@@ -33,6 +33,7 @@ exports.findById = async (id) => {
             p.product_id,
             p.code,
             p.name,
+            p.category_id,
             p.price,
             p.description,
             p.image_path,
@@ -173,6 +174,21 @@ exports.updateVariant = async (variantId, size, color, stock) => {
         RETURNING *
     `,
     [size || null, color || null, stock, variantId],
+  );
+
+  return result.rows[0];
+};
+
+exports.findByCode = async (code) => {
+  const result = await pool.query(
+    `
+        SELECT
+            product_id,
+            code
+        FROM products
+        WHERE code = $1
+    `,
+    [code],
   );
 
   return result.rows[0];

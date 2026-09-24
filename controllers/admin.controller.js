@@ -17,6 +17,10 @@ exports.createProduct = async (req, res) => {
     return res.status(400).send("กรุณากรอกข้อมูลสินค้าให้ครบ");
   }
 
+  if (!code.trim() || !name.trim()) {
+    return res.status(400).send("รหัสสินค้าและชื่อสินค้าห้ามเป็นค่าว่าง");
+  }
+
   if (!Number.isInteger(Number(category_id))) {
     return res.status(400).send("category_id ต้องเป็นตัวเลข");
   }
@@ -64,9 +68,19 @@ exports.createVariant = async (req, res) => {
     return res.status(404).send("ไม่พบสินค้านี้");
   }
 
-  await Product.createVariant(product_id, size, color, stock);
+  try {
+    await Product.createVariant(product_id, size, color, stock);
 
-  res.redirect(`/admin/products/${product_id}/variants`);
+    res.redirect(`/admin/products/${product_id}/variants`);
+  } catch (error) {
+    console.error(error);
+
+    if (error.code === "23503") {
+      return res.status(404).send("ไม่พบสินค้าที่ต้องการเพิ่ม Variant");
+    }
+
+    res.status(500).send("เกิดข้อผิดพลาดในการเพิ่ม Variant");
+  }
 };
 
 exports.variants = async (req, res) => {
@@ -85,12 +99,30 @@ exports.variants = async (req, res) => {
 exports.editProduct = async (req, res) => {
   const productId = req.params.id;
 
+  if (!Number.isInteger(Number(productId))) {
+    return res.status(400).send("productId ต้องเป็นตัวเลข");
+  }
+
   const { code, name, category_id, price, description, status } = req.body;
+
+  if (typeof code !== "string" || typeof name !== "string") {
+    return res.status(400).send("รหัสสินค้าและชื่อสินค้าต้องเป็นข้อความ");
+  }
+
+  if (!code.trim() || !name.trim()) {
+    return res.status(400).send("รหัสสินค้าและชื่อสินค้าห้ามเป็นค่าว่าง");
+  }
 
   const product = await Product.findById(productId);
 
   if (!product) {
     return res.status(404).send("ไม่พบสินค้านี้");
+  }
+
+  const existingProduct = await Product.findByCode(code);
+
+  if (existingProduct && existingProduct.product_id != productId) {
+    return res.status(409).send("รหัสสินค้านี้มีอยู่แล้ว");
   }
 
   if (!code || !name || !category_id || !price) {
@@ -121,17 +153,27 @@ exports.editProduct = async (req, res) => {
     return res.status(400).send("สถานะสินค้าไม่ถูกต้อง");
   }
 
-  await Product.update(
-    productId,
-    code,
-    name,
-    category_id,
-    price,
-    description,
-    status,
-  );
+  try {
+    await Product.update(
+      productId,
+      code,
+      name,
+      category_id,
+      price,
+      description,
+      status,
+    );
 
-  res.redirect("/admin/products");
+    res.redirect("/admin/products");
+  } catch (error) {
+    console.error(error);
+
+    if (error.code === "23505") {
+      return res.status(409).send("รหัสสินค้านี้มีอยู่แล้ว");
+    }
+
+    res.status(500).send("เกิดข้อผิดพลาดในการแก้ไขสินค้า");
+  }
 };
 
 exports.editProductForm = async (req, res) => {
@@ -143,14 +185,33 @@ exports.editProductForm = async (req, res) => {
     return res.status(404).send("ไม่พบสินค้า");
   }
 
+  const categories = await Category.findAll();
+
   res.render("admin/product-edit", {
     product,
+    categories,
   });
 };
 
 exports.updateProductStatus = async (req, res) => {
   const productId = req.params.id;
   const { status } = req.body;
+
+  if (!Number.isInteger(Number(productId))) {
+    return res.status(400).send("productId ต้องเป็นตัวเลข");
+  }
+
+  const allowedStatus = ["ACTIVE", "INACTIVE"];
+
+  if (!allowedStatus.includes(status)) {
+    return res.status(400).send("สถานะสินค้าไม่ถูกต้อง");
+  }
+
+  const product = await Product.findById(productId);
+
+  if (!product) {
+    return res.status(404).send("ไม่พบสินค้านี้");
+  }
 
   await Product.updateStatus(productId, status);
 
@@ -160,6 +221,14 @@ exports.updateProductStatus = async (req, res) => {
 exports.editVariant = async (req, res) => {
   const variantId = req.params.variantId;
   const productId = req.params.id;
+
+  if (!Number.isInteger(Number(productId))) {
+    return res.status(400).send("productId ต้องเป็นตัวเลข");
+  }
+
+  if (!Number.isInteger(Number(variantId))) {
+    return res.status(400).send("variantId ต้องเป็นตัวเลข");
+  }
 
   const { size, color, stock } = req.body;
 
@@ -175,9 +244,15 @@ exports.editVariant = async (req, res) => {
     return res.status(404).send("ไม่พบ Variant นี้");
   }
 
-  await Product.updateVariant(variantId, size, color, stock);
+  try {
+    await Product.updateVariant(variantId, size, color, stock);
 
-  res.redirect(`/admin/products/${productId}/variants`);
+    res.redirect(`/admin/products/${productId}/variants`);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).send("เกิดข้อผิดพลาดในการแก้ไข Variant");
+  }
 };
 
 exports.orders = async (req, res) => {

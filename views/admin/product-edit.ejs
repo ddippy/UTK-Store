@@ -42,14 +42,16 @@
         <br><br>
 
         <label>หมวดหมู่</label>
-        <br>
-
-        <input
-            type="number"
-            name="category_id"
-            value="<%= product.category_id %>"
-            required
-        >
+            <select name="category_id" required>
+                <% categories.forEach(category => { %>
+                    <option
+                        value="<%= category.category_id %>"
+                        <%= Number(product.category_id) === Number(category.category_id) ? "selected" : "" %>
+                    >
+                        <%= category.name %>
+                    </option>
+                <% }) %>
+            </select>
 
         <br><br>
 
