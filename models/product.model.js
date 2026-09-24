@@ -17,6 +17,7 @@ exports.findAll = async () => {
             ON p.category_id = c.category_id
         LEFT JOIN product_variants v
             ON p.product_id = v.product_id
+        WHERE p.status = 'ACTIVE'
         GROUP BY
             p.product_id,
             c.name
@@ -189,6 +190,52 @@ exports.findByCode = async (code) => {
         WHERE code = $1
     `,
     [code],
+  );
+
+  return result.rows[0];
+};
+
+exports.findAllAdmin = async () => {
+  const result = await pool.query(`
+        SELECT
+            p.product_id,
+            p.code,
+            p.name,
+            p.price,
+            p.description,
+            p.image_path,
+            p.status,
+            c.name AS category_name,
+            COALESCE(SUM(v.stock), 0) AS stock
+        FROM products p
+        JOIN categories c
+            ON p.category_id = c.category_id
+        LEFT JOIN product_variants v
+            ON p.product_id = v.product_id
+        GROUP BY
+            p.product_id,
+            c.name
+        ORDER BY p.product_id DESC
+    `);
+
+  return result.rows;
+};
+
+exports.findActiveVariant = async (variantId) => {
+  const result = await pool.query(
+    `
+        SELECT
+            v.variant_id,
+            v.product_id,
+            v.stock,
+            p.status
+        FROM product_variants v
+        JOIN products p
+            ON v.product_id = p.product_id
+        WHERE v.variant_id = $1
+          AND p.status = 'ACTIVE'
+    `,
+    [variantId],
   );
 
   return result.rows[0];

@@ -3,7 +3,7 @@ const Order = require("../models/order.model");
 const Category = require("../models/category.model");
 
 exports.products = async (req, res) => {
-  const products = await Product.findAll();
+  const products = await Product.findAllAdmin();
 
   res.render("admin/products", {
     products,
@@ -288,6 +288,6 @@ exports.dashboard = async (req, res) => {
     sales,
     dailySales,
     bestSellingProducts,
-    categorySales
+    categorySales,
   });
 };

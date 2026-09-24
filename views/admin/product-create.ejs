@@ -26,9 +26,14 @@
       <br /><br />
 
       <label>หมวดหมู่</label>
-      <br />
-
-      <input type="number" name="category_id" required />
+      <select name="category_id" required>
+          <option value="">-- เลือกหมวดหมู่ --</option>
+          <% categories.forEach(category => { %>
+              <option value="<%= category.category_id %>">
+                  <%= category.name %>
+              </option>
+          <% }) %>
+      </select>
 
       <br /><br />
 

@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const adminController = require("../controllers/admin.controller");
+const Category = require("../models/category.model");
 
 router.get("/", adminController.dashboard);
 
@@ -10,8 +11,12 @@ router.get("/products",
 router.get("/orders", 
     adminController.orders);
 
-router.get("/products/create", (req, res) => {
-  res.render("admin/product-create");
+router.get("/products/create", async (req, res) => {
+    const categories = await Category.findAll();
+
+    res.render("admin/product-create", {
+        categories
+    });
 });
 
 router.get("/products/:id/variants", 

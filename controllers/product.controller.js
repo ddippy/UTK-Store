@@ -10,7 +10,20 @@ exports.list = async (req, res) => {
 
 exports.detail = async (req, res) => {
   const id = req.params.id;
+
+  if (!Number.isInteger(Number(id))) {
+    return res.status(400).send("รหัสสินค้าต้องเป็นตัวเลข");
+  }
+
   const product = await Product.findById(id);
+
+  if (!product) {
+    return res.status(404).send("ไม่พบสินค้า");
+  }
+
+  if (product.status !== "ACTIVE") {
+    return res.status(404).send("ไม่พบสินค้านี้");
+  }
 
   res.render("products/detail", {
     product,
