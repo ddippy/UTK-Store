@@ -206,13 +206,16 @@ exports.getSalesSummary = async () => {
 exports.getDailySales = async () => {
   const result = await pool.query(`
         SELECT
-            DATE(created_at) AS sale_date,
+            TO_CHAR(
+                DATE(created_at AT TIME ZONE 'Asia/Bangkok'),
+                'DD/MM/YYYY'
+            ) AS sale_date,
             COUNT(*) AS order_count,
             SUM(total_price) AS total_sales
         FROM orders
         WHERE status = 'COMPLETED'
-        GROUP BY DATE(created_at)
-        ORDER BY sale_date DESC
+        GROUP BY DATE(created_at AT TIME ZONE 'Asia/Bangkok')
+        ORDER BY DATE(created_at AT TIME ZONE 'Asia/Bangkok') DESC
     `);
 
   return result.rows;

@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const adminController = require("../controllers/admin.controller");
 const Category = require("../models/category.model");
+const upload = require("../middleware/upload");
 
 router.get("/", adminController.dashboard);
 
@@ -39,6 +40,7 @@ router.post(
 
 router.post(
     "/products/:id/edit",
+    upload.single("image"),
     adminController.editProduct
 );
 

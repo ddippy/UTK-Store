@@ -119,6 +119,10 @@ exports.editProduct = async (req, res) => {
     return res.status(404).send("ไม่พบสินค้านี้");
   }
 
+  const imagePath = req.file
+    ? `/uploads/${req.file.filename}`
+    : product.image_path;
+
   const existingProduct = await Product.findByCode(code);
 
   if (existingProduct && existingProduct.product_id != productId) {
@@ -162,6 +166,7 @@ exports.editProduct = async (req, res) => {
       price,
       description,
       status,
+      imagePath,
     );
 
     res.redirect("/admin/products");

@@ -129,6 +129,7 @@ exports.update = async (
   price,
   description,
   status,
+  imagePath,
 ) => {
   const result = await pool.query(
     `
@@ -139,11 +140,12 @@ exports.update = async (
             category_id = $3,
             price = $4,
             description = $5,
-            status = $6
-        WHERE product_id = $7
+            status = $6,
+            image_path = $7
+        WHERE product_id = $8
         RETURNING *
     `,
-    [code, name, categoryId, price, description, status, productId],
+    [code, name, categoryId, price, description, status, imagePath, productId],
   );
 
   return result.rows[0];

@@ -15,6 +15,7 @@
     <form
         action="/admin/products/<%= product.product_id %>/edit"
         method="POST"
+        enctype="multipart/form-data"
     >
 
         <label>รหัสสินค้า</label>
@@ -78,6 +79,24 @@
         ><%= product.description || "" %></textarea>
 
         <br><br>
+
+        <div>
+            <label>รูปสินค้า</label>
+
+            <% if (product.image_path) { %>
+                <br>
+                <img
+                    src="<%= product.image_path %>"
+                    width="150"
+                    alt="<%= product.name %>"
+                >
+                <br><br>
+            <% } %>
+
+            <input type="file" name="image" accept="image/*">
+        </div>
+
+        <br>
 
         <label>สถานะ</label>
         <br>

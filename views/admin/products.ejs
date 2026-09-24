@@ -30,6 +30,16 @@
                 <%= product.name %>
             </h2>
 
+            <% if (product.image_path) { %>
+                <img
+                    src="<%= product.image_path %>"
+                    width="100"
+                    alt="<%= product.name %>"
+                >
+            <% } else { %>
+                <p>ไม่มีรูปสินค้า</p>
+            <% } %>
+
             <p>
                 รหัสสินค้า: <%= product.code %>
             </p>
