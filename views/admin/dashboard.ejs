@@ -22,6 +22,96 @@
       </li>
     </ul>
 
+    <h2>สรุปยอดขาย</h2>
+    <p>
+      จำนวนออเดอร์ที่ขายสำเร็จ:
+      <%= sales.order_count %>
+    </p>
+
+    <p>
+      ยอดขายรวม:
+      <%= Number(sales.total_sales).toLocaleString() %> บาท
+    </p>
+    <h2>ยอดขายรายวัน</h2>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>วันที่</th>
+          <th>จำนวนออเดอร์</th>
+          <th>ยอดขาย</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% dailySales.forEach(day => { %>
+          <tr>
+            <td>
+              <%= day.sale_date.toISOString().split("T")[0] %>
+            </td>
+
+            <td>
+              <%= day.order_count %>
+            </td>
+
+            <td>
+              <%= Number(day.total_sales).toLocaleString() %> บาท
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <h2>สินค้าขายดี</h2>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>สินค้า</th>
+          <th>จำนวนที่ขาย</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% bestSellingProducts.forEach(product => { %>
+          <tr>
+            <td>
+              <%= product.name %>
+            </td>
+
+            <td>
+              <%= product.total_quantity %> ชิ้น
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <h2>ยอดขายตามหมวดหมู่</h2>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>หมวดหมู่</th>
+          <th>ยอดขาย</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% categorySales.forEach(category => { %>
+          <tr>
+            <td>
+              <%= category.category_name %>
+            </td>
+
+            <td>
+              <%= Number(category.total_sales).toLocaleString() %> บาท
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
     <br />
 
     <a href="/products"> กลับหน้าร้าน </a>

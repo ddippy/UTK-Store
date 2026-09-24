@@ -277,3 +277,17 @@ exports.updateOrderStatus = async (req, res) => {
 
   res.redirect("/admin/orders");
 };
+
+exports.dashboard = async (req, res) => {
+  const sales = await Order.getSalesSummary();
+  const dailySales = await Order.getDailySales();
+  const bestSellingProducts = await Order.getBestSellingProducts();
+  const categorySales = await Order.getCategorySales();
+
+  res.render("admin/dashboard", {
+    sales,
+    dailySales,
+    bestSellingProducts,
+    categorySales
+  });
+};

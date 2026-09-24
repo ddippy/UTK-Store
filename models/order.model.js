@@ -190,3 +190,72 @@ exports.updateStatus = async (orderId, status) => {
 
   return result.rows[0];
 };
+
+exports.getSalesSummary = async () => {
+  const result = await pool.query(`
+        SELECT
+            COUNT(*) AS order_count,
+            COALESCE(SUM(total_price), 0) AS total_sales
+        FROM orders
+        WHERE status = 'COMPLETED'
+    `);
+
+  return result.rows[0];
+};
+
+exports.getDailySales = async () => {
+  const result = await pool.query(`
+        SELECT
+            DATE(created_at) AS sale_date,
+            COUNT(*) AS order_count,
+            SUM(total_price) AS total_sales
+        FROM orders
+        WHERE status = 'COMPLETED'
+        GROUP BY DATE(created_at)
+        ORDER BY sale_date DESC
+    `);
+
+  return result.rows;
+};
+
+exports.getBestSellingProducts = async () => {
+  const result = await pool.query(`
+        SELECT
+            p.name,
+            SUM(oi.quantity) AS total_quantity
+        FROM order_items oi
+        JOIN product_variants v
+            ON oi.variant_id = v.variant_id
+        JOIN products p
+            ON v.product_id = p.product_id
+        JOIN orders o
+            ON oi.order_id = o.order_id
+        WHERE o.status = 'COMPLETED'
+        GROUP BY p.product_id, p.name
+        ORDER BY total_quantity DESC
+    `);
+
+  return result.rows;
+};
+
+exports.getCategorySales = async () => {
+  const result = await pool.query(`
+        SELECT
+            c.name AS category_name,
+            SUM(oi.quantity * oi.price) AS total_sales
+        FROM order_items oi
+        JOIN product_variants v
+            ON oi.variant_id = v.variant_id
+        JOIN products p
+            ON v.product_id = p.product_id
+        JOIN categories c
+            ON p.category_id = c.category_id
+        JOIN orders o
+            ON oi.order_id = o.order_id
+        WHERE o.status = 'COMPLETED'
+        GROUP BY c.category_id, c.name
+        ORDER BY total_sales DESC
+    `);
+
+  return result.rows;
+};

@@ -1,9 +1,7 @@
 const router = require("express").Router();
 const adminController = require("../controllers/admin.controller");
 
-router.get("/", (req, res) => {
-  res.render("admin/dashboard");
-});
+router.get("/", adminController.dashboard);
 
 router.get("/products", 
     adminController.products
