@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>สั่งซื้อสำเร็จ | UTK-Store</title>
+  </head>
+
+  <body>
+    <h1>สั่งซื้อสำเร็จ 🎉</h1>
+
+    <p>
+      เลขที่คำสั่งซื้อ:
+      <strong><%= order.order_id %></strong>
+    </p>
+
+    <p>
+      ยอดรวม:
+      <strong><%= order.total_price %> บาท</strong>
+    </p>
+
+    <br />
+
+    <a href="/products"> กลับไปเลือกสินค้า </a>
+  </body>
+</html>

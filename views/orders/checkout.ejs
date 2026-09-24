@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>สั่งซื้อ | UTK-Store</title>
+  </head>
+
+  <body>
+    <h1>ข้อมูลผู้สั่งซื้อ</h1>
+
+    <form action="/orders/create" method="POST">
+      <label>ชื่อ-นามสกุล</label>
+      <br />
+
+      <input type="text" name="customer_name" required />
+
+      <br /><br />
+
+      <label>รหัสนักศึกษา</label>
+      <br />
+
+      <input type="text" name="student_id" required />
+
+      <br /><br />
+
+      <label>เบอร์โทรศัพท์</label>
+      <br />
+
+      <input type="tel" name="phone" required />
+
+      <br /><br />
+
+      <button type="submit">ยืนยันการสั่งซื้อ</button>
+    </form>
+
+    <br />
+
+    <a href="/cart"> ← กลับไปตะกร้า </a>
+  </body>
+</html>

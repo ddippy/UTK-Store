@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>จัดการคำสั่งซื้อ | Admin</title>
+</head>
+
+<body>
+
+<h1>จัดการคำสั่งซื้อ</h1>
+
+<% if (orders.length === 0) { %>
+
+    <p>ยังไม่มีคำสั่งซื้อ</p>
+
+<% } else { %>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>ลูกค้า</th>
+                <th>รหัสนักศึกษา</th>
+                <th>เบอร์โทร</th>
+                <th>ยอดรวม</th>
+                <th>สถานะ</th>
+                <th>วันที่สั่งซื้อ</th>
+                <th>จัดการ</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <% orders.forEach(order => { %>
+
+                <tr>
+                    <td><%= order.order_id %></td>
+
+                    <td>
+                        <%= order.customer_name %>
+                    </td>
+
+                    <td>
+                        <%= order.student_id %>
+                    </td>
+
+                    <td>
+                        <%= order.phone %>
+                    </td>
+
+                    <td>
+                        <%= order.total_price %> บาท
+                    </td>
+
+                    <td>
+                        <%= order.status %>
+                    </td>
+
+                    <td>
+                        <%= order.created_at %>
+                    </td>
+
+                    <td>
+                        <form
+                            action="/admin/orders/<%= order.order_id %>/status"
+                            method="POST"
+                        >
+                            <select name="status">
+
+                                <option value="PENDING"
+                                    <%= order.status === "PENDING" ? "selected" : "" %>>
+                                    PENDING
+                                </option>
+
+                                <option value="CONFIRMED"
+                                    <%= order.status === "CONFIRMED" ? "selected" : "" %>>
+                                    CONFIRMED
+                                </option>
+
+                                <option value="COMPLETED"
+                                    <%= order.status === "COMPLETED" ? "selected" : "" %>>
+                                    COMPLETED
+                                </option>
+
+                                <option value="CANCELLED"
+                                    <%= order.status === "CANCELLED" ? "selected" : "" %>>
+                                    CANCELLED
+                                </option>
+
+                            </select>
+
+                            <button type="submit">
+                                บันทึก
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+
+            <% }) %>
+
+        </tbody>
+    </table>
+
+<% } %>
+
+<br>
+
+<a href="/admin">← กลับ Admin</a>
+
+</body>
+</html>

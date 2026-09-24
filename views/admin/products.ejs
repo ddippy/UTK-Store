@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>จัดการสินค้า | Admin</title>
+</head>
+
+<body>
+
+    <h1>จัดการสินค้า</h1>
+
+    <a href="/admin">← Dashboard</a>
+
+    <br><br>
+
+    <a href="/admin/products/create">
+        + เพิ่มสินค้า
+    </a>
+
+    <hr>
+
+    <% products.forEach(product => { %>
+
+        <div>
+
+            <h2>
+                <%= product.name %>
+            </h2>
+
+            <p>
+                รหัสสินค้า: <%= product.code %>
+            </p>
+
+            <p>
+                หมวดหมู่: <%= product.category_name %>
+            </p>
+
+            <p>
+                ราคา: <%= product.price %> บาท
+            </p>
+
+            <p>
+                Stock: <%= product.stock %>
+            </p>
+
+            <p>
+                สถานะ: <%= product.status %>
+            </p>
+
+            <a href="/products/<%= product.product_id %>">
+                ดูสินค้า
+            </a>
+
+            <br>
+
+            <a href="/admin/products/<%= product.product_id %>/edit">
+                แก้ไขสินค้า
+            </a>
+
+            <br>
+
+            <a href="/admin/products/<%= product.product_id %>/variants">
+                จัดการ Variant
+            </a>
+
+            <br>
+
+            <form
+                action="/admin/products/<%= product.product_id %>/status"
+                method="POST"
+            >
+
+                <input
+                    type="hidden"
+                    name="status"
+                    value="<%= product.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE' %>"
+                >
+
+                <button type="submit">
+
+                    <%= product.status === 'ACTIVE'
+                        ? 'ปิดการขาย'
+                        : 'เปิดการขาย'
+                    %>
+
+                </button>
+            </form>
+
+        </div>
+
+        <hr>
+
+    <% }) %>
+
+</body>
+
+</html>

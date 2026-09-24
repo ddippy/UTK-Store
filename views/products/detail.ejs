@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= product.name %> | UTK-Store</title>
+  </head>
+  <body>
+    <h1><%= product.name %></h1>
+
+    <p>รหัสสินค้า: <%= product.code %></p>
+
+    <p>หมวดหมู่: <%= product.category_name %></p>
+
+    <p>ราคา: <%= product.price %> บาท</p>
+
+    <p>รายละเอียด: <%= product.description %></p>
+
+    <h2>ตัวเลือกสินค้า</h2>
+
+    <h2>ตัวเลือกสินค้า</h2>
+
+    <form action="/cart/add" method="POST">
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>เลือก</th>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th>Stock</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% product.variants.forEach(variant => { %>
+                    <tr>
+                        <td>
+                            <input
+                                type="radio"
+                                name="variant_id"
+                                value="<%= variant.variant_id %>"
+                                required
+                            >
+                        </td>
+
+                        <td><%= variant.size || "-" %></td>
+
+                        <td><%= variant.color || "-" %></td>
+
+                        <td><%= variant.stock %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <br>
+
+        <label>จำนวน:</label>
+
+        <input
+            type="number"
+            name="quantity"
+            value="1"
+            min="1"
+            required
+        >
+
+        <br><br>
+
+        <button type="submit">
+            เพิ่มลงตะกร้า
+        </button>
+
+    </form>
+
+    <p>สถานะ: <%= product.status %></p>
+
+    <a href="/products">← กลับไปหน้าสินค้า</a>
+  </body>
+</html>

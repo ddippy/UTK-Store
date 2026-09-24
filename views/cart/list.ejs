@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ตะกร้าสินค้า | UTK-Store</title>
+</head>
+
+<body>
+    <h1>ตะกร้าสินค้า</h1>
+    <% if (items.length === 0) { %>
+        <p>ตะกร้าสินค้าว่าง</p>
+    <% } else { %>
+        <% items.forEach(item => { %>
+            <div>
+                <h2><%= item.name %></h2>
+                <p>ราคา: <%= item.price %> บาท</p>
+                <p>Size: <%= item.size || "-" %></p>
+                <p>สี: <%= item.color || "-" %></p>
+                <form action="/cart/update" method="POST">
+                    <input
+                        type="hidden"
+                        name="variant_id"
+                        value="<%= item.variant_id %>"
+                    >
+                    <input
+                        type="number"
+                        name="quantity"
+                        value="<%= item.quantity %>"
+                        min="1"
+                        required
+                    >
+                    <button type="submit">
+                        อัปเดต
+                    </button>
+                </form>
+
+                <form action="/cart/remove" method="POST">
+                    <input
+                        type="hidden"
+                        name="variant_id"
+                        value="<%= item.variant_id %>"
+                    >
+                    <button type="submit">
+                        ลบ
+                    </button>
+                </form>
+
+            </div>
+            <hr>
+        <% }) %>
+
+        <h2>ยอดรวม: <%= total %> บาท</h2>
+
+        <a href="/orders/checkout">
+            ไปสั่งซื้อ
+        </a>
+
+    <% } %>
+    
+    <a href="/products">← กลับไปเลือกสินค้า</a>
+
+</body>
+</html>

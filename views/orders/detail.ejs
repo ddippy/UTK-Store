@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>รายละเอียดคำสั่งซื้อ | UTK-Store</title>
+</head>
+
+<body>
+
+    <h1>รายละเอียดคำสั่งซื้อ</h1>
+
+    <p>
+        เลขที่คำสั่งซื้อ:
+        <strong><%= order.order_id %></strong>
+    </p>
+
+    <p>
+        ชื่อผู้สั่ง:
+        <%= order.customer_name %>
+    </p>
+
+    <p>
+        รหัสนักศึกษา:
+        <%= order.student_id %>
+    </p>
+
+    <p>
+        เบอร์โทร:
+        <%= order.phone %>
+    </p>
+
+    <hr>
+
+    <h2>รายการสินค้า</h2>
+
+    <% order.items.forEach(item => { %>
+
+        <div>
+
+            <h3><%= item.name %></h3>
+
+            <p>
+                Size: <%= item.size || "-" %>
+            </p>
+
+            <p>
+                สี: <%= item.color || "-" %>
+            </p>
+
+            <p>
+                จำนวน: <%= item.quantity %>
+            </p>
+
+            <p>
+                ราคา: <%= item.price %> บาท
+            </p>
+
+        </div>
+
+        <hr>
+
+    <% }) %>
+
+    <h2>
+        ยอดรวม:
+        <%= order.total_price %> บาท
+    </h2>
+
+    <p>
+        สถานะ:
+        <%= order.status %>
+    </p>
+
+    <br>
+
+    <a href="/products">
+        กลับไปหน้าสินค้า
+    </a>
+
+</body>
+
+</html>

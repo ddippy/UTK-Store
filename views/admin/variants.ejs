@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>จัดการ Variant | Admin</title>
+</head>
+
+<body>
+
+    <h1>จัดการ Variant</h1>
+
+    <h2>
+        <%= product.name %>
+    </h2>
+
+    <p>
+        รหัสสินค้า: <%= product.code %>
+    </p>
+
+    <hr>
+
+    <h2>Variant ที่มีอยู่</h2>
+
+    <% if (variants.length === 0) { %>
+
+        <p>ยังไม่มี Variant</p>
+
+    <% } else { %>
+
+        <table border="1">
+
+            <thead>
+                <tr>
+                    <th>Variant ID</th>
+                    <th>Size</th>
+                    <th>สี</th>
+                    <th>Stock</th>
+                    <th>จัดการ</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <% variants.forEach(variant => { %>
+
+                    <tr>
+                        <td><%= variant.variant_id %></td>
+
+                        <td>
+                            <input
+                                type="text"
+                                name="size"
+                                value="<%= variant.size || "" %>"
+                                form="edit-<%= variant.variant_id %>"
+                            >
+                        </td>
+
+                        <td>
+                            <input
+                                type="text"
+                                name="color"
+                                value="<%= variant.color || "" %>"
+                                form="edit-<%= variant.variant_id %>"
+                            >
+                        </td>
+
+                        <td>
+                            <input
+                                type="number"
+                                name="stock"
+                                min="0"
+                                value="<%= variant.stock %>"
+                                form="edit-<%= variant.variant_id %>"
+                            >
+                        </td>
+
+                        <td>
+                            <form
+                                id="edit-<%= variant.variant_id %>"
+                                action="/admin/products/<%= product.product_id %>/variants/<%= variant.variant_id %>/edit"
+                                method="POST"
+                            >
+                                <button type="submit">บันทึก</button>
+                            </form>
+                        </td>
+                    </tr>
+
+                <% }) %>
+
+            </tbody>
+
+        </table>
+
+    <% } %>
+
+    <hr>
+
+    <h2>เพิ่ม Variant</h2>
+
+    <form
+        action="/admin/products/<%= product.product_id %>/variants"
+        method="POST"
+    >
+
+        <label>Size</label>
+        <br>
+
+        <input
+            type="text"
+            name="size"
+            placeholder="เช่น M"
+        >
+
+        <br><br>
+
+        <label>สี</label>
+        <br>
+
+        <input
+            type="text"
+            name="color"
+            placeholder="เช่น ขาว"
+        >
+
+        <br><br>
+
+        <label>Stock</label>
+        <br>
+
+        <input
+            type="number"
+            name="stock"
+            min="0"
+            value="0"
+            required
+        >
+
+        <br><br>
+
+        <button type="submit">
+            เพิ่ม Variant
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/admin/products">
+        ← กลับไปจัดการสินค้า
+    </a>
+
+</body>
+
+</html>
