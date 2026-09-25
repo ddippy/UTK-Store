@@ -8,7 +8,7 @@ app.use(express.urlencoded({ extended: true })); // อ่านข้อมู�
 app.use(express.static("public")); // ไฟล์ CSS / รูปภาพ / JavaScript
 app.use(
   session({
-    secret: "utk-store-secret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
   }),
