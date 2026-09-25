@@ -55,6 +55,11 @@ router.post(
 );
 
 router.post(
+    "/products/:id/variants/:variantId/delete",
+    adminController.deleteVariant
+);
+
+router.post(
     "/orders/:id/status",
     adminController.updateOrderStatus
 );

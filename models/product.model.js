@@ -182,6 +182,16 @@ exports.updateVariant = async (variantId, size, color, stock) => {
   return result.rows[0];
 };
 
+exports.deleteVariant = async (variantId) => {
+  await pool.query(
+    `
+        DELETE FROM product_variants
+        WHERE variant_id = $1
+    `,
+    [variantId],
+  );
+};
+
 exports.findByCode = async (code) => {
   const result = await pool.query(
     `

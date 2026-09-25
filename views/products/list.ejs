@@ -14,6 +14,16 @@
         <div>
             <h2><%= product.name %></h2>
 
+            <% if (product.image_path) { %>
+                <img
+                    src="<%= product.image_path %>"
+                    width="300"
+                    alt="<%= product.name %>"
+                >
+            <% } else { %>
+                <p>ไม่มีรูปสินค้า</p>
+            <% } %>
+
             <p>รหัสสินค้า: <%= product.code %></p>
 
             <p>หมวดหมู่: <%= product.category_name %></p>

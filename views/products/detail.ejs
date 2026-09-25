@@ -8,6 +8,16 @@
   <body>
     <h1><%= product.name %></h1>
 
+    <% if (product.image_path) { %>
+        <img
+            src="<%= product.image_path %>"
+            width="300"
+            alt="<%= product.name %>"
+        >
+    <% } else { %>
+        <p>ไม่มีรูปสินค้า</p>
+    <% } %>
+
     <p>รหัสสินค้า: <%= product.code %></p>
 
     <p>หมวดหมู่: <%= product.category_name %></p>
@@ -15,8 +25,6 @@
     <p>ราคา: <%= product.price %> บาท</p>
 
     <p>รายละเอียด: <%= product.description %></p>
-
-    <h2>ตัวเลือกสินค้า</h2>
 
     <h2>ตัวเลือกสินค้า</h2>
 

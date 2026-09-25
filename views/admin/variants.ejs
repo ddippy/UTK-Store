@@ -85,7 +85,20 @@
                             >
                                 <button type="submit">บันทึก</button>
                             </form>
+
+                            <form
+                                action="/admin/products/<%= product.product_id %>/variants/<%= variant.variant_id %>/delete"
+                                method="POST"
+                            >
+                                <button
+                                    type="submit"
+                                    onclick="return confirm('คุณต้องการลบ Variant นี้ใช่หรือไม่?')"
+                                >
+                                    ลบ
+                                </button>
+                            </form>
                         </td>
+
                     </tr>
 
                 <% }) %>

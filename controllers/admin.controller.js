@@ -260,6 +260,43 @@ exports.editVariant = async (req, res) => {
   }
 };
 
+exports.deleteVariant = async (req, res) => {
+  const productId = req.params.id;
+  const variantId = req.params.variantId;
+
+  if (!Number.isInteger(Number(productId))) {
+    return res.status(400).send("productId ต้องเป็นตัวเลข");
+  }
+
+  if (!Number.isInteger(Number(variantId))) {
+    return res.status(400).send("variantId ต้องเป็นตัวเลข");
+  }
+
+  const variants = await Product.findVariants(productId);
+
+  const variant = variants.find((item) => item.variant_id == variantId);
+
+  if (!variant) {
+    return res.status(404).send("ไม่พบ Variant นี้");
+  }
+
+  try {
+    await Product.deleteVariant(variantId);
+
+    res.redirect(`/admin/products/${productId}/variants`);
+  } catch (error) {
+    console.error(error);
+
+    if (error.code === "23503") {
+      return res
+        .status(409)
+        .send("ไม่สามารถลบ Variant นี้ได้ เพราะถูกใช้ใน Order แล้ว");
+    }
+
+    res.status(500).send("เกิดข้อผิดพลาดในการลบ Variant");
+  }
+};
+
 exports.orders = async (req, res) => {
   const orders = await Order.findAll();
 
