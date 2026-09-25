@@ -331,5 +331,6 @@ exports.dashboard = async (req, res) => {
     dailySales,
     bestSellingProducts,
     categorySales,
+    adminUsername: req.session.adminUsername,
   });
 };

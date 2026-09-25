@@ -7,11 +7,11 @@ const PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true })); // อ่านข้อมูลจาก form
 app.use(express.static("public")); // ไฟล์ CSS / รูปภาพ / JavaScript
 app.use(
-    session({
-        secret: "utk-store-secret",
-        resave: false,
-        saveUninitialized: true
-    })
+  session({
+    secret: "utk-store-secret",
+    resave: false,
+    saveUninitialized: true,
+  }),
 );
 
 app.set("view engine", "ejs"); // ใช้ EJS เป็น View Engine
@@ -20,11 +20,15 @@ const productRoutes = require("./routes/product.routes"); // Routes
 const cartRoutes = require("./routes/cart.routes");
 const orderRoutes = require("./routes/order.routes");
 const adminRoutes = require("./routes/admin.routes");
+const authRoutes = require("./routes/auth.routes");
+
+const requireAdmin = require("./middleware/auth");
 
 app.use("/products", productRoutes);
 app.use("/cart", cartRoutes);
 app.use("/orders", orderRoutes);
-app.use("/admin", adminRoutes);
+app.use("/", authRoutes);
+app.use("/admin", requireAdmin, adminRoutes);
 
 app.get("/", (req, res) => {
   // หน้าแรก
