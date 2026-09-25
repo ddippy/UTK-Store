@@ -22,7 +22,7 @@ const orderRoutes = require("./routes/order.routes");
 const adminRoutes = require("./routes/admin.routes");
 const authRoutes = require("./routes/auth.routes");
 
-const requireAdmin = require("./middleware/auth");
+const requireAdmin = require("./middleware/adminAuth");
 
 app.use("/products", productRoutes);
 app.use("/cart", cartRoutes);

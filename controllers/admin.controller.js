@@ -315,6 +315,25 @@ exports.updateOrderStatus = async (req, res) => {
     return res.status(400).send("สถานะไม่ถูกต้อง");
   }
 
+  const order = await Order.findById(orderId);
+
+  if (!order) {
+    return res.status(404).send("ไม่พบคำสั่งซื้อ");
+  }
+
+  const allowedTransitions = {
+    PENDING: ["CONFIRMED", "CANCELLED"],
+    CONFIRMED: ["COMPLETED"],
+    COMPLETED: [],
+    CANCELLED: [],
+  };
+
+  if (!allowedTransitions[order.status].includes(status)) {
+    return res
+      .status(400)
+      .send(`ไม่สามารถเปลี่ยนสถานะจาก ${order.status} เป็น ${status} ได้`);
+  }
+
   await Order.updateStatus(orderId, status);
 
   res.redirect("/admin/orders");

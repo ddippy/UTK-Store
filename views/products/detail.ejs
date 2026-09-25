@@ -29,6 +29,12 @@
     <h2>ตัวเลือกสินค้า</h2>
 
     <form action="/cart/add" method="POST">
+        <input
+            type="hidden"
+            name="returnTo"
+            value="/products/<%= product.product_id %>"
+        >
+
 
         <table border="1">
             <thead>

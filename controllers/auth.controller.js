@@ -1,11 +1,13 @@
 const bcrypt = require("bcrypt");
 const Admin = require("../models/admin.model");
+const User = require("../models/user.model");
 
-exports.loginForm = (req, res) => {
-  res.render("auth/login");
+// ==================== ADMIN ====================
+exports.adminLoginForm = (req, res) => {
+  res.render("auth/admin-login");
 };
 
-exports.login = async (req, res) => {
+exports.adminLogin = async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -30,6 +32,42 @@ exports.login = async (req, res) => {
   res.redirect("/admin");
 };
 
+// ==================== USER ====================
+
+exports.userLoginForm = (req, res) => {
+  const { returnTo } = req.query;
+
+  res.render("auth/user-login", { returnTo });
+};
+
+exports.userLogin = async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).send("กรุณากรอก Username และ Password");
+  }
+
+  const user = await User.findByUsername(username);
+
+  if (!user) {
+    return res.status(401).send("Username หรือ Password ไม่ถูกต้อง");
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password_hash);
+
+  if (!isMatch) {
+    return res.status(401).send("Username หรือ Password ไม่ถูกต้อง");
+  }
+
+  req.session.userId = user.user_id;
+  req.session.username = user.username;
+
+  const returnTo = req.body.returnTo || "/";
+
+  res.redirect(returnTo);
+};
+
+// ==================== LOGOUT ====================
 exports.logout = (req, res) => {
   req.session.destroy((error) => {
     if (error) {
@@ -37,6 +75,6 @@ exports.logout = (req, res) => {
       return res.status(500).send("เกิดข้อผิดพลาดในการ Logout");
     }
 
-    res.redirect("/login");
+    res.redirect("/user/login");
   });
 };

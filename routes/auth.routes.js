@@ -1,12 +1,19 @@
 const router = require("express").Router();
 const authController = require("../controllers/auth.controller");
 
-router.get("/login",
-    authController.loginForm);
+// Admin Login
+router.get("/admin/login", 
+    authController.adminLoginForm);
+router.post("/admin/login", 
+    authController.adminLogin);
 
-router.post("/login", 
-    authController.login);
+// User Login
+router.get("/user/login", 
+    authController.userLoginForm);
+router.post("/user/login", 
+    authController.userLogin);
 
+// Logout
 router.post("/logout", 
     authController.logout);
 

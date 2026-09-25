@@ -1,7 +1,11 @@
 const router = require("express").Router();
 const cartController = require("../controllers/cart.controller");
+const requireUser = require("../middleware/userAuth");
 
-router.post("/add", cartController.add);
+router.post("/add",
+    requireUser(req => req.body.returnTo),
+    cartController.add
+);
 
 router.post("/remove", cartController.remove);
 

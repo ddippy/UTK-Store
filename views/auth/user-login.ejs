@@ -4,13 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Admin Login</title>
+    <title>User Login</title>
   </head>
 
   <body>
-    <h1>Admin Login</h1>
+    <h1>User Login</h1>
 
-    <form action="/login" method="POST">
+    <form action="/user/login" method="POST">
+      <input
+        type="hidden"
+        name="returnTo"
+        value="<%= returnTo || '/' %>"
+        >
+
       <div>
         <label>Username</label>
         <input type="text" name="username" required />

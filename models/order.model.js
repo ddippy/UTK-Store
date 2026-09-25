@@ -178,17 +178,66 @@ exports.findAll = async () => {
 };
 
 exports.updateStatus = async (orderId, status) => {
-  const result = await pool.query(
-    `
-        UPDATE orders
-        SET status = $1
-        WHERE order_id = $2
-        RETURNING *
-    `,
-    [status, orderId],
-  );
+  const client = await pool.connect();
 
-  return result.rows[0];
+  try {
+    await client.query("BEGIN");
+
+    const orderResult = await client.query(
+      `
+            SELECT order_id, status
+            FROM orders
+            WHERE order_id = $1
+            FOR UPDATE
+            `,
+      [orderId],
+    );
+
+    if (orderResult.rows.length === 0) {
+      throw new Error("ไม่พบคำสั่งซื้อ");
+    }
+
+    const order = orderResult.rows[0];
+
+    // คืน Stock เฉพาะตอน PENDING → CANCELLED
+    if (order.status === "PENDING" && status === "CANCELLED") {
+      const itemsResult = await client.query(
+        `
+        SELECT variant_id, quantity
+        FROM order_items
+        WHERE order_id = $1
+        `,
+        [orderId],
+      );
+
+      for (const item of itemsResult.rows) {
+        await client.query(
+          `
+            UPDATE product_variants
+            SET stock = stock + $1
+            WHERE variant_id = $2
+            `,
+          [item.quantity, item.variant_id],
+        );
+      }
+    }
+
+    await client.query(
+      `
+            UPDATE orders
+            SET status = $1
+            WHERE order_id = $2
+            `,
+      [status, orderId],
+    );
+
+    await client.query("COMMIT");
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
 };
 
 exports.getSalesSummary = async () => {

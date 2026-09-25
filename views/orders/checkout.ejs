@@ -14,21 +14,36 @@
       <label>ชื่อ-นามสกุล</label>
       <br />
 
-      <input type="text" name="customer_name" required />
+      <input
+        type="text"
+        name="customer_name"
+        value="<%= user.name %>"
+        required
+      />
 
       <br /><br />
 
       <label>รหัสนักศึกษา</label>
       <br />
 
-      <input type="text" name="student_id" required />
+      <input
+        type="text"
+        name="student_id"
+        value="<%= user.student_id %>"
+        required
+      >
 
       <br /><br />
 
       <label>เบอร์โทรศัพท์</label>
       <br />
 
-      <input type="tel" name="phone" required />
+      <input
+        type="text"
+        name="phone"
+        value="<%= user.phone %>"
+        required
+      >
 
       <br /><br />
 
