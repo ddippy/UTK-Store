@@ -1,111 +1,475 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
+
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>จัดการคำสั่งซื้อ | Admin</title>
+
+    <link rel="stylesheet" href="/css/tabler.min.css">
+
 </head>
+
 
 <body>
 
-<h1>จัดการคำสั่งซื้อ</h1>
+    <!-- Navbar -->
 
-<% if (orders.length === 0) { %>
+    <header class="navbar navbar-expand-md d-print-none">
 
-    <p>ยังไม่มีคำสั่งซื้อ</p>
+        <div class="container-xl">
 
-<% } else { %>
+            <a href="/admin" class="navbar-brand navbar-brand-autodark">
+                UTK-Store Admin
+            </a>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>ลูกค้า</th>
-                <th>รหัสนักศึกษา</th>
-                <th>เบอร์โทร</th>
-                <th>ยอดรวม</th>
-                <th>สถานะ</th>
-                <th>วันที่สั่งซื้อ</th>
-                <th>จัดการ</th>
-            </tr>
-        </thead>
 
-        <tbody>
+            <div class="navbar-nav flex-row order-md-last ms-auto">
 
-            <% orders.forEach(order => { %>
+                <a
+                    href="/products"
+                    class="btn btn-outline-primary"
+                >
+                    🛍️ หน้าร้าน
+                </a>
 
-                <tr>
-                    <td><%= order.order_id %></td>
+            </div>
 
-                    <td>
-                        <%= order.customer_name %>
-                    </td>
+        </div>
 
-                    <td>
-                        <%= order.student_id %>
-                    </td>
+    </header>
 
-                    <td>
-                        <%= order.phone %>
-                    </td>
 
-                    <td>
-                        <%= order.total_price %> บาท
-                    </td>
+    <!-- Page -->
 
-                    <td>
-                        <%= order.status %>
-                    </td>
+    <div class="page">
 
-                    <td>
-                        <%= order.created_at %>
-                    </td>
+        <div class="page-wrapper">
 
-                    <td>
-                        <form
-                            action="/admin/orders/<%= order.order_id %>/status"
-                            method="POST"
-                        >
-                            <select name="status">
 
-                                <option value="PENDING"
-                                    <%= order.status === "PENDING" ? "selected" : "" %>>
-                                    PENDING
-                                </option>
+            <!-- Page Header -->
 
-                                <option value="CONFIRMED"
-                                    <%= order.status === "CONFIRMED" ? "selected" : "" %>>
-                                    CONFIRMED
-                                </option>
+            <div class="page-header d-print-none">
 
-                                <option value="COMPLETED"
-                                    <%= order.status === "COMPLETED" ? "selected" : "" %>>
-                                    COMPLETED
-                                </option>
+                <div class="container-xl">
 
-                                <option value="CANCELLED"
-                                    <%= order.status === "CANCELLED" ? "selected" : "" %>>
-                                    CANCELLED
-                                </option>
+                    <div class="row align-items-center">
 
-                            </select>
+                        <div class="col">
 
-                            <button type="submit">
-                                บันทึก
-                            </button>
-                        </form>
-                    </td>
-                </tr>
+                            <h2 class="page-title">
+                                จัดการคำสั่งซื้อ
+                            </h2>
 
-            <% }) %>
+                            <div class="text-secondary mt-1">
+                                ตรวจสอบและจัดการสถานะคำสั่งซื้อ
+                            </div>
 
-        </tbody>
-    </table>
+                        </div>
 
-<% } %>
 
-<br>
+                        <div class="col-auto">
 
-<a href="/admin">← กลับ Admin</a>
+                            <a
+                                href="/admin"
+                                class="btn btn-outline-secondary"
+                            >
+                                ← กลับ Dashboard
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Page Body -->
+
+            <div class="page-body">
+
+                <div class="container-xl">
+
+
+                    <% if (orders.length === 0) { %>
+
+
+                        <!-- Empty -->
+
+                        <div class="card">
+
+                            <div class="empty">
+
+                                <div class="empty-img">
+                                    📦
+                                </div>
+
+                                <p class="empty-title">
+                                    ยังไม่มีคำสั่งซื้อ
+                                </p>
+
+                                <p class="empty-subtitle text-secondary">
+                                    เมื่อมีลูกค้าสั่งซื้อสินค้า
+                                    รายการคำสั่งซื้อจะแสดงที่นี่
+                                </p>
+
+                                <div class="empty-action">
+
+                                    <a
+                                        href="/admin"
+                                        class="btn btn-primary"
+                                    >
+                                        ← กลับ Dashboard
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    <% } else { %>
+
+
+                        <!-- Order Summary -->
+
+                        <div class="row row-cards mb-4">
+
+                            <div class="col-sm-6 col-lg-4">
+
+                                <div class="card">
+
+                                    <div class="card-body">
+
+                                        <div class="d-flex align-items-center">
+
+                                            <div>
+
+                                                <div class="text-secondary">
+                                                    คำสั่งซื้อทั้งหมด
+                                                </div>
+
+                                                <div class="h1 mb-0">
+                                                    <%= orders.length %>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="ms-auto">
+
+                                                <span class="avatar bg-blue-lt">
+                                                    📦
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Orders Table -->
+
+                        <div class="card">
+
+
+                            <div class="card-header">
+
+                                <div>
+
+                                    <h3 class="card-title">
+                                        รายการคำสั่งซื้อ
+                                    </h3>
+
+                                    <div class="text-secondary mt-1">
+                                        ทั้งหมด <%= orders.length %> รายการ
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="table-responsive">
+
+                                <table class="table table-vcenter card-table">
+
+                                    <thead>
+
+                                        <tr>
+
+                                            <th>
+                                                Order ID
+                                            </th>
+
+                                            <th>
+                                                ลูกค้า
+                                            </th>
+
+                                            <th>
+                                                รหัสนักศึกษา
+                                            </th>
+
+                                            <th>
+                                                เบอร์โทร
+                                            </th>
+
+                                            <th>
+                                                ยอดรวม
+                                            </th>
+
+                                            <th>
+                                                สถานะ
+                                            </th>
+
+                                            <th>
+                                                วันที่สั่งซื้อ
+                                            </th>
+
+                                            <th>
+                                                จัดการ
+                                            </th>
+
+                                        </tr>
+
+                                    </thead>
+
+
+                                    <tbody>
+
+
+                                        <% orders.forEach(order => { %>
+
+
+                                            <tr>
+
+
+                                                <!-- Order ID -->
+
+                                                <td>
+
+                                                    <span class="badge bg-blue-lt">
+                                                        #<%= order.order_id %>
+                                                    </span>
+
+                                                </td>
+
+
+                                                <!-- Customer -->
+
+                                                <td>
+
+                                                    <div class="fw-bold">
+                                                        <%= order.customer_name %>
+                                                    </div>
+
+                                                </td>
+
+
+                                                <!-- Student ID -->
+
+                                                <td>
+
+                                                    <span class="text-secondary">
+                                                        <%= order.student_id %>
+                                                    </span>
+
+                                                </td>
+
+
+                                                <!-- Phone -->
+
+                                                <td>
+
+                                                    <%= order.phone %>
+
+                                                </td>
+
+
+                                                <!-- Total -->
+
+                                                <td>
+
+                                                    <strong>
+                                                        <%= Number(order.total_price).toLocaleString() %>
+                                                    </strong>
+
+                                                    บาท
+
+                                                </td>
+
+
+                                                <!-- Status -->
+
+                                                <td>
+
+                                                    <% if (order.status === "PENDING") { %>
+
+                                                        <span class="badge bg-yellow-lt">
+                                                            PENDING
+                                                        </span>
+
+                                                    <% } else if (order.status === "CONFIRMED") { %>
+
+                                                        <span class="badge bg-blue-lt">
+                                                            CONFIRMED
+                                                        </span>
+
+                                                    <% } else if (order.status === "COMPLETED") { %>
+
+                                                        <span class="badge bg-green-lt">
+                                                            COMPLETED
+                                                        </span>
+
+                                                    <% } else if (order.status === "CANCELLED") { %>
+
+                                                        <span class="badge bg-red-lt">
+                                                            CANCELLED
+                                                        </span>
+
+                                                    <% } else { %>
+
+                                                        <span class="badge bg-secondary-lt">
+                                                            <%= order.status %>
+                                                        </span>
+
+                                                    <% } %>
+
+                                                </td>
+
+
+                                                <!-- Created At -->
+
+                                                <td>
+
+                                                    <span class="text-secondary">
+
+                                                        <%= new Date(order.created_at).toLocaleString("th-TH") %>
+
+                                                    </span>
+
+                                                </td>
+
+
+                                                <!-- Manage -->
+
+                                                <td>
+
+                                                    <form
+                                                        action="/admin/orders/<%= order.order_id %>/status"
+                                                        method="POST"
+                                                        class="d-flex gap-2"
+                                                    >
+
+
+                                                        <select
+                                                            name="status"
+                                                            class="form-select form-select-sm"
+                                                            style="min-width: 140px;"
+                                                        >
+
+                                                            <option
+                                                                value="PENDING"
+                                                                <%= order.status === "PENDING" ? "selected" : "" %>
+                                                            >
+                                                                PENDING
+                                                            </option>
+
+
+                                                            <option
+                                                                value="CONFIRMED"
+                                                                <%= order.status === "CONFIRMED" ? "selected" : "" %>
+                                                            >
+                                                                CONFIRMED
+                                                            </option>
+
+
+                                                            <option
+                                                                value="COMPLETED"
+                                                                <%= order.status === "COMPLETED" ? "selected" : "" %>
+                                                            >
+                                                                COMPLETED
+                                                            </option>
+
+
+                                                            <option
+                                                                value="CANCELLED"
+                                                                <%= order.status === "CANCELLED" ? "selected" : "" %>
+                                                            >
+                                                                CANCELLED
+                                                            </option>
+
+                                                        </select>
+
+
+                                                        <button
+                                                            type="submit"
+                                                            class="btn btn-primary btn-sm"
+                                                        >
+                                                            บันทึก
+                                                        </button>
+
+
+                                                    </form>
+
+                                                </td>
+
+
+                                            </tr>
+
+
+                                        <% }) %>
+
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+
+                            <!-- Card Footer -->
+
+                            <div class="card-footer">
+
+                                <a
+                                    href="/admin"
+                                    class="btn btn-outline-secondary"
+                                >
+                                    ← กลับ Dashboard
+                                </a>
+
+                            </div>
+
+
+                        </div>
+
+
+                    <% } %>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="/js/tabler.min.js"></script>
 
 </body>
+
 </html>

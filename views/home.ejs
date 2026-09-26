@@ -1,22 +1,258 @@
 <!DOCTYPE html>
 <html lang="th">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title><%= title %></title>
-  </head>
+<head>
 
-  <body>
-    <h1>UTK-Store</h1>
+    <meta charset="UTF-8">
 
-    <p>ร้านค้าออนไลน์ของมหาวิทยาลัย</p>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
 
-    <a href="/products">ดูสินค้า</a>
+    <title>UTK-Store</title>
 
-    <br><br>
-    <form action="/logout" method="POST">
-      <button type="submit">Logout</button>
-    </form>
-  </body>
+    <link
+        rel="stylesheet"
+        href="/css/tabler.min.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar navbar-expand-md d-print-none">
+
+        <div class="container-xl">
+
+            <a
+                href="/"
+                class="navbar-brand navbar-brand-autodark"
+            >
+                UTK-Store
+            </a>
+
+
+            <div class="navbar-nav flex-row order-md-last ms-auto">
+
+                <a
+                    href="/products"
+                    class="btn btn-outline-primary"
+                >
+                    🛍️ ดูสินค้า
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- Page -->
+    <div class="page">
+
+        <div class="page-wrapper">
+
+
+            <!-- Page Header -->
+            <div class="page-header d-print-none">
+
+                <div class="container-xl">
+
+                    <div class="row align-items-center">
+
+                        <div class="col">
+
+                            <h2 class="page-title">
+                                UTK-Store
+                            </h2>
+
+                            <div class="text-secondary mt-1">
+                                ร้านค้าออนไลน์ของมหาวิทยาลัย
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Page Body -->
+            <div class="page-body">
+
+                <div class="container-xl">
+
+                    <div class="row row-cards">
+
+
+                        <!-- Welcome Card -->
+                        <div class="col-12">
+
+                            <div class="card">
+
+                                <div class="card-body py-5">
+
+                                    <div class="row align-items-center">
+
+                                        <div class="col-auto">
+
+                                            <span
+                                                class="avatar avatar-xl bg-primary-lt"
+                                            >
+                                                🛍️
+                                            </span>
+
+                                        </div>
+
+
+                                        <div class="col">
+
+                                            <h1 class="mb-2">
+                                                ยินดีต้อนรับสู่ UTK-Store
+                                            </h1>
+
+                                            <p class="text-secondary mb-3">
+                                                ร้านค้าออนไลน์ของมหาวิทยาลัย
+                                                สามารถเลือกดูสินค้าและสั่งซื้อสินค้าได้ที่นี่
+                                            </p>
+
+                                            <a
+                                                href="/products"
+                                                class="btn btn-primary"
+                                            >
+                                                🛍️ ดูสินค้าทั้งหมด
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Feature 1 -->
+                        <div class="col-md-4">
+
+                            <div class="card">
+
+                                <div class="card-body">
+
+                                    <div class="d-flex align-items-center mb-3">
+
+                                        <span
+                                            class="avatar bg-blue-lt me-3"
+                                        >
+                                            🛒
+                                        </span>
+
+                                        <h3 class="card-title mb-0">
+                                            เลือกสินค้า
+                                        </h3>
+
+                                    </div>
+
+                                    <div class="text-secondary">
+                                        เลือกดูสินค้าที่ต้องการ
+                                        และตรวจสอบรายละเอียดสินค้า
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Feature 2 -->
+                        <div class="col-md-4">
+
+                            <div class="card">
+
+                                <div class="card-body">
+
+                                    <div class="d-flex align-items-center mb-3">
+
+                                        <span
+                                            class="avatar bg-green-lt me-3"
+                                        >
+                                            📦
+                                        </span>
+
+                                        <h3 class="card-title mb-0">
+                                            สั่งซื้อ
+                                        </h3>
+
+                                    </div>
+
+                                    <div class="text-secondary">
+                                        เพิ่มสินค้าลงรถเข็น
+                                        และดำเนินการสั่งซื้อได้ง่าย
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Feature 3 -->
+                        <div class="col-md-4">
+
+                            <div class="card">
+
+                                <div class="card-body">
+
+                                    <div class="d-flex align-items-center mb-3">
+
+                                        <span
+                                            class="avatar bg-yellow-lt me-3"
+                                        >
+                                            🎓
+                                        </span>
+
+                                        <h3 class="card-title mb-0">
+                                            สำหรับนักศึกษา
+                                        </h3>
+
+                                    </div>
+
+                                    <div class="text-secondary">
+                                        ระบบร้านค้าออนไลน์
+                                        สำหรับนักศึกษาของมหาวิทยาลัย
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <script src="/js/tabler.min.js"></script>
+
+</body>
+
 </html>

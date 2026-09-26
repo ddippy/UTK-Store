@@ -1,95 +1,572 @@
 <!DOCTYPE html>
 <html lang="th">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
     <title><%= product.name %> | UTK-Store</title>
-  </head>
-  <body>
-    <h1><%= product.name %></h1>
 
-    <% if (product.image_path) { %>
-        <img
-            src="<%= product.image_path %>"
-            width="300"
-            alt="<%= product.name %>"
-        >
-    <% } else { %>
-        <p>ไม่มีรูปสินค้า</p>
-    <% } %>
+    <link
+        rel="stylesheet"
+        href="/css/tabler.min.css"
+    >
 
-    <p>รหัสสินค้า: <%= product.code %></p>
-
-    <p>หมวดหมู่: <%= product.category_name %></p>
-
-    <p>ราคา: <%= product.price %> บาท</p>
-
-    <p>รายละเอียด: <%= product.description %></p>
-
-    <h2>ตัวเลือกสินค้า</h2>
-
-    <form action="/cart/add" method="POST">
-        <input
-            type="hidden"
-            name="returnTo"
-            value="/products/<%= product.product_id %>"
-        >
+</head>
 
 
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>เลือก</th>
-                    <th>Size</th>
-                    <th>Color</th>
-                    <th>Stock</th>
-                </tr>
-            </thead>
+<body>
 
-            <tbody>
-                <% product.variants.forEach(variant => { %>
-                    <tr>
-                        <td>
-                            <input
-                                type="radio"
-                                name="variant_id"
-                                value="<%= variant.variant_id %>"
-                                required
-                            >
-                        </td>
 
-                        <td><%= variant.size || "-" %></td>
+    <!-- ========================= -->
+    <!-- Navbar -->
+    <!-- ========================= -->
 
-                        <td><%= variant.color || "-" %></td>
+    <header class="navbar navbar-expand-md d-print-none">
 
-                        <td><%= variant.stock %></td>
-                    </tr>
-                <% }) %>
-            </tbody>
-        </table>
+        <div class="container-xl">
 
-        <br>
+            <a
+                href="/"
+                class="navbar-brand navbar-brand-autodark"
+            >
+                UTK-Store
+            </a>
 
-        <label>จำนวน:</label>
 
-        <input
-            type="number"
-            name="quantity"
-            value="1"
-            min="1"
-            required
-        >
+            <div class="navbar-nav flex-row order-md-last ms-auto">
 
-        <br><br>
+                <a
+                    href="/products"
+                    class="btn btn-outline-secondary me-2"
+                >
+                    ← สินค้า
+                </a>
 
-        <button type="submit">
-            เพิ่มลงตะกร้า
-        </button>
+                <a
+                    href="/cart"
+                    class="btn btn-primary"
+                >
+                    🛒 รถเข็น
+                </a>
 
-    </form>
+            </div>
 
-    <p>สถานะ: <%= product.status %></p>
+        </div>
 
-    <a href="/products">← กลับไปหน้าสินค้า</a>
-  </body>
+    </header>
+
+
+
+    <!-- ========================= -->
+    <!-- Page -->
+    <!-- ========================= -->
+
+    <div class="page">
+
+        <div class="page-wrapper">
+
+
+            <!-- Page Header -->
+
+            <div class="page-header d-print-none">
+
+                <div class="container-xl">
+
+                    <div class="row align-items-center">
+
+                        <div class="col">
+
+                            <h2 class="page-title">
+                                รายละเอียดสินค้า
+                            </h2>
+
+                            <div class="text-secondary mt-1">
+                                ดูรายละเอียดและเลือกตัวเลือกสินค้า
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Page Body -->
+
+            <div class="page-body">
+
+                <div class="container-xl">
+
+                    <div class="row row-cards">
+
+
+                        <!-- ========================= -->
+                        <!-- Product Image -->
+                        <!-- ========================= -->
+
+                        <div class="col-lg-5">
+
+                            <div class="card">
+
+                                <div class="card-body p-3">
+
+                                    <% if (product.image_path) { %>
+
+                                        <img
+                                            src="<%= product.image_path %>"
+                                            class="w-100 rounded"
+                                            style="
+                                                height: 420px;
+                                                object-fit: cover;
+                                            "
+                                            alt="<%= product.name %>"
+                                        >
+
+                                    <% } else { %>
+
+                                        <div
+                                            class="d-flex align-items-center justify-content-center bg-secondary-lt rounded"
+                                            style="
+                                                height: 420px;
+                                            "
+                                        >
+
+                                            <span class="text-secondary">
+                                                ไม่มีรูปสินค้า
+                                            </span>
+
+                                        </div>
+
+                                    <% } %>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- ========================= -->
+                        <!-- Product Information -->
+                        <!-- ========================= -->
+
+                        <div class="col-lg-7">
+
+                            <div class="card h-100">
+
+                                <div class="card-body">
+
+
+                                    <!-- Category -->
+
+                                    <div class="mb-3">
+
+                                        <span class="badge bg-blue-lt">
+
+                                            <%= product.category_name %>
+
+                                        </span>
+
+                                    </div>
+
+
+
+                                    <!-- Name -->
+
+                                    <h1 class="mb-2">
+
+                                        <%= product.name %>
+
+                                    </h1>
+
+
+
+                                    <!-- Code -->
+
+                                    <div class="text-secondary mb-4">
+
+                                        รหัสสินค้า:
+                                        <span class="fw-medium">
+                                            <%= product.code %>
+                                        </span>
+
+                                    </div>
+
+
+
+                                    <!-- Price -->
+
+                                    <div class="mb-4">
+
+                                        <div class="text-secondary small">
+                                            ราคา
+                                        </div>
+
+                                        <div class="h1 mb-0 text-primary">
+
+                                            <%= Number(product.price).toLocaleString("th-TH", {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            }) %>
+
+                                            <span class="fs-3">
+                                                บาท
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <!-- Description -->
+
+                                    <div class="mb-4">
+
+                                        <h3>
+                                            รายละเอียดสินค้า
+                                        </h3>
+
+                                        <div class="text-secondary">
+
+                                            <%= product.description || "ไม่มีรายละเอียดสินค้า" %>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <hr>
+
+
+
+                                    <!-- ========================= -->
+                                    <!-- Add To Cart -->
+                                    <!-- ========================= -->
+
+                                    <form
+                                        action="/cart/add"
+                                        method="POST"
+                                    >
+
+
+                                        <input
+                                            type="hidden"
+                                            name="returnTo"
+                                            value="/products/<%= product.product_id %>"
+                                        >
+
+
+
+                                        <!-- Variants -->
+
+                                        <div class="mb-4">
+
+                                            <h3 class="mb-3">
+                                                ตัวเลือกสินค้า
+                                            </h3>
+
+
+                                            <% if (product.variants.length === 0) { %>
+
+                                                <div class="alert alert-warning">
+
+                                                    สินค้านี้ยังไม่มีตัวเลือกสินค้า
+
+                                                </div>
+
+                                            <% } else { %>
+
+
+                                                <div class="table-responsive">
+
+                                                    <table class="table table-vcenter card-table">
+
+                                                        <thead>
+
+                                                            <tr>
+
+                                                                <th>
+                                                                    เลือก
+                                                                </th>
+
+                                                                <th>
+                                                                    Size
+                                                                </th>
+
+                                                                <th>
+                                                                    Color
+                                                                </th>
+
+                                                                <th class="text-end">
+                                                                    Stock
+                                                                </th>
+
+                                                            </tr>
+
+                                                        </thead>
+
+
+                                                        <tbody>
+
+                                                            <% product.variants.forEach(variant => { %>
+
+                                                                <tr>
+
+                                                                    <td>
+
+                                                                        <label
+                                                                            class="form-check"
+                                                                        >
+
+                                                                            <input
+                                                                                class="form-check-input"
+                                                                                type="radio"
+                                                                                name="variant_id"
+                                                                                value="<%= variant.variant_id %>"
+                                                                                <%= variant.stock <= 0 ? "disabled" : "" %>
+                                                                                required
+                                                                            >
+
+                                                                        </label>
+
+                                                                    </td>
+
+
+                                                                    <td>
+
+                                                                        <%= variant.size || "-" %>
+
+                                                                    </td>
+
+
+                                                                    <td>
+
+                                                                        <%= variant.color || "-" %>
+
+                                                                    </td>
+
+
+                                                                    <td class="text-end">
+
+                                                                        <% if (variant.stock > 0) { %>
+
+                                                                            <span class="badge bg-green-lt">
+
+                                                                                <%= variant.stock %>
+
+                                                                            </span>
+
+                                                                        <% } else { %>
+
+                                                                            <span class="badge bg-red-lt">
+
+                                                                                หมด
+
+                                                                            </span>
+
+                                                                        <% } %>
+
+                                                                    </td>
+
+                                                                </tr>
+
+                                                            <% }) %>
+
+                                                        </tbody>
+
+                                                    </table>
+
+                                                </div>
+
+
+                                            <% } %>
+
+                                        </div>
+
+
+
+                                        <!-- Quantity -->
+
+                                        <div class="mb-4">
+
+                                            <label class="form-label">
+
+                                                จำนวน
+
+                                            </label>
+
+
+                                            <input
+                                                type="number"
+                                                name="quantity"
+                                                class="form-control"
+                                                value="1"
+                                                min="1"
+                                                style="max-width: 150px;"
+                                                required
+                                            >
+
+                                        </div>
+
+
+
+                                        <!-- Buttons -->
+
+                                        <div class="d-flex gap-2">
+
+
+                                            <% if (product.variants.length > 0) { %>
+
+                                                <button
+                                                    type="submit"
+                                                    class="btn btn-primary"
+                                                >
+
+                                                    🛒 เพิ่มลงตะกร้า
+
+                                                </button>
+
+                                            <% } %>
+
+
+                                            <a
+                                                href="/products"
+                                                class="btn btn-outline-secondary"
+                                            >
+
+                                                ← กลับไปหน้าสินค้า
+
+                                            </a>
+
+
+                                        </div>
+
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- ========================= -->
+                    <!-- Product Status -->
+                    <!-- ========================= -->
+
+                    <div class="row row-cards mt-3">
+
+                        <div class="col-12">
+
+                            <div class="card">
+
+                                <div class="card-body">
+
+                                    <div class="d-flex align-items-center">
+
+
+                                        <span
+                                            class="avatar
+                                            <%= product.status === 'ACTIVE'
+                                                ? 'bg-green-lt'
+                                                : 'bg-red-lt'
+                                            %>
+                                            me-3"
+                                        >
+
+                                            <%= product.status === "ACTIVE"
+                                                ? "✓"
+                                                : "!"
+                                            %>
+
+                                        </span>
+
+
+                                        <div>
+
+                                            <div class="fw-bold">
+                                                สถานะสินค้า
+                                            </div>
+
+                                            <div class="text-secondary">
+
+                                                <% if (product.status === "ACTIVE") { %>
+
+                                                    สินค้านี้พร้อมสำหรับการสั่งซื้อ
+
+                                                <% } else { %>
+
+                                                    สินค้านี้ไม่เปิดให้สั่งซื้อ
+
+                                                <% } %>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="ms-auto">
+
+                                            <% if (product.status === "ACTIVE") { %>
+
+                                                <span class="badge bg-green-lt">
+                                                    พร้อมขาย
+                                                </span>
+
+                                            <% } else { %>
+
+                                                <span class="badge bg-red-lt">
+                                                    ไม่พร้อมขาย
+                                                </span>
+
+                                            <% } %>
+
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Tabler JS -->
+
+    <script src="/js/tabler.min.js"></script>
+
+
+</body>
+
 </html>

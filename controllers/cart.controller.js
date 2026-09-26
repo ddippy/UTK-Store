@@ -71,7 +71,7 @@ exports.add = async (req, res) => {
 
   console.log(req.session.cart);
 
-  res.send("เพิ่มสินค้าเข้าตะกร้าแล้ว");
+  res.redirect("/cart");
 };
 
 exports.update = async (req, res) => {

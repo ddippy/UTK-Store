@@ -28,6 +28,8 @@ exports.adminLogin = async (req, res) => {
 
   req.session.adminId = admin.admin_id;
   req.session.adminUsername = admin.username;
+  req.session.userName = admin.username;
+  req.session.role = "ADMIN";
 
   res.redirect("/admin");
 };
@@ -61,6 +63,8 @@ exports.userLogin = async (req, res) => {
 
   req.session.userId = user.user_id;
   req.session.username = user.username;
+  req.session.userName = user.name;
+  req.session.role = "USER";
 
   const returnTo = req.body.returnTo || "/";
 

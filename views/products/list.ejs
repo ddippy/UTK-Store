@@ -1,47 +1,779 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
     <title>สินค้า | UTK-Store</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/tabler.min.css"
+    >
+
+    <style>
+        /* =========================
+           Order Success Modal
+           ========================= */
+
+        #order-success-modal {
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        #order-success-modal.show {
+            opacity: 1;
+        }
+
+        #order-success-box {
+            opacity: 0;
+            transform: translateY(35px) scale(0.9);
+            transition:
+                opacity 0.35s ease,
+                transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #order-success-modal.show #order-success-box {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Success Icon */
+
+        #success-icon {
+            transform: scale(0);
+        }
+
+        #order-success-modal.show #success-icon {
+            animation:
+                successPop
+                0.5s
+                0.2s
+                cubic-bezier(0.34, 1.56, 0.64, 1)
+                forwards;
+        }
+
+        @keyframes successPop {
+
+            0% {
+                transform: scale(0);
+            }
+
+            70% {
+                transform: scale(1.15);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+
+        }
+
+
+        /* Confetti */
+
+        .confetti {
+            position: fixed;
+            top: -20px;
+            width: 9px;
+            height: 14px;
+            z-index: 10000;
+            pointer-events: none;
+            animation: confettiFall linear forwards;
+        }
+
+        @keyframes confettiFall {
+
+            0% {
+                transform:
+                    translate3d(0, 0, 0)
+                    rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform:
+                    translate3d(var(--x), 110vh, 0)
+                    rotate(var(--rotate));
+                opacity: 0;
+            }
+
+        }
+    </style>
+
 </head>
+
+
 <body>
 
-    <h1>สินค้า UTK-Store</h1>
 
-    <% products.forEach(product => { %>
+    <!-- ========================= -->
+    <!-- Navbar -->
+    <!-- ========================= -->
 
-        <div>
-            <h2><%= product.name %></h2>
+    <header class="navbar navbar-expand-md d-print-none">
 
-            <% if (product.image_path) { %>
-                <img
-                    src="<%= product.image_path %>"
-                    width="300"
-                    alt="<%= product.name %>"
-                >
-            <% } else { %>
-                <p>ไม่มีรูปสินค้า</p>
-            <% } %>
+        <div class="container-xl">
 
-            <p>รหัสสินค้า: <%= product.code %></p>
-
-            <p>หมวดหมู่: <%= product.category_name %></p>
-
-            <p>ราคา: <%= product.price %> บาท</p>
-
-            <p>Stock: <%= product.stock %></p>
-
-            <p><%= product.description %></p>
-
-            <a href="/products/<%= product.product_id %>">
-                ดูรายละเอียด
+            <a
+                href="/"
+                class="navbar-brand navbar-brand-autodark"
+            >
+                UTK-Store
             </a>
+
+
+            <div class="navbar-nav flex-row order-md-last ms-auto">
+
+                <a
+                    href="/"
+                    class="btn btn-outline-secondary me-2"
+                >
+                    หน้าหลัก
+                </a>
+
+                <a
+                    href="/cart"
+                    class="btn btn-primary"
+                >
+                    🛒 รถเข็น
+                </a>
+
+            </div>
+
         </div>
 
-        <hr>
+    </header>
 
-    <% }) %>
+
+
+    <!-- ========================= -->
+    <!-- Page -->
+    <!-- ========================= -->
+
+    <div class="page">
+
+        <div class="page-wrapper">
+
+
+            <!-- Page Header -->
+
+            <div class="page-header d-print-none">
+
+                <div class="container-xl">
+
+                    <div class="row align-items-center">
+
+                        <div class="col">
+
+                            <h2 class="page-title">
+                                สินค้า
+                            </h2>
+
+                            <div class="text-secondary mt-1">
+                                เลือกสินค้าและสั่งซื้อจาก UTK-Store
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ========================= -->
+            <!-- Product Content -->
+            <!-- ========================= -->
+
+            <div class="page-body">
+
+                <div class="container-xl">
+
+
+                    <% if (products.length === 0) { %>
+
+                        <div class="empty">
+
+                            <div class="empty-img">
+                                🛍️
+                            </div>
+
+                            <p class="empty-title">
+                                ยังไม่มีสินค้า
+                            </p>
+
+                            <p class="empty-subtitle text-secondary">
+                                ขณะนี้ยังไม่มีสินค้าในร้าน
+                            </p>
+
+                        </div>
+
+                    <% } %>
+
+
+
+                    <div class="row row-cards">
+
+
+                        <% products.forEach(product => { %>
+
+
+                            <div class="col-md-6 col-lg-4">
+
+
+                                <!-- Product Card -->
+
+                                <div class="card h-100">
+
+
+                                    <!-- Image -->
+
+                                    <div class="card-img-top">
+
+                                        <a
+                                            href="/products/<%= product.product_id %>"
+                                        >
+
+                                            <% if (product.image_path) { %>
+
+                                                <img
+                                                    src="<%= product.image_path %>"
+                                                    class="w-100"
+                                                    style="
+                                                        height: 240px;
+                                                        object-fit: cover;
+                                                    "
+                                                    alt="<%= product.name %>"
+                                                >
+
+                                            <% } else { %>
+
+                                                <div
+                                                    class="d-flex align-items-center justify-content-center bg-secondary-lt"
+                                                    style="height: 240px;"
+                                                >
+
+                                                    <div class="text-secondary">
+                                                        ไม่มีรูปสินค้า
+                                                    </div>
+
+                                                </div>
+
+                                            <% } %>
+
+                                        </a>
+
+                                    </div>
+
+
+
+                                    <!-- Product Body -->
+
+                                    <div class="card-body d-flex flex-column">
+
+
+                                        <div class="mb-2">
+
+                                            <span class="badge bg-blue-lt">
+
+                                                <%= product.category_name %>
+
+                                            </span>
+
+                                        </div>
+
+
+
+                                        <h3 class="card-title mb-2">
+
+                                            <a
+                                                href="/products/<%= product.product_id %>"
+                                                class="text-reset"
+                                            >
+
+                                                <%= product.name %>
+
+                                            </a>
+
+                                        </h3>
+
+
+
+                                        <div class="text-secondary mb-3">
+
+                                            <%= product.description || "ไม่มีรายละเอียดสินค้า" %>
+
+                                        </div>
+
+
+
+                                        <div class="mt-auto">
+
+                                            <div class="d-flex align-items-end justify-content-between">
+
+
+                                                <div>
+
+                                                    <div class="text-secondary small">
+                                                        ราคา
+                                                    </div>
+
+                                                    <div class="h2 mb-0">
+
+                                                        <%= Number(product.price).toLocaleString("th-TH", {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2
+                                                        }) %>
+
+                                                        <span class="fs-5">
+                                                            บาท
+                                                        </span>
+
+                                                    </div>
+
+                                                </div>
+
+
+
+                                                <a
+                                                    href="/products/<%= product.product_id %>"
+                                                    class="btn btn-primary"
+                                                >
+                                                    ดูสินค้า
+                                                </a>
+
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+
+                        <% }) %>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ========================= -->
+    <!-- Order Success Modal -->
+    <!-- ========================= -->
+
+    <% if (success) { %>
+
+
+        <div
+            id="order-success-modal"
+            style="
+                display: none;
+                position: fixed;
+                inset: 0;
+                z-index: 9999;
+                background: rgba(0, 0, 0, 0.55);
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            "
+        >
+
+            <div
+                id="order-success-box"
+                style="
+                    width: 100%;
+                    max-width: 420px;
+                    background: white;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+                "
+            >
+
+                <!-- Green Header -->
+
+                <div
+                    style="
+                        height: 6px;
+                        background: #2fb344;
+                    "
+                ></div>
+
+
+                <!-- Content -->
+
+                <div
+                    style="
+                        padding: 40px 30px 30px;
+                        text-align: center;
+                    "
+                >
+
+
+                    <!-- Success Icon -->
+
+                    <div
+                        id="success-icon"
+                        style="
+                            width: 70px;
+                            height: 70px;
+                            margin: 0 auto 20px;
+                            border-radius: 50%;
+                            background: #dff7e5;
+                            color: #2fb344;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 36px;
+                            font-weight: bold;
+                        "
+                    >
+                        ✓
+                    </div>
+
+
+
+                    <h2
+                        style="
+                            margin: 0 0 8px;
+                            font-size: 24px;
+                        "
+                    >
+                        สั่งซื้อสำเร็จ!
+                    </h2>
+
+
+
+                    <div
+                        style="
+                            color: #667382;
+                            margin-bottom: 25px;
+                        "
+                    >
+                        ขอบคุณสำหรับการสั่งซื้อ
+                    </div>
+
+
+
+                    <!-- Order Info -->
+
+                    <div
+                        style="
+                            background: #f5f7fb;
+                            border-radius: 8px;
+                            padding: 18px;
+                            margin-bottom: 25px;
+                        "
+                    >
+
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                margin-bottom: 12px;
+                            "
+                        >
+
+                            <span style="color: #667382;">
+                                เลขที่คำสั่งซื้อ
+                            </span>
+
+                            <strong>
+                                #<%= orderId %>
+                            </strong>
+
+                        </div>
+
+
+
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                            "
+                        >
+
+                            <span style="color: #667382;">
+                                ยอดรวม
+                            </span>
+
+                            <strong style="color: #2fb344;">
+
+                                <%= Number(total || 0).toLocaleString("th-TH", {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }) %>
+
+                                บาท
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Close Button -->
+
+                    <button
+                        id="close-order-success"
+                        type="button"
+                        style="
+                            width: 100%;
+                            border: 0;
+                            border-radius: 6px;
+                            padding: 11px;
+                            background: #2fb344;
+                            color: white;
+                            font-size: 15px;
+                            cursor: pointer;
+                        "
+                    >
+                        เรียบร้อย
+                    </button>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <script>
+
+            document.addEventListener("DOMContentLoaded", function () {
+
+                const modal =
+                    document.getElementById("order-success-modal");
+
+                const closeButton =
+                    document.getElementById("close-order-success");
+
+
+                // =========================
+                // เปิด Modal
+                // =========================
+
+                setTimeout(() => {
+
+                    modal.style.display = "flex";
+
+                    requestAnimationFrame(() => {
+
+                        modal.classList.add("show");
+
+                    });
+
+                    createConfetti();
+
+                }, 100);
+
+
+
+                // =========================
+                // ปิด Modal
+                // =========================
+
+                closeButton.addEventListener("click", function () {
+
+                    modal.classList.remove("show");
+
+                    setTimeout(() => {
+
+                        modal.style.display = "none";
+
+                    }, 300);
+
+                });
+
+
+
+                // =========================
+                // กดพื้นที่ด้านนอกเพื่อปิด
+                // =========================
+
+                modal.addEventListener("click", function (event) {
+
+                    if (event.target === modal) {
+
+                        modal.classList.remove("show");
+
+                        setTimeout(() => {
+
+                            modal.style.display = "none";
+
+                        }, 300);
+
+                    }
+
+                });
+
+
+
+                // =========================
+                // ลบ Query String
+                // =========================
+
+                const url =
+                    new URL(window.location.href);
+
+                url.searchParams.delete("success");
+                url.searchParams.delete("orderId");
+                url.searchParams.delete("total");
+
+                window.history.replaceState(
+                    {},
+                    "",
+                    url
+                );
+
+
+
+                // =========================
+                // Confetti
+                // =========================
+
+                function createConfetti() {
+
+                    const pieces = 80;
+
+                    const colors = [
+                        "#2fb344",
+                        "#206bc4",
+                        "#f59f00",
+                        "#d63939",
+                        "#ae3ec9",
+                        "#12b886"
+                    ];
+
+
+                    for (let i = 0; i < pieces; i++) {
+
+                        const confetti =
+                            document.createElement("div");
+
+                        confetti.className =
+                            "confetti";
+
+
+                        // สีสุ่ม
+
+                        confetti.style.background =
+                            colors[
+                                Math.floor(
+                                    Math.random() * colors.length
+                                )
+                            ];
+
+
+                        // ตำแหน่งเริ่มต้น
+
+                        confetti.style.left =
+                            Math.random() * 100 + "vw";
+
+
+                        // ขนาด
+
+                        const size =
+                            Math.random() * 6 + 6;
+
+                        confetti.style.width =
+                            size + "px";
+
+                        confetti.style.height =
+                            size * 1.5 + "px";
+
+
+                        // ความเร็วตก
+
+                        const duration =
+                            Math.random() * 2 + 2.5;
+
+                        confetti.style.animationDuration =
+                            duration + "s";
+
+
+                        // การเคลื่อนที่ด้านข้าง
+
+                        const x =
+                            (Math.random() - 0.5) * 300;
+
+                        confetti.style.setProperty(
+                            "--x",
+                            x + "px"
+                        );
+
+
+                        // การหมุน
+
+                        const rotate =
+                            Math.random() * 1000 - 500;
+
+                        confetti.style.setProperty(
+                            "--rotate",
+                            rotate + "deg"
+                        );
+
+
+                        // หน่วงเวลาแต่ละชิ้น
+
+                        confetti.style.animationDelay =
+                            Math.random() * 0.8 + "s";
+
+
+                        document.body.appendChild(
+                            confetti
+                        );
+
+
+                        // ลบหลัง Animation จบ
+
+                        setTimeout(() => {
+
+                            confetti.remove();
+
+                        }, (duration + 1) * 1000);
+
+                    }
+
+                }
+
+            });
+
+        </script>
+
+
+    <% } %>
+
 
 </body>
+
 </html>

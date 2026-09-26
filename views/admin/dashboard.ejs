@@ -1,129 +1,797 @@
 <!DOCTYPE html>
 <html lang="th">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Admin | UTK-Store</title>
-  </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <body>
-    <h1>UTK-Store Admin</h1>
+    <title>Admin Dashboard | UTK-Store</title>
 
-    <p>
-      สวัสดี, <%= adminUsername %>
-    </p>
+    <link rel="stylesheet" href="/css/tabler.min.css">
+</head>
 
-    <form action="/logout" method="POST">
-      <button type="submit">
-        Logout
-      </button>
-    </form>
+<body>
 
-    <h2>จัดการระบบ</h2>
+    <!-- Navbar -->
+    <header class="navbar navbar-expand-md d-print-none">
+        <div class="container-xl">
 
-    <ul>
-      <li>
-        <a href="/admin/products"> จัดการสินค้า </a>
-      </li>
+            <h1 class="navbar-brand navbar-brand-autodark">
+                UTK-Store Admin
+            </h1>
 
-      <li>
-        <a href="/admin/orders"> จัดการคำสั่งซื้อ </a>
-      </li>
-    </ul>
+            <div class="navbar-nav flex-row order-md-last ms-auto">
 
-    <h2>สรุปยอดขาย</h2>
-    <p>
-      จำนวนออเดอร์ที่ขายสำเร็จ:
-      <%= sales.order_count %>
-    </p>
+                <div class="nav-item">
+                    <span class="nav-link">
+                        สวัสดี, <%= adminUsername %>
+                    </span>
+                </div>
 
-    <p>
-      ยอดขายรวม:
-      <%= Number(sales.total_sales).toLocaleString() %> บาท
-    </p>
-    <h2>ยอดขายรายวัน</h2>
+                <div class="nav-item">
+                    <form action="/logout" method="POST">
+                        <button type="submit" class="btn btn-outline-danger">
+                            Logout
+                        </button>
+                    </form>
+                </div>
 
-    <table border="1">
-      <thead>
-        <tr>
-          <th>วันที่</th>
-          <th>จำนวนออเดอร์</th>
-          <th>ยอดขาย</th>
-        </tr>
-      </thead>
+            </div>
 
-      <tbody>
-        <% dailySales.forEach(day => { %>
-          <tr>
-            <td>
-              <%= day.sale_date %>
-            </td>
+        </div>
+    </header>
 
-            <td>
-              <%= day.order_count %>
-            </td>
 
-            <td>
-              <%= Number(day.total_sales).toLocaleString() %> บาท
-            </td>
-          </tr>
-        <% }) %>
-      </tbody>
-    </table>
+    <!-- Page -->
+    <div class="page">
 
-    <h2>สินค้าขายดี</h2>
+        <div class="page-wrapper">
 
-    <table border="1">
-      <thead>
-        <tr>
-          <th>สินค้า</th>
-          <th>จำนวนที่ขาย</th>
-        </tr>
-      </thead>
+            <!-- Page Header -->
+            <div class="page-header d-print-none">
 
-      <tbody>
-        <% bestSellingProducts.forEach(product => { %>
-          <tr>
-            <td>
-              <%= product.name %>
-            </td>
+                <div class="container-xl">
 
-            <td>
-              <%= product.total_quantity %> ชิ้น
-            </td>
-          </tr>
-        <% }) %>
-      </tbody>
-    </table>
+                    <div class="row g-2 align-items-center">
 
-    <h2>ยอดขายตามหมวดหมู่</h2>
+                        <div class="col">
 
-    <table border="1">
-      <thead>
-        <tr>
-          <th>หมวดหมู่</th>
-          <th>ยอดขาย</th>
-        </tr>
-      </thead>
+                            <h2 class="page-title">
+                                Dashboard
+                            </h2>
 
-      <tbody>
-        <% categorySales.forEach(category => { %>
-          <tr>
-            <td>
-              <%= category.category_name %>
-            </td>
+                            <div class="text-secondary mt-1">
+                                ภาพรวมระบบร้านค้า UTK-Store
+                            </div>
 
-            <td>
-              <%= Number(category.total_sales).toLocaleString() %> บาท
-            </td>
-          </tr>
-        <% }) %>
-      </tbody>
-    </table>
+                        </div>
 
-    <br />
+                    </div>
 
-    <a href="/products"> กลับหน้าร้าน </a>
-  </body>
+                </div>
+
+            </div>
+
+
+            <!-- Page Body -->
+            <div class="page-body">
+
+                <div class="container-xl">
+
+
+                    <!-- Summary Cards -->
+
+                    <div class="row row-cards mb-4">
+
+                        <!-- Orders -->
+                        <div class="col-sm-6 col-lg-4">
+
+                            <div class="card">
+
+                                <div class="card-body">
+
+                                    <div class="d-flex align-items-center">
+
+                                        <div>
+
+                                            <div class="text-secondary">
+                                                ออเดอร์ที่ขายสำเร็จ
+                                            </div>
+
+                                            <div class="h1 mb-0">
+                                                <%= sales.order_count %>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="ms-auto">
+
+                                            <span class="avatar bg-blue-lt">
+                                                📦
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Total Sales -->
+                        <div class="col-sm-6 col-lg-4">
+
+                            <div class="card">
+
+                                <div class="card-body">
+
+                                    <div class="d-flex align-items-center">
+
+                                        <div>
+
+                                            <div class="text-secondary">
+                                                ยอดขายรวม
+                                            </div>
+
+                                            <div class="h1 mb-0">
+
+                                                <%= Number(sales.total_sales).toLocaleString() %>
+
+                                                <span class="fs-4">
+                                                    บาท
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="ms-auto">
+
+                                            <span class="avatar bg-green-lt">
+                                                💰
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Average -->
+                        <div class="col-sm-6 col-lg-4">
+
+                            <div class="card">
+
+                                <div class="card-body">
+
+                                    <div class="d-flex align-items-center">
+
+                                        <div>
+
+                                            <div class="text-secondary">
+                                                ยอดขายเฉลี่ย / ออเดอร์
+                                            </div>
+
+                                            <div class="h1 mb-0">
+
+                                                <%
+                                                    const totalSales = Number(sales.total_sales || 0);
+                                                    const orderCount = Number(sales.order_count || 0);
+
+                                                    const averageSales =
+                                                        orderCount > 0
+                                                            ? totalSales / orderCount
+                                                            : 0;
+                                                %>
+
+                                                <%= averageSales.toLocaleString(undefined, {
+                                                    maximumFractionDigits: 0
+                                                }) %>
+
+                                                <span class="fs-4">
+                                                    บาท
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="ms-auto">
+
+                                            <span class="avatar bg-yellow-lt">
+                                                📊
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Charts -->
+
+                    <div class="row row-cards mb-4">
+
+
+                        <!-- Daily Sales Chart -->
+
+                        <div class="col-lg-8">
+
+                            <div class="card">
+
+                                <div class="card-header">
+
+                                    <h3 class="card-title">
+                                        ยอดขายรายวัน
+                                    </h3>
+
+                                </div>
+
+                                <div class="card-body">
+
+                                    <div style="height: 300px;">
+                                        <canvas
+                                            id="dailySalesChart"
+                                            data-sales='<%= JSON.stringify(dailySales) %>'
+                                        ></canvas>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Category Sales -->
+
+                        <div class="col-lg-4">
+
+                            <div class="card">
+
+                                <div class="card-header">
+
+                                    <h3 class="card-title">
+                                        ยอดขายตามหมวดหมู่
+                                    </h3>
+
+                                </div>
+
+                                <div class="card-body">
+
+                                    <div style="height: 300px;">
+                                        <canvas
+                                            id="categorySalesChart"
+                                            data-sales='<%= JSON.stringify(categorySales) %>'
+                                        ></canvas>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Best Selling -->
+
+                    <div class="row row-cards mb-4">
+
+                        <div class="col-lg-12">
+
+                            <div class="card">
+
+                                <div class="card-header">
+
+                                    <h3 class="card-title">
+                                        🏆 สินค้าขายดี
+                                    </h3>
+
+                                </div>
+
+                                <div class="table-responsive">
+
+                                    <table class="table table-vcenter card-table">
+
+                                        <thead>
+
+                                            <tr>
+
+                                                <th>
+                                                    อันดับ
+                                                </th>
+
+                                                <th>
+                                                    สินค้า
+                                                </th>
+
+                                                <th class="text-end">
+                                                    จำนวนที่ขาย
+                                                </th>
+
+                                            </tr>
+
+                                        </thead>
+
+                                        <tbody>
+
+                                            <% if (bestSellingProducts.length > 0) { %>
+
+                                                <% bestSellingProducts.forEach((product, index) => { %>
+
+                                                    <tr>
+
+                                                        <td>
+
+                                                            <span class="badge bg-blue-lt">
+                                                                #<%= index + 1 %>
+                                                            </span>
+
+                                                        </td>
+
+                                                        <td>
+                                                            <%= product.name %>
+                                                        </td>
+
+                                                        <td class="text-end">
+
+                                                            <strong>
+                                                                <%= product.total_quantity %>
+                                                            </strong>
+
+                                                            ชิ้น
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                <% }) %>
+
+                                            <% } else { %>
+
+                                                <tr>
+
+                                                    <td colspan="3"
+                                                        class="text-center text-secondary py-4">
+
+                                                        ยังไม่มีข้อมูลการขาย
+
+                                                    </td>
+
+                                                </tr>
+
+                                            <% } %>
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Daily Sales Table -->
+
+                    <div class="row row-cards mb-4">
+
+                        <div class="col-lg-12">
+
+                            <div class="card">
+
+                                <div class="card-header">
+
+                                    <h3 class="card-title">
+                                        รายละเอียดยอดขายรายวัน
+                                    </h3>
+
+                                </div>
+
+                                <div class="table-responsive">
+
+                                    <table class="table table-vcenter card-table">
+
+                                        <thead>
+
+                                            <tr>
+
+                                                <th>
+                                                    วันที่
+                                                </th>
+
+                                                <th class="text-end">
+                                                    จำนวนออเดอร์
+                                                </th>
+
+                                                <th class="text-end">
+                                                    ยอดขาย
+                                                </th>
+
+                                            </tr>
+
+                                        </thead>
+
+                                        <tbody>
+
+                                            <% if (dailySales.length > 0) { %>
+
+                                                <% dailySales.forEach(day => { %>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            <%= day.sale_date %>
+                                                        </td>
+
+                                                        <td class="text-end">
+                                                            <%= day.order_count %>
+                                                        </td>
+
+                                                        <td class="text-end">
+
+                                                            <strong>
+                                                                <%= Number(day.total_sales).toLocaleString() %>
+                                                            </strong>
+
+                                                            บาท
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                <% }) %>
+
+                                            <% } else { %>
+
+                                                <tr>
+
+                                                    <td colspan="3"
+                                                        class="text-center text-secondary py-4">
+
+                                                        ยังไม่มีข้อมูลยอดขาย
+
+                                                    </td>
+
+                                                </tr>
+
+                                            <% } %>
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Category Table -->
+
+                    <div class="row row-cards mb-4">
+
+                        <div class="col-lg-12">
+
+                            <div class="card">
+
+                                <div class="card-header">
+
+                                    <h3 class="card-title">
+                                        ยอดขายตามหมวดหมู่
+                                    </h3>
+
+                                </div>
+
+                                <div class="table-responsive">
+
+                                    <table class="table table-vcenter card-table">
+
+                                        <thead>
+
+                                            <tr>
+
+                                                <th>
+                                                    หมวดหมู่
+                                                </th>
+
+                                                <th class="text-end">
+                                                    ยอดขาย
+                                                </th>
+
+                                            </tr>
+
+                                        </thead>
+
+                                        <tbody>
+
+                                            <% if (categorySales.length > 0) { %>
+
+                                                <% categorySales.forEach(category => { %>
+
+                                                    <tr>
+
+                                                        <td>
+                                                            <%= category.category_name %>
+                                                        </td>
+
+                                                        <td class="text-end">
+
+                                                            <strong>
+                                                                <%= Number(category.total_sales).toLocaleString() %>
+                                                            </strong>
+
+                                                            บาท
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                <% }) %>
+
+                                            <% } else { %>
+
+                                                <tr>
+
+                                                    <td colspan="2"
+                                                        class="text-center text-secondary py-4">
+
+                                                        ยังไม่มีข้อมูลยอดขาย
+
+                                                    </td>
+
+                                                </tr>
+
+                                            <% } %>
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Management -->
+
+                    <div class="row row-cards mb-4">
+
+                        <div class="col-md-6">
+
+                            <a
+                                href="/admin/products"
+                                class="card card-link card-link-pop"
+                            >
+
+                                <div class="card-body">
+
+                                    <div class="d-flex align-items-center">
+
+                                        <span class="avatar bg-blue-lt me-3">
+                                            📦
+                                        </span>
+
+                                        <div>
+
+                                            <h3 class="mb-1">
+                                                จัดการสินค้า
+                                            </h3>
+
+                                            <div class="text-secondary">
+                                                เพิ่ม แก้ไข ลบสินค้า และจัดการ Stock
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <a
+                                href="/admin/orders"
+                                class="card card-link card-link-pop"
+                            >
+
+                                <div class="card-body">
+
+                                    <div class="d-flex align-items-center">
+
+                                        <span class="avatar bg-green-lt me-3">
+                                            🛒
+                                        </span>
+
+                                        <div>
+
+                                            <h3 class="mb-1">
+                                                จัดการคำสั่งซื้อ
+                                            </h3>
+
+                                            <div class="text-secondary">
+                                                ตรวจสอบและอัปเดตสถานะคำสั่งซื้อ
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Back -->
+
+                    <div class="mb-4">
+
+                        <a
+                            href="/products"
+                            class="btn btn-outline-secondary"
+                        >
+                            ← กลับหน้าร้าน
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Chart.js -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      console.log("Chart.js =", typeof Chart);
+    </script>
+
+
+    <script>
+    const dailySalesChart =
+        document.getElementById("dailySalesChart");
+
+    const categorySalesChart =
+        document.getElementById("categorySalesChart");
+
+
+    const dailySales =
+        JSON.parse(dailySalesChart.dataset.sales);
+
+    const categorySales =
+        JSON.parse(categorySalesChart.dataset.sales);
+
+
+    const dailySalesLabels =
+        dailySales.map(day => day.sale_date);
+
+    const dailySalesData =
+        dailySales.map(day => Number(day.total_sales));
+
+
+    const categoryLabels =
+        categorySales.map(category => category.category_name);
+
+    const categoryData =
+        categorySales.map(category => Number(category.total_sales));
+
+
+    new Chart(
+        dailySalesChart,
+        {
+            type: "line",
+
+            data: {
+                labels: dailySalesLabels,
+
+                datasets: [{
+                    label: "ยอดขาย (บาท)",
+                    data: dailySalesData,
+                    tension: 0.3,
+                    fill: true,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+
+                scales: {
+                    y: {
+                        beginAtZero: true,
+
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString() + " บาท";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    );
+
+
+    new Chart(
+        categorySalesChart,
+        {
+            type: "doughnut",
+
+            data: {
+                labels: categoryLabels,
+
+                datasets: [{
+                    data: categoryData
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                plugins: {
+                    legend: {
+                        position: "bottom"
+                    }
+                }
+            }
+        }
+    );
+</script>
+
+
+    <script src="/js/tabler.min.js"></script>
+
+</body>
+
 </html>

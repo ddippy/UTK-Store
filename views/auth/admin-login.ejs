@@ -1,31 +1,200 @@
 <!DOCTYPE html>
 <html lang="th">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Admin Login</title>
-  </head>
+<head>
 
-  <body>
-    <h1>Admin Login</h1>
-    
-    <form action="/admin/login" method="POST">
-      <div>
-        <label>Username</label>
-        <input type="text" name="username" required />
-      </div>
+    <meta charset="UTF-8">
 
-      <br />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
 
-      <div>
-        <label>Password</label>
-        <input type="password" name="password" required />
-      </div>
+    <title>Admin Login | UTK-Store</title>
 
-      <br />
+    <link
+        rel="stylesheet"
+        href="/css/tabler.min.css"
+    >
 
-      <button type="submit">Login</button>
-    </form>
-  </body>
+</head>
+
+
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+
+    <!-- ========================= -->
+    <!-- Navbar -->
+    <!-- ========================= -->
+
+    <header class="navbar navbar-expand-md d-print-none">
+
+        <div class="container-xl">
+
+            <a
+                href="/"
+                class="navbar-brand navbar-brand-autodark"
+            >
+                UTK-Store
+            </a>
+
+
+            <div class="navbar-nav flex-row order-md-last">
+
+                <a
+                    href="/"
+                    class="btn btn-outline-secondary"
+                >
+                    หน้าหลัก
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ========================= -->
+    <!-- Admin Login -->
+    <!-- ========================= -->
+
+    <div class="page page-center flex-fill">
+
+        <div class="container container-tight py-4">
+
+
+            <div class="text-center mb-4">
+
+                <div
+                    class="fw-bold text-danger"
+                    style="font-size: 32px;"
+                >
+                    UTK-Store
+                </div>
+
+                <div class="text-secondary mt-1">
+                    ระบบจัดการสำหรับผู้ดูแลระบบ
+                </div>
+
+            </div>
+
+
+
+            <!-- Login Card -->
+
+            <div class="card card-md">
+
+                <div class="card-body p-4">
+
+
+                    <h2 class="h2 text-center mb-4 text-danger">
+                        Admin Login
+                    </h2>
+
+
+                    <form
+                        action="/admin/login"
+                        method="POST"
+                    >
+
+
+                        <!-- Username -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Username
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="username"
+                                placeholder="กรอก Admin Username"
+                                autocomplete="username"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <!-- Password -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Password
+                            </label>
+
+                            <input
+                                type="password"
+                                class="form-control"
+                                name="password"
+                                placeholder="กรอก Password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <!-- Login Button -->
+
+                        <div class="form-footer">
+
+                            <button
+                                class="btn btn-danger w-100"
+                                type="submit"
+                            >
+                                เข้าสู่ระบบ
+                            </button>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+
+
+                <!-- User Login -->
+
+                <div class="card-footer text-center">
+
+                    <div class="text-secondary mb-2">
+                        สำหรับผู้ใช้งานทั่วไป
+                    </div>
+
+                    <a
+                        href="/user/login"
+                        class="btn btn-outline-primary w-100"
+                    >
+                        เข้าสู่ระบบผู้ใช้
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="text-center text-secondary mt-3">
+                UTK-Store Admin
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <script src="/js/tabler.min.js"></script>
+
+</body>
+
 </html>

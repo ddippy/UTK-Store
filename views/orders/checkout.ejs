@@ -1,57 +1,426 @@
 <!DOCTYPE html>
 <html lang="th">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
 
     <title>สั่งซื้อ | UTK-Store</title>
-  </head>
 
-  <body>
-    <h1>ข้อมูลผู้สั่งซื้อ</h1>
+    <link
+        rel="stylesheet"
+        href="/css/tabler.min.css"
+    >
 
-    <form action="/orders/create" method="POST">
-      <label>ชื่อ-นามสกุล</label>
-      <br />
+</head>
 
-      <input
-        type="text"
-        name="customer_name"
-        value="<%= user.name %>"
-        required
-      />
 
-      <br /><br />
+<body>
 
-      <label>รหัสนักศึกษา</label>
-      <br />
 
-      <input
-        type="text"
-        name="student_id"
-        value="<%= user.student_id %>"
-        required
-      >
+    <!-- ========================= -->
+    <!-- Navbar -->
+    <!-- ========================= -->
 
-      <br /><br />
+    <header class="navbar navbar-expand-md d-print-none">
 
-      <label>เบอร์โทรศัพท์</label>
-      <br />
+        <div class="container-xl">
 
-      <input
-        type="text"
-        name="phone"
-        value="<%= user.phone %>"
-        required
-      >
+            <a
+                href="/"
+                class="navbar-brand navbar-brand-autodark"
+            >
+                UTK-Store
+            </a>
 
-      <br /><br />
 
-      <button type="submit">ยืนยันการสั่งซื้อ</button>
-    </form>
+            <div class="navbar-nav flex-row order-md-last ms-auto">
 
-    <br />
+                <a
+                    href="/products"
+                    class="btn btn-outline-secondary me-2"
+                >
+                    ← สินค้า
+                </a>
 
-    <a href="/cart"> ← กลับไปตะกร้า </a>
-  </body>
+                <a
+                    href="/cart"
+                    class="btn btn-primary"
+                >
+                    🛒 รถเข็น
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ========================= -->
+    <!-- Page -->
+    <!-- ========================= -->
+
+    <div class="page">
+
+        <div class="page-wrapper">
+
+
+            <!-- ========================= -->
+            <!-- Page Header -->
+            <!-- ========================= -->
+
+            <div class="page-header d-print-none">
+
+                <div class="container-xl">
+
+                    <div class="row align-items-center">
+
+                        <div class="col">
+
+                            <h2 class="page-title">
+                                ยืนยันการสั่งซื้อ
+                            </h2>
+
+                            <div class="text-secondary mt-1">
+                                ตรวจสอบข้อมูลผู้สั่งซื้อก่อนยืนยันคำสั่งซื้อ
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ========================= -->
+            <!-- Page Body -->
+            <!-- ========================= -->
+
+            <div class="page-body">
+
+                <div class="container-xl">
+
+                    <div class="row row-cards">
+
+
+                        <!-- ========================= -->
+                        <!-- Customer Information -->
+                        <!-- ========================= -->
+
+                        <div class="col-lg-8">
+
+                            <form
+                                action="/orders/create"
+                                method="POST"
+                            >
+
+                                <div class="card">
+
+
+                                    <div class="card-header">
+
+                                        <h3 class="card-title">
+                                            ข้อมูลผู้สั่งซื้อ
+                                        </h3>
+
+                                    </div>
+
+
+
+                                    <div class="card-body">
+
+
+                                        <!-- Name -->
+
+                                        <div class="mb-4">
+
+                                            <label class="form-label">
+
+                                                ชื่อ-นามสกุล
+
+                                            </label>
+
+
+                                            <input
+                                                type="text"
+                                                name="customer_name"
+                                                value="<%= user.name %>"
+                                                class="form-control"
+                                                required
+                                            >
+
+
+                                            <div class="form-hint">
+                                                ชื่อที่ใช้สำหรับคำสั่งซื้อ
+                                            </div>
+
+                                        </div>
+
+
+
+                                        <!-- Student ID -->
+
+                                        <div class="mb-4">
+
+                                            <label class="form-label">
+
+                                                รหัสนักศึกษา
+
+                                            </label>
+
+
+                                            <input
+                                                type="text"
+                                                name="student_id"
+                                                value="<%= user.student_id %>"
+                                                class="form-control"
+                                                required
+                                            >
+
+
+                                            <div class="form-hint">
+                                                รหัสนักศึกษาของผู้สั่งซื้อ
+                                            </div>
+
+                                        </div>
+
+
+
+                                        <!-- Phone -->
+
+                                        <div class="mb-4">
+
+                                            <label class="form-label">
+
+                                                เบอร์โทรศัพท์
+
+                                            </label>
+
+
+                                            <input
+                                                type="text"
+                                                name="phone"
+                                                value="<%= user.phone %>"
+                                                class="form-control"
+                                                required
+                                            >
+
+
+                                            <div class="form-hint">
+                                                เบอร์โทรศัพท์สำหรับติดต่อ
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+
+
+                                    <!-- Footer -->
+
+                                    <div class="card-footer d-flex justify-content-between">
+
+
+                                        <a
+                                            href="/cart"
+                                            class="btn btn-outline-secondary"
+                                        >
+                                            ← กลับไปตะกร้า
+                                        </a>
+
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-primary"
+                                        >
+                                            ✓ ยืนยันการสั่งซื้อ
+                                        </button>
+
+
+                                    </div>
+
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+
+
+                        <!-- ========================= -->
+                        <!-- Information -->
+                        <!-- ========================= -->
+
+                        <div class="col-lg-4">
+
+
+                            <div class="card">
+
+
+                                <div class="card-header">
+
+                                    <h3 class="card-title">
+                                        ข้อมูลการสั่งซื้อ
+                                    </h3>
+
+                                </div>
+
+
+                                <div class="card-body">
+
+
+                                    <div class="d-flex mb-4">
+
+                                        <span
+                                            class="avatar bg-blue-lt me-3"
+                                        >
+                                            👤
+                                        </span>
+
+
+                                        <div>
+
+                                            <div class="fw-bold">
+                                                ผู้สั่งซื้อ
+                                            </div>
+
+                                            <div class="text-secondary mt-1">
+                                                ข้อมูลถูกดึงจากบัญชีผู้ใช้
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="d-flex mb-4">
+
+                                        <span
+                                            class="avatar bg-green-lt me-3"
+                                        >
+                                            🛒
+                                        </span>
+
+
+                                        <div>
+
+                                            <div class="fw-bold">
+                                                ตะกร้าสินค้า
+                                            </div>
+
+                                            <div class="text-secondary mt-1">
+                                                ระบบจะใช้สินค้าที่อยู่ในตะกร้า
+                                                เพื่อสร้างคำสั่งซื้อ
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="d-flex">
+
+                                        <span
+                                            class="avatar bg-yellow-lt me-3"
+                                        >
+                                            ✓
+                                        </span>
+
+
+                                        <div>
+
+                                            <div class="fw-bold">
+                                                ตรวจสอบข้อมูล
+                                            </div>
+
+                                            <div class="text-secondary mt-1">
+                                                กรุณาตรวจสอบข้อมูลให้ถูกต้อง
+                                                ก่อนกดยืนยัน
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- Warning -->
+
+                            <div class="card mt-3">
+
+                                <div class="card-body">
+
+                                    <div class="d-flex">
+
+                                        <span
+                                            class="avatar bg-orange-lt me-3"
+                                        >
+                                            !
+                                        </span>
+
+
+                                        <div>
+
+                                            <div class="fw-bold">
+                                                ก่อนยืนยัน
+                                            </div>
+
+                                            <div class="text-secondary mt-1">
+                                                เมื่อยืนยันแล้ว
+                                                ระบบจะสร้างคำสั่งซื้อ
+                                                จากสินค้าในตะกร้าของคุณ
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Tabler JS -->
+
+    <script src="/js/tabler.min.js"></script>
+
+
+</body>
+
 </html>

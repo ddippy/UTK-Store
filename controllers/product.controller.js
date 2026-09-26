@@ -5,6 +5,9 @@ exports.list = async (req, res) => {
 
   res.render("products/list", {
     products,
+    success: req.query.success === "1",
+    orderId: req.query.orderId || null,
+    total: req.query.total || null,
   });
 };
 

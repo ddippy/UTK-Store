@@ -1,65 +1,443 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
 
     <title>ตะกร้าสินค้า | UTK-Store</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/tabler.min.css"
+    >
+
 </head>
 
-<body>
-    <h1>ตะกร้าสินค้า</h1>
-    <% if (items.length === 0) { %>
-        <p>ตะกร้าสินค้าว่าง</p>
-    <% } else { %>
-        <% items.forEach(item => { %>
-            <div>
-                <h2><%= item.name %></h2>
-                <p>ราคา: <%= item.price %> บาท</p>
-                <p>Size: <%= item.size || "-" %></p>
-                <p>สี: <%= item.color || "-" %></p>
-                <form action="/cart/update" method="POST">
-                    <input
-                        type="hidden"
-                        name="variant_id"
-                        value="<%= item.variant_id %>"
-                    >
-                    <input
-                        type="number"
-                        name="quantity"
-                        value="<%= item.quantity %>"
-                        min="1"
-                        required
-                    >
-                    <button type="submit">
-                        อัปเดต
-                    </button>
-                </form>
 
-                <form action="/cart/remove" method="POST">
-                    <input
-                        type="hidden"
-                        name="variant_id"
-                        value="<%= item.variant_id %>"
-                    >
-                    <button type="submit">
-                        ลบ
-                    </button>
-                </form>
+<body>
+
+
+    <!-- ========================= -->
+    <!-- Navbar -->
+    <!-- ========================= -->
+
+    <header class="navbar navbar-expand-md d-print-none">
+
+        <div class="container-xl">
+
+            <a
+                href="/"
+                class="navbar-brand navbar-brand-autodark"
+            >
+                UTK-Store
+            </a>
+
+
+            <div class="navbar-nav flex-row order-md-last ms-auto">
+
+                <a
+                    href="/products"
+                    class="btn btn-outline-secondary me-2"
+                >
+                    ← สินค้า
+                </a>
+
+                <a
+                    href="/cart"
+                    class="btn btn-primary"
+                >
+                    🛒 รถเข็น
+                </a>
 
             </div>
-            <hr>
-        <% }) %>
 
-        <h2>ยอดรวม: <%= total %> บาท</h2>
+        </div>
 
-        <a href="/orders/checkout">
-            ไปสั่งซื้อ
-        </a>
+    </header>
 
-    <% } %>
-    
-    <a href="/products">← กลับไปเลือกสินค้า</a>
+
+
+    <!-- ========================= -->
+    <!-- Page -->
+    <!-- ========================= -->
+
+    <div class="page">
+
+        <div class="page-wrapper">
+
+
+            <!-- Page Header -->
+
+            <div class="page-header d-print-none">
+
+                <div class="container-xl">
+
+                    <div class="row align-items-center">
+
+                        <div class="col">
+
+                            <h2 class="page-title">
+                                ตะกร้าสินค้า
+                            </h2>
+
+                            <div class="text-secondary mt-1">
+                                ตรวจสอบสินค้าและจำนวนก่อนสั่งซื้อ
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Page Body -->
+
+            <div class="page-body">
+
+                <div class="container-xl">
+
+
+                    <% if (items.length === 0) { %>
+
+
+                        <!-- ========================= -->
+                        <!-- Empty Cart -->
+                        <!-- ========================= -->
+
+                        <div class="empty">
+
+                            <div class="empty-img">
+                                🛒
+                            </div>
+
+                            <p class="empty-title">
+                                ตะกร้าสินค้าว่าง
+                            </p>
+
+                            <p class="empty-subtitle text-secondary">
+                                ยังไม่มีสินค้าในตะกร้า
+                            </p>
+
+                            <div class="empty-action">
+
+                                <a
+                                    href="/products"
+                                    class="btn btn-primary"
+                                >
+                                    🛍️ เลือกสินค้า
+                                </a>
+
+                            </div>
+
+                        </div>
+
+
+                    <% } else { %>
+
+
+                        <div class="row row-cards">
+
+
+                            <!-- ========================= -->
+                            <!-- Cart Items -->
+                            <!-- ========================= -->
+
+                            <div class="col-lg-8">
+
+
+                                <% items.forEach(item => { %>
+
+
+                                    <div class="card mb-3">
+
+
+                                        <div class="card-body">
+
+
+                                            <div class="row align-items-center">
+
+
+                                                <!-- Product Icon -->
+
+                                                <div class="col-auto">
+
+                                                    <span
+                                                        class="avatar avatar-lg bg-blue-lt"
+                                                    >
+                                                        🛍️
+                                                    </span>
+
+                                                </div>
+
+
+                                                <!-- Product Info -->
+
+                                                <div class="col">
+
+                                                    <h3 class="card-title mb-1">
+
+                                                        <%= item.name %>
+
+                                                    </h3>
+
+
+                                                    <div class="text-secondary">
+
+                                                        ราคา:
+                                                        <%= Number(item.price).toLocaleString("th-TH", {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2
+                                                        }) %>
+                                                        บาท
+
+                                                    </div>
+
+
+                                                    <div class="mt-2">
+
+                                                        <span class="badge bg-blue-lt me-1">
+
+                                                            Size:
+                                                            <%= item.size || "-" %>
+
+                                                        </span>
+
+
+                                                        <span class="badge bg-purple-lt">
+
+                                                            สี:
+                                                            <%= item.color || "-" %>
+
+                                                        </span>
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <!-- Quantity -->
+
+                                                <div class="col-md-auto mt-3 mt-md-0">
+
+
+                                                    <form
+                                                        action="/cart/update"
+                                                        method="POST"
+                                                    >
+
+                                                        <input
+                                                            type="hidden"
+                                                            name="variant_id"
+                                                            value="<%= item.variant_id %>"
+                                                        >
+
+
+                                                        <label class="form-label">
+                                                            จำนวน
+                                                        </label>
+
+
+                                                        <div class="input-group">
+
+                                                            <input
+                                                                type="number"
+                                                                name="quantity"
+                                                                value="<%= item.quantity %>"
+                                                                min="1"
+                                                                class="form-control"
+                                                                style="width: 80px;"
+                                                                required
+                                                            >
+
+
+                                                            <button
+                                                                type="submit"
+                                                                class="btn btn-outline-primary"
+                                                            >
+                                                                อัปเดต
+                                                            </button>
+
+                                                        </div>
+
+                                                    </form>
+
+
+                                                </div>
+
+
+                                                <!-- Remove -->
+
+                                                <div class="col-auto mt-3 mt-md-0">
+
+                                                    <form
+                                                        action="/cart/remove"
+                                                        method="POST"
+                                                    >
+
+                                                        <input
+                                                            type="hidden"
+                                                            name="variant_id"
+                                                            value="<%= item.variant_id %>"
+                                                        >
+
+
+                                                        <button
+                                                            type="submit"
+                                                            class="btn btn-outline-danger"
+                                                        >
+                                                            ลบ
+                                                        </button>
+
+                                                    </form>
+
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                <% }) %>
+
+
+                            </div>
+
+
+
+                            <!-- ========================= -->
+                            <!-- Order Summary -->
+                            <!-- ========================= -->
+
+                            <div class="col-lg-4">
+
+
+                                <div
+                                    class="card"
+                                    style="position: sticky; top: 20px;"
+                                >
+
+
+                                    <div class="card-header">
+
+                                        <h3 class="card-title">
+                                            สรุปคำสั่งซื้อ
+                                        </h3>
+
+                                    </div>
+
+
+                                    <div class="card-body">
+
+
+                                        <div class="d-flex justify-content-between mb-3">
+
+                                            <span class="text-secondary">
+                                                จำนวนสินค้า
+                                            </span>
+
+                                            <span class="fw-bold">
+
+                                                <%= items.reduce((sum, item) => {
+                                                    return sum + Number(item.quantity);
+                                                }, 0) %>
+
+                                                ชิ้น
+
+                                            </span>
+
+                                        </div>
+
+
+                                        <div class="d-flex justify-content-between mb-3">
+
+                                            <span class="text-secondary">
+                                                ยอดรวม
+                                            </span>
+
+                                            <span class="h2 mb-0 text-primary">
+
+                                                <%= Number(total).toLocaleString("th-TH", {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }) %>
+
+                                                บาท
+
+                                            </span>
+
+                                        </div>
+
+
+                                        <hr>
+
+
+                                        <a
+                                            href="/orders/checkout"
+                                            class="btn btn-primary w-100"
+                                        >
+                                            ดำเนินการสั่งซื้อ
+                                        </a>
+
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- Back -->
+
+                        <div class="mt-4">
+
+                            <a
+                                href="/products"
+                                class="btn btn-outline-secondary"
+                            >
+                                ← กลับไปเลือกสินค้า
+                            </a>
+
+                        </div>
+
+
+                    <% } %>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Tabler JS -->
+
+    <script src="/js/tabler.min.js"></script>
+
 
 </body>
+
 </html>

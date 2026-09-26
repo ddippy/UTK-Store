@@ -50,9 +50,9 @@ exports.create = async (req, res) => {
     req.session.cart = [];
 
     // แสดงหน้าสำเร็จ
-    res.render("orders/success", {
-      order,
-    });
+    res.redirect(
+      `/products?success=1&orderId=${order.order_id}&total=${order.total_price}`,
+    );
   } catch (error) {
     console.error(error);
 

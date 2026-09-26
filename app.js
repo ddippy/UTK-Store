@@ -1,6 +1,8 @@
 require("dotenv").config(); // .env จะเป็นตัวที่บอก Node ว่า PostgreSQL อยู่ที่ไหน และใช้ฐานข้อมูลอะไร
 const express = require("express");
 const session = require("express-session");
+const userInfo = require("./middleware/userInfo");
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -13,6 +15,8 @@ app.use(
     saveUninitialized: true,
   }),
 );
+
+app.use(userInfo); // middleware userInfo จะทำงานก่อนทุก route
 
 app.set("view engine", "ejs"); // ใช้ EJS เป็น View Engine
 

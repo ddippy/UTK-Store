@@ -2,168 +2,530 @@
 <html lang="th">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>จัดการ Variant | Admin</title>
+
+    <link rel="stylesheet" href="/css/tabler.min.css">
+
 </head>
+
 
 <body>
 
-    <h1>จัดการ Variant</h1>
+    <!-- Navbar -->
 
-    <h2>
-        <%= product.name %>
-    </h2>
+    <header class="navbar navbar-expand-md d-print-none">
 
-    <p>
-        รหัสสินค้า: <%= product.code %>
-    </p>
+        <div class="container-xl">
 
-    <hr>
+            <a
+                href="/admin"
+                class="navbar-brand navbar-brand-autodark"
+            >
+                UTK-Store Admin
+            </a>
 
-    <h2>Variant ที่มีอยู่</h2>
 
-    <% if (variants.length === 0) { %>
+            <div class="navbar-nav flex-row order-md-last ms-auto">
 
-        <p>ยังไม่มี Variant</p>
+                <a
+                    href="/products"
+                    class="btn btn-outline-primary"
+                >
+                    🛍️ หน้าร้าน
+                </a>
 
-    <% } else { %>
+            </div>
 
-        <table border="1">
+        </div>
 
-            <thead>
-                <tr>
-                    <th>Variant ID</th>
-                    <th>Size</th>
-                    <th>สี</th>
-                    <th>Stock</th>
-                    <th>จัดการ</th>
-                </tr>
-            </thead>
+    </header>
 
-            <tbody>
 
-                <% variants.forEach(variant => { %>
+    <!-- Page -->
 
-                    <tr>
-                        <td><%= variant.variant_id %></td>
+    <div class="page">
 
-                        <td>
-                            <input
-                                type="text"
-                                name="size"
-                                value="<%= variant.size || "" %>"
-                                form="edit-<%= variant.variant_id %>"
+        <div class="page-wrapper">
+
+
+            <!-- Page Header -->
+
+            <div class="page-header d-print-none">
+
+                <div class="container-xl">
+
+                    <div class="row align-items-center">
+
+                        <div class="col">
+
+                            <h2 class="page-title">
+                                จัดการ Variant
+                            </h2>
+
+                            <div class="text-secondary mt-1">
+                                จัดการขนาด สี และ Stock ของสินค้า
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-auto">
+
+                            <a
+                                href="/admin/products"
+                                class="btn btn-outline-secondary"
                             >
-                        </td>
+                                ← กลับไปจัดการสินค้า
+                            </a>
 
-                        <td>
-                            <input
-                                type="text"
-                                name="color"
-                                value="<%= variant.color || "" %>"
-                                form="edit-<%= variant.variant_id %>"
-                            >
-                        </td>
+                        </div>
 
-                        <td>
-                            <input
-                                type="number"
-                                name="stock"
-                                min="0"
-                                value="<%= variant.stock %>"
-                                form="edit-<%= variant.variant_id %>"
-                            >
-                        </td>
+                    </div>
 
-                        <td>
-                            <form
-                                id="edit-<%= variant.variant_id %>"
-                                action="/admin/products/<%= product.product_id %>/variants/<%= variant.variant_id %>/edit"
-                                method="POST"
-                            >
-                                <button type="submit">บันทึก</button>
-                            </form>
+                </div>
 
-                            <form
-                                action="/admin/products/<%= product.product_id %>/variants/<%= variant.variant_id %>/delete"
-                                method="POST"
-                            >
-                                <button
-                                    type="submit"
-                                    onclick="return confirm('คุณต้องการลบ Variant นี้ใช่หรือไม่?')"
+            </div>
+
+
+            <!-- Page Body -->
+
+            <div class="page-body">
+
+                <div class="container-xl">
+
+
+                    <!-- Product Information -->
+
+                    <div class="card mb-4">
+
+                        <div class="card-body">
+
+                            <div class="d-flex align-items-center">
+
+                                <span class="avatar bg-blue-lt me-3">
+                                    📦
+                                </span>
+
+                                <div>
+
+                                    <div class="text-secondary">
+                                        สินค้า
+                                    </div>
+
+                                    <h2 class="mb-1">
+                                        <%= product.name %>
+                                    </h2>
+
+                                    <div class="text-secondary">
+                                        รหัสสินค้า:
+                                        <strong>
+                                            <%= product.code %>
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row row-cards">
+
+
+                        <!-- Variant List -->
+
+                        <div class="col-lg-8">
+
+                            <div class="card">
+
+
+                                <div class="card-header">
+
+                                    <div>
+
+                                        <h3 class="card-title">
+                                            Variant ที่มีอยู่
+                                        </h3>
+
+                                        <div class="text-secondary mt-1">
+                                            ทั้งหมด <%= variants.length %> Variant
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <% if (variants.length === 0) { %>
+
+
+                                    <!-- Empty -->
+
+                                    <div class="empty">
+
+                                        <div class="empty-img">
+                                            📦
+                                        </div>
+
+                                        <p class="empty-title">
+                                            ยังไม่มี Variant
+                                        </p>
+
+                                        <p class="empty-subtitle text-secondary">
+                                            เพิ่ม Variant ทางด้านขวาเพื่อเริ่มจัดการสินค้า
+                                        </p>
+
+                                    </div>
+
+
+                                <% } else { %>
+
+
+                                    <!-- Variant Table -->
+
+                                    <div class="table-responsive">
+
+                                        <table class="table table-vcenter card-table">
+
+                                            <thead>
+
+                                                <tr>
+
+                                                    <th>
+                                                        ID
+                                                    </th>
+
+                                                    <th>
+                                                        Size
+                                                    </th>
+
+                                                    <th>
+                                                        สี
+                                                    </th>
+
+                                                    <th>
+                                                        Stock
+                                                    </th>
+
+                                                    <th class="text-end">
+                                                        จัดการ
+                                                    </th>
+
+                                                </tr>
+
+                                            </thead>
+
+
+                                            <tbody>
+
+
+                                                <% variants.forEach(variant => { %>
+
+
+                                                    <tr>
+
+
+                                                        <!-- ID -->
+
+                                                        <td>
+
+                                                            <span class="badge bg-blue-lt">
+                                                                #<%= variant.variant_id %>
+                                                            </span>
+
+                                                        </td>
+
+
+                                                        <!-- Size -->
+
+                                                        <td>
+
+                                                            <input
+                                                                type="text"
+                                                                name="size"
+                                                                class="form-control form-control-sm"
+                                                                value="<%= variant.size || "" %>"
+                                                                form="edit-<%= variant.variant_id %>"
+                                                                placeholder="Size"
+                                                            >
+
+                                                        </td>
+
+
+                                                        <!-- Color -->
+
+                                                        <td>
+
+                                                            <input
+                                                                type="text"
+                                                                name="color"
+                                                                class="form-control form-control-sm"
+                                                                value="<%= variant.color || "" %>"
+                                                                form="edit-<%= variant.variant_id %>"
+                                                                placeholder="สี"
+                                                            >
+
+                                                        </td>
+
+
+                                                        <!-- Stock -->
+
+                                                        <td>
+
+                                                            <input
+                                                                type="number"
+                                                                name="stock"
+                                                                class="form-control form-control-sm"
+                                                                min="0"
+                                                                value="<%= variant.stock %>"
+                                                                form="edit-<%= variant.variant_id %>"
+                                                                style="width: 100px;"
+                                                            >
+
+                                                        </td>
+
+
+                                                        <!-- Actions -->
+
+                                                        <td>
+
+                                                            <div class="d-flex justify-content-end gap-2">
+
+
+                                                                <!-- Edit -->
+
+                                                                <form
+                                                                    id="edit-<%= variant.variant_id %>"
+                                                                    action="/admin/products/<%= product.product_id %>/variants/<%= variant.variant_id %>/edit"
+                                                                    method="POST"
+                                                                >
+
+                                                                    <button
+                                                                        type="submit"
+                                                                        class="btn btn-sm btn-primary"
+                                                                    >
+                                                                        บันทึก
+                                                                    </button>
+
+                                                                </form>
+
+
+                                                                <!-- Delete -->
+
+                                                                <form
+                                                                    action="/admin/products/<%= product.product_id %>/variants/<%= variant.variant_id %>/delete"
+                                                                    method="POST"
+                                                                >
+
+                                                                    <button
+                                                                        type="submit"
+                                                                        class="btn btn-sm btn-outline-danger"
+                                                                        onclick="return confirm('คุณต้องการลบ Variant นี้ใช่หรือไม่?')"
+                                                                    >
+                                                                        ลบ
+                                                                    </button>
+
+                                                                </form>
+
+
+                                                            </div>
+
+                                                        </td>
+
+
+                                                    </tr>
+
+
+                                                <% }) %>
+
+
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
+
+
+                                <% } %>
+
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Add Variant -->
+
+                        <div class="col-lg-4">
+
+                            <div class="card">
+
+
+                                <div class="card-header">
+
+                                    <h3 class="card-title">
+                                        เพิ่ม Variant
+                                    </h3>
+
+                                </div>
+
+
+                                <form
+                                    action="/admin/products/<%= product.product_id %>/variants"
+                                    method="POST"
                                 >
-                                    ลบ
-                                </button>
-                            </form>
-                        </td>
 
-                    </tr>
 
-                <% }) %>
+                                    <div class="card-body">
 
-            </tbody>
 
-        </table>
+                                        <!-- Size -->
 
-    <% } %>
+                                        <div class="mb-3">
 
-    <hr>
+                                            <label class="form-label">
+                                                Size
+                                            </label>
 
-    <h2>เพิ่ม Variant</h2>
+                                            <input
+                                                type="text"
+                                                name="size"
+                                                class="form-control"
+                                                placeholder="เช่น S, M, L, XL"
+                                            >
 
-    <form
-        action="/admin/products/<%= product.product_id %>/variants"
-        method="POST"
-    >
+                                        </div>
 
-        <label>Size</label>
-        <br>
 
-        <input
-            type="text"
-            name="size"
-            placeholder="เช่น M"
-        >
+                                        <!-- Color -->
 
-        <br><br>
+                                        <div class="mb-3">
 
-        <label>สี</label>
-        <br>
+                                            <label class="form-label">
+                                                สี
+                                            </label>
 
-        <input
-            type="text"
-            name="color"
-            placeholder="เช่น ขาว"
-        >
+                                            <input
+                                                type="text"
+                                                name="color"
+                                                class="form-control"
+                                                placeholder="เช่น ขาว, ดำ, แดง"
+                                            >
 
-        <br><br>
+                                        </div>
 
-        <label>Stock</label>
-        <br>
 
-        <input
-            type="number"
-            name="stock"
-            min="0"
-            value="0"
-            required
-        >
+                                        <!-- Stock -->
 
-        <br><br>
+                                        <div class="mb-3">
 
-        <button type="submit">
-            เพิ่ม Variant
-        </button>
+                                            <label class="form-label">
+                                                Stock
+                                                <span class="text-danger">*</span>
+                                            </label>
 
-    </form>
+                                            <input
+                                                type="number"
+                                                name="stock"
+                                                class="form-control"
+                                                min="0"
+                                                value="0"
+                                                required
+                                            >
 
-    <br>
+                                        </div>
 
-    <a href="/admin/products">
-        ← กลับไปจัดการสินค้า
-    </a>
+
+                                    </div>
+
+
+                                    <div class="card-footer">
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-primary w-100"
+                                        >
+                                            + เพิ่ม Variant
+                                        </button>
+
+                                    </div>
+
+
+                                </form>
+
+
+                            </div>
+
+
+                            <!-- Information -->
+
+                            <div class="card mt-3">
+
+                                <div class="card-body">
+
+                                    <div class="d-flex">
+
+                                        <span class="avatar bg-yellow-lt me-3">
+                                            💡
+                                        </span>
+
+                                        <div>
+
+                                            <div class="fw-bold">
+                                                Variant คืออะไร?
+                                            </div>
+
+                                            <div class="text-secondary mt-1">
+                                                ใช้สำหรับแยกสินค้าที่มีขนาด
+                                                สี หรือ Stock แตกต่างกัน
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- Back -->
+
+                    <div class="mt-4 mb-4">
+
+                        <a
+                            href="/admin/products"
+                            class="btn btn-outline-secondary"
+                        >
+                            ← กลับไปจัดการสินค้า
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="/js/tabler.min.js"></script>
 
 </body>
 
