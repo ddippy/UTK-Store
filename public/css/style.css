@@ -1,0 +1,6 @@
+/* button ของ product detail */
+.size-btn.active {
+    color: white;
+    background-color: #206bc4;
+    border-color: #206bc4;
+}

@@ -17,6 +17,13 @@
         href="/css/tabler.min.css"
     >
 
+    <!-- CSS ของเรา -->
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+    
+
 </head>
 
 
@@ -289,9 +296,102 @@
                                             <% } else { %>
 
 
-                                                <div class="table-responsive">
+                                                <div
+                                                    id="variant-selector"
+                                                    data-variants='<%= JSON.stringify(product.variants) %>'
+                                                >
 
-                                                    <table class="table table-vcenter card-table">
+
+
+                                                            <!-- Size -->
+
+                                                            <%
+                                                                const sizes = [
+                                                                    ...new Set(
+                                                                        product.variants
+                                                                            .map(v => v.size)
+                                                                            .filter(Boolean)
+                                                                    )
+                                                                ];
+                                                            %>
+
+                                                            <% if (sizes.length > 0) { %>
+
+                                                                <div class="mb-3">
+
+                                                                    <label class="form-label">
+                                                                        Size
+                                                                    </label>
+
+                                                                    <div class="d-flex flex-wrap gap-2">
+
+                                                                        <% sizes.forEach(size => { %>
+
+                                                                            <button
+                                                                                type="button"
+                                                                                class="btn btn-outline-primary size-btn"
+                                                                                data-size="<%= size %>"
+                                                                           >
+                                                                                <%= size %>
+                                                                            </button>
+
+                                                                        <% }) %>
+                                                            
+                                                                    </div>
+
+                                                                </div>
+
+                                                            <% } %>
+
+                                                            <!-- Color -->
+
+                                                            <%
+                                                                const colors = [
+                                                                    ...new Set(
+                                                                        product.variants
+                                                                            .map(v => v.color)
+                                                                            .filter(Boolean)
+                                                                    )
+                                                                ];
+                                                            %>
+
+                                                            <% if (colors.length > 0) { %>
+
+                                                                <div class="mb-3">
+
+                                                                    <label class="form-label">
+                                                                        Color
+                                                                    </label>
+
+                                                                    <div class="d-flex flex-wrap gap-2">
+
+                                                                        <% colors.forEach(color => { %>
+
+                                                                            <button
+                                                                                type="button"
+                                                                                class="btn btn-outline-warning color-btn"
+                                                                                data-color="<%= color %>"
+                                                                           >
+                                                                                <%= color %>
+                                                                            </button>
+
+                                                                        <% }) %>
+                                                            
+                                                                    </div>
+
+                                                                </div>
+
+                                                            <% } %>
+
+
+
+
+
+
+
+
+
+                                                    <!-- <table class="table table-vcenter card-table">
 
                                                         <thead>
 
@@ -386,7 +486,7 @@
 
                                                         </tbody>
 
-                                                    </table>
+                                                    </table> -->
 
                                                 </div>
 
@@ -402,22 +502,32 @@
                                         <div class="mb-4">
 
                                             <label class="form-label">
-
                                                 จำนวน
-
                                             </label>
 
+                                            
+                                            <div class="d-flex align-items-center gap-1">
 
-                                            <input
-                                                type="number"
-                                                name="quantity"
-                                                class="form-control"
-                                                value="1"
-                                                min="1"
-                                                style="max-width: 150px;"
-                                                required
-                                            >
+                                                <!-- Quantity -->
+                                                <input
+                                                    type="number"
+                                                    name="quantity"
+                                                    id="quantity"
+                                                    class="form-control"
+                                                    value="1"
+                                                    min="1"
+                                                    style="max-width: 150px;"
+                                                    required
+                                                >
 
+                                                <!-- Stock -->
+                                                <div id="variant-stock" class="mb-2 ms-2 d-none">
+                                                    <span class="text-secondary">
+                                                        Stock:
+                                                    </span>
+                                                    <span id="stock-value" class="fw-bold"></span>
+                                                </div>
+                                            </div>
                                         </div>
 
 
@@ -429,9 +539,19 @@
 
                                             <% if (product.variants.length > 0) { %>
 
+                                                <input
+                                                    type="hidden"
+                                                    name="variant_id"
+                                                    id="selected-variant-id"
+                                                    required
+                                                >
+
+
                                                 <button
                                                     type="submit"
                                                     class="btn btn-primary"
+                                                    id="add-to-cart-btn"
+                                                    disabled
                                                 >
 
                                                     🛒 เพิ่มลงตะกร้า
@@ -565,6 +685,340 @@
     <!-- Tabler JS -->
 
     <script src="/js/tabler.min.js"></script>
+
+    <script>
+
+        // ========================================
+        // ตัวแปรเก็บ Size และ Color ที่ผู้ใช้เลือก
+        // ========================================
+
+        let selectedSize = null;
+        let selectedColor = null;
+
+
+        // ========================================
+        // ดึงข้อมูล Variant จาก EJS
+        // ========================================
+
+        const variantSelector = document.querySelector("#variant-selector");
+
+        const variants = JSON.parse(variantSelector.dataset.variants);
+
+
+        // ========================================
+        // ดึงปุ่ม Size และ Color
+        // ========================================
+
+        const sizeButtons =
+            document.querySelectorAll(".size-btn");
+
+        const colorButtons =
+            document.querySelectorAll(".color-btn");
+
+
+        // ========================================
+        // ดึง Element ที่ใช้ในระบบ
+        // ========================================
+
+        const stockBox = document.querySelector("#variant-stock");
+        const stockValue = document.querySelector("#stock-value");
+        const addToCartButton = document.querySelector("#add-to-cart-btn");
+        const selectedVariantInput = document.querySelector("#selected-variant-id");
+        const quantityInput = document.querySelector("#quantity");
+
+
+        // ========================================
+        // หา Variant จาก Size + Color ที่เลือก
+        // ========================================
+
+        function findSelectedVariant() {
+
+            // เช็กว่าสินค้านี้มี Size หรือไม่
+            const hasSize =
+                sizeButtons.length > 0;
+
+            // เช็กว่าสินค้านี้มี Color หรือไม่
+            const hasColor =
+                colorButtons.length > 0;
+
+
+            // ถ้ามี Size แต่ยังไม่ได้เลือก
+            if (hasSize && !selectedSize) {
+                return null;
+             }
+
+
+            // ถ้ามี Color แต่ยังไม่ได้เลือก
+            if (hasColor && !selectedColor) {
+                return null;
+            }
+
+
+            // ค้นหา Variant ที่ตรงกับตัวเลือก
+            const variant = variants.find(v => {
+
+                // ถ้าไม่มี Size ให้ผ่าน
+                // ถ้ามี Size ต้องตรงกับที่เลือก
+                const sizeMatch =
+                    !hasSize ||
+                    v.size === selectedSize;
+
+
+                // ถ้าไม่มี Color ให้ผ่าน
+                // ถ้ามี Color ต้องตรงกับที่เลือก
+                const colorMatch =
+                    !hasColor ||
+                    v.color === selectedColor;
+
+
+                // ต้องตรงทั้ง Size และ Color
+                return sizeMatch && colorMatch;
+            });
+
+
+            // แสดง Variant ที่หาได้ใน Console
+            console.log(
+                "Variant ที่เลือก:",
+                variant
+            );
+
+
+            return variant;
+        }
+
+
+        // ========================================
+        // Update Stock
+        // ========================================
+
+        function updateStock() {
+
+            // หา Variant ที่ตรงกับที่เลือก
+            const variant =
+                findSelectedVariant();
+
+
+            // ------------------------------------
+            // ถ้ายังเลือก Variant ไม่ครบ
+            // ------------------------------------
+
+            if (!variant) {
+
+                // ซ่อน Stock
+                stockBox.classList.add("d-none");
+
+                // ล้างตัวเลข Stock
+                stockValue.textContent = "";
+
+                // ปิดปุ่มเพิ่มลงตะกร้า
+                addToCartButton.disabled = true;
+
+                // ล้าง Variant ID
+                selectedVariantInput.value = "";
+
+                // ล้าง Max ของ Quantity
+                quantityInput.removeAttribute("max");
+
+                return;
+            }
+
+
+            // ------------------------------------
+            // ถ้ามี Variant แล้ว
+            // ------------------------------------
+
+            // ใส่ Variant ID ลง Hidden Input
+            selectedVariantInput.value =
+                variant.variant_id;
+
+
+            // กำหนดจำนวนสูงสุดตาม Stock
+            quantityInput.max =
+                variant.stock;
+
+
+            // ถ้าจำนวนที่กรอกอยู่มากกว่า Stock
+            // ให้ปรับกลับมาเท่ากับ Stock
+            if (
+                Number(quantityInput.value) > variant.stock
+            ) {
+                quantityInput.value = variant.stock;
+            }
+
+
+            // ถ้า Stock หมด
+            // ปิดปุ่มเพิ่มตะกร้า
+            if (variant.stock <= 0) {
+
+                addToCartButton.disabled = true;
+
+            } else {
+
+                // ถ้ามี Stock
+                // เปิดปุ่มเพิ่มตะกร้า
+                addToCartButton.disabled = false;
+            }
+
+
+            // แสดงกล่อง Stock
+            stockBox.classList.remove("d-none");
+
+
+            // แสดงจำนวน Stock
+            stockValue.textContent =
+                variant.stock;
+        }
+
+
+        // ========================================
+        // เมื่อกดปุ่ม Size
+        // ========================================
+
+        sizeButtons.forEach(button => {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    // ถ้ากดปุ่มเดิมที่กำลัง Active
+                    // ให้ยกเลิกการเลือก
+                    if (
+                        this.classList.contains("active")
+                    ) {
+
+                        this.classList.remove("active");
+
+                        selectedSize = null;
+
+                    } else {
+
+                        // เอา Active ออกจากปุ่ม Size อื่น
+                        sizeButtons.forEach(btn => {
+
+                            btn.classList.remove("active");
+
+                        });
+
+
+                        // ทำปุ่มที่กดให้ Active
+                        this.classList.add("active");
+
+
+                        // เก็บค่าที่เลือก
+                        selectedSize =
+                            this.dataset.size;
+                    }
+
+
+                // อัปเดต Variant และ Stock
+                updateStock();
+            }
+        );
+
+    });
+
+
+    // ========================================
+    // เมื่อกดปุ่ม Color
+    // ========================================
+
+    colorButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                // ถ้ากดปุ่มเดิมที่กำลัง Active
+                // ให้ยกเลิกการเลือก
+                if (
+                    this.classList.contains("active")
+                ) {
+
+                    this.classList.remove("active");
+
+                    selectedColor = null;
+
+                } else {
+
+                    // เอา Active ออกจาก Color อื่น
+                    colorButtons.forEach(btn => {
+
+                        btn.classList.remove("active");
+
+                    });
+
+
+                    // ทำปุ่มที่กดให้ Active
+                    this.classList.add("active");
+
+
+                    // เก็บค่าที่เลือก
+                    selectedColor =
+                        this.dataset.color;
+                }
+
+
+                // อัปเดต Variant และ Stock
+                updateStock();
+            }
+        );
+
+    });
+
+
+    // ========================================
+    // ป้องกันกรอกจำนวนเกิน Stock
+    // ========================================
+
+    quantityInput.addEventListener(
+        "input",
+        function () {
+
+            // หา Variant ปัจจุบัน
+            const variant =
+                findSelectedVariant();
+
+
+            // ถ้ายังไม่ได้เลือก Variant
+            // ไม่ต้องทำอะไร
+            if (!variant) {
+                return;
+            }
+
+
+            // ถ้ากรอกมากกว่า Stock
+            // ให้ปรับกลับมาเป็น Stock
+            if (
+                Number(this.value) >
+                variant.stock
+            ) {
+
+                this.value =
+                    variant.stock;
+            }
+
+
+            // ถ้ากรอกน้อยกว่า 1
+            // ให้กลับเป็น 1
+            if (
+                Number(this.value) < 1
+            ) {
+
+                this.value = 1;
+            }
+
+        }
+    );
+
+        // ========================================
+        // โหลดข้อมูล Stock ตอนเปิดหน้า
+        // สำหรับสินค้าที่ไม่มี Size / Color
+        // ========================================
+
+        updateStock();
+
+    </script>
+
 
 
 </body>
