@@ -237,6 +237,7 @@
                                                     <form
                                                         action="/cart/update"
                                                         method="POST"
+                                                        class="cart-update-form"
                                                     >
 
                                                         <input
@@ -286,6 +287,7 @@
                                                     <form
                                                         action="/cart/remove"
                                                         method="POST"
+                                                        class="cart-remove-form"
                                                     >
 
                                                         <input
@@ -436,11 +438,136 @@
     </div>
 
 
+    <!-- Toast แจ้งเตือน -->
+    <div
+        id="cart-toast"
+        class="toast position-fixed top-0 end-0 m-3"
+        role="alert"
+        style="z-index: 9999;"
+    >
+        <div class="toast-body">
+            <span id="cart-toast-message"></span>
+        </div>
+    </div>
+
 
     <!-- Tabler JS -->
 
     <script src="/js/tabler.min.js"></script>
 
+    <script>
+
+    // ======================================== 
+    // แสดง Toast
+    // ========================================
+
+
+        function showToast(message, type = "danger") {
+
+            const toast = document.querySelector("#cart-toast");
+
+            const messageBox = document.querySelector("#cart-toast-message");
+
+
+            // ล้างสีเดิมก่อน
+            toast.classList.remove(
+                "text-bg-danger",
+                "text-bg-success",
+                "text-bg-warning"
+            );
+
+
+            // กำหนดสีตามประเภท
+            toast.classList.add(
+                `text-bg-${type}`
+            );
+
+
+            // ใส่ข้อความ
+            messageBox.textContent = message;
+
+
+            // แสดง Toast
+            toast.classList.add("show");
+
+
+            // ซ่อนหลัง 3 วินาที
+            setTimeout(() => {
+
+                toast.classList.remove("show");
+
+            }, 3000);
+
+        }
+
+        // ========================================
+        // ดักการกดปุ่ม "อัปเดต"
+        // ========================================
+        
+        const updateForms = document.querySelectorAll(".cart-update-form");
+
+        updateForms.forEach(form => {
+
+            form.addEventListener("submit", async function (event) {
+
+                // ป้องกัน Form ส่งแบบปกติ
+                event.preventDefault();
+
+
+                // เก็บข้อมูลจาก Form
+                const formData = new FormData(this);
+                try {
+                    // ส่งข้อมูลไป Backend
+                    const response =
+                        await fetch(
+                            this.action,
+                            {
+                                method: "POST",
+                                body: formData
+                            }
+                        );
+
+
+                    // ถ้า Backend ตอบ Error
+                    if (!response.ok) {
+
+                        // อ่านข้อความ Error จาก Backend
+                        const message = await response.text();
+
+                        // แสดง Toast
+                        showToast(message, "danger");
+
+                        return;
+                    }
+
+
+                    // ถ้า Update สำเร็จ
+                    // แสดงข้อความสำเร็จ
+                    showToast(
+                        "อัปเดตจำนวนสินค้าเรียบร้อย",
+                        "success"
+                    );
+
+                    // รอให้เห็น Toast ก่อนแล้วค่อย Reload
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+
+                    } catch (error) {
+
+                        // กรณีเชื่อมต่อ Server ไม่ได้
+                        showToast(
+                        "เกิดข้อผิดพลาด กรุณาลองใหม่"
+                    );
+
+                    console.error(error);
+                }
+
+            });
+
+        });
+
+    </script>
 
 </body>
 
