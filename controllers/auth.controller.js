@@ -4,69 +4,115 @@ const User = require("../models/user.model");
 
 // ==================== ADMIN ====================
 exports.adminLoginForm = (req, res) => {
-  res.render("auth/admin-login");
+
+  const { returnTo } = req.query;
+
+  res.render("auth/admin-login", {
+    returnTo,
+    error: null
+  });
+
 };
 
 exports.adminLogin = async (req, res) => {
+
   const { username, password } = req.body;
 
+  const returnTo = req.body.returnTo || "/";
+
   if (!username || !password) {
-    return res.status(400).send("กรุณากรอก Username และ Password");
+    return res.status(400).render("auth/admin-login", {
+      error: "กรุณากรอกอีเมลและรหัสผ่าน",
+      returnTo
+    });
   }
 
   const admin = await Admin.findByUsername(username);
 
   if (!admin) {
-    return res.status(401).send("Username หรือ Password ไม่ถูกต้อง");
+    return res.status(401).render("auth/admin-login", {
+      error: "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+      returnTo
+    });
   }
 
-  const isMatch = await bcrypt.compare(password, admin.password_hash);
+  const isMatch = await bcrypt.compare(
+    password,
+    admin.password_hash
+  );
 
   if (!isMatch) {
-    return res.status(401).send("Username หรือ Password ไม่ถูกต้อง");
+    return res.status(401).render("auth/admin-login", {
+      error: "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+      returnTo
+    });
   }
 
-  req.session.adminId = admin.admin_id;
-  req.session.adminUsername = admin.username;
-  req.session.userName = admin.username;
+  req.session.userId = Admin.user_id;
+  req.session.username = Admin.username;
+  req.session.userName = Admin.name;
   req.session.role = "ADMIN";
 
-  res.redirect("/admin");
+  res.redirect(returnTo);
 };
+
+
+
+
+
+
 
 // ==================== USER ====================
 
 exports.userLoginForm = (req, res) => {
+
   const { returnTo } = req.query;
 
-  res.render("auth/user-login", { returnTo });
+  res.render("auth/user-login", {
+    returnTo,
+    error: null
+  });
+
 };
 
 exports.userLogin = async (req, res) => {
+
   const { username, password } = req.body;
 
+  const returnTo = req.body.returnTo || "/";
+
   if (!username || !password) {
-    return res.status(400).send("กรุณากรอก Username และ Password");
+    return res.status(400).render("auth/user-login", {
+      error: "กรุณากรอกอีเมลและรหัสผ่าน",
+      returnTo
+    });
   }
 
   const user = await User.findByUsername(username);
 
   if (!user) {
-    return res.status(401).send("Username หรือ Password ไม่ถูกต้อง");
+    return res.status(401).render("auth/user-login", {
+      error: "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+      returnTo
+    });
   }
 
-  const isMatch = await bcrypt.compare(password, user.password_hash);
+  const isMatch = await bcrypt.compare(
+    password,
+    user.password_hash
+  );
 
   if (!isMatch) {
-    return res.status(401).send("Username หรือ Password ไม่ถูกต้อง");
+    return res.status(401).render("auth/user-login", {
+      error: "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+      returnTo
+    });
   }
 
   req.session.userId = user.user_id;
   req.session.username = user.username;
   req.session.userName = user.name;
   req.session.role = "USER";
-
-  const returnTo = req.body.returnTo || "/";
 
   res.redirect(returnTo);
 };

@@ -60,7 +60,7 @@
     <!-- Login -->
     <!-- ========================= -->
 
-    <div class="page page-center flex-fill">
+    <div class="page flex-fill">
 
         <div class="container container-tight py-4">
 
@@ -91,6 +91,26 @@
                     <h2 class="h2 text-center mb-4">
                         เข้าสู่ระบบ
                     </h2>
+
+                    <% if (error) { %>
+
+                        <div class="alert alert-danger" role="alert">
+
+                            <div>
+
+                                <h4 class="alert-title">
+                                    เข้าสู่ระบบไม่สำเร็จ
+                                </h4>
+
+                                <div class="text-secondary">
+                                    <%= error %>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    <% } %>
 
 
                     <form

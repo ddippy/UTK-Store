@@ -10,6 +10,12 @@ router.get(
   orderController.checkout,
 );
 
+router.get(
+  "/my-orders",
+  requireUser("/orders/my-orders"),
+  orderController.myOrders
+);
+
 router.get("/:id", orderController.detail);
 
 // รับไฟล์ชื่อ payment_slip ก่อนเข้า Controller

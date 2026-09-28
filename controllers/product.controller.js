@@ -8,24 +8,26 @@ exports.list = async (req, res) => {
     success: req.query.success === "1",
     orderId: req.query.orderId || null,
     total: req.query.total || null,
+    error: req.query.error || null
   });
+
 };
 
 exports.detail = async (req, res) => {
   const id = req.params.id;
 
   if (!Number.isInteger(Number(id))) {
-    return res.status(400).send("รหัสสินค้าต้องเป็นตัวเลข");
+    return res.redirect("/products?error=invalid-id");
   }
 
   const product = await Product.findById(id);
 
   if (!product) {
-    return res.status(404).send("ไม่พบสินค้า");
+    return res.redirect("/products?error=product-not-found");
   }
 
   if (product.status !== "ACTIVE") {
-    return res.status(404).send("ไม่พบสินค้านี้");
+    return res.redirect("/products?error=inactive");
   }
 
   res.render("products/detail", {

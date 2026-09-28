@@ -17,101 +17,16 @@
         href="/css/tabler.min.css"
     >
 
-    <style>
-        /* =========================
-           Order Success Modal
-           ========================= */
-
-        #order-success-modal {
-            opacity: 0;
-            transition: opacity 0.25s ease;
-        }
-
-        #order-success-modal.show {
-            opacity: 1;
-        }
-
-        #order-success-box {
-            opacity: 0;
-            transform: translateY(35px) scale(0.9);
-            transition:
-                opacity 0.35s ease,
-                transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        #order-success-modal.show #order-success-box {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        /* Success Icon */
-
-        #success-icon {
-            transform: scale(0);
-        }
-
-        #order-success-modal.show #success-icon {
-            animation:
-                successPop
-                0.5s
-                0.2s
-                cubic-bezier(0.34, 1.56, 0.64, 1)
-                forwards;
-        }
-
-        @keyframes successPop {
-
-            0% {
-                transform: scale(0);
-            }
-
-            70% {
-                transform: scale(1.15);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-
-        }
-
-
-        /* Confetti */
-
-        .confetti {
-            position: fixed;
-            top: -20px;
-            width: 9px;
-            height: 14px;
-            z-index: 10000;
-            pointer-events: none;
-            animation: confettiFall linear forwards;
-        }
-
-        @keyframes confettiFall {
-
-            0% {
-                transform:
-                    translate3d(0, 0, 0)
-                    rotate(0deg);
-                opacity: 1;
-            }
-
-            100% {
-                transform:
-                    translate3d(var(--x), 110vh, 0)
-                    rotate(var(--rotate));
-                opacity: 0;
-            }
-
-        }
-    </style>
+    <!-- CSS ของเรา -->
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
 
 </head>
 
 
 <body>
-
 
     <!-- ========================= -->
     <!-- Navbar -->
@@ -128,20 +43,17 @@
                 UTK-Store
             </a>
 
-
             <div class="navbar-nav flex-row order-md-last ms-auto">
 
-                <a
-                    href="/"
-                    class="btn btn-outline-secondary me-2"
-                >
+                <a href="/" class="btn btn-outline-secondary me-2">
                     หน้าหลัก
                 </a>
 
-                <a
-                    href="/cart"
-                    class="btn btn-primary"
-                >
+                <a href="/orders/my-orders" class="btn btn-outline-primary me-2">
+                    📦 คำสั่งซื้อของฉัน
+                </a>
+
+                <a href="/cart" class="btn btn-primary">
                     🛒 รถเข็น
                 </a>
 
@@ -564,12 +476,96 @@
             </div>
 
         </div>
+        <% } %>
 
+        <!-- ========================= -->
+        <!-- Product Error Toast -->
+        <!-- ========================= -->
+
+        <div
+            id="product-toast"
+            class="toast position-fixed top-0 end-0 m-3"
+            role="alert"
+            style="z-index: 9999;"
+        >
+            <div class="toast-body">
+                <span id="product-toast-message"></span>
+            </div>
+        </div>
 
 
         <script>
 
             document.addEventListener("DOMContentLoaded", function () {
+
+                const toast = document.querySelector("#product-toast");
+                const messageBox = document.querySelector("#product-toast-message");
+
+                const params = new URLSearchParams(window.location.search);
+
+                const error = params.get("error");
+
+                if (!error) {
+                    return;
+                }
+
+
+                let message = "";
+                let type = "warning";
+
+
+                if (error === "invalid-id") {
+
+                    message = "รหัสสินค้าไม่ถูกต้อง";
+
+                } else if (error === "product-not-found") {
+
+                    message = "ไม่พบสินค้าที่ต้องการ";
+
+                } else if (error === "inactive") {
+
+                    message = "สินค้านี้ไม่มีจำหน่ายแล้ว";
+
+                }
+
+
+                if (!message) {
+                    return;
+                }
+
+
+                toast.classList.remove(
+                    "text-bg-danger",
+                    "text-bg-warning",
+                    "text-bg-success"
+                );
+
+                toast.classList.add(`text-bg-${type}`);
+
+                messageBox.textContent = message;
+
+                toast.classList.add("show");
+
+
+                setTimeout(() => {
+
+                    toast.classList.remove("show");
+
+                }, 3000);
+
+
+                // ลบ error ออกจาก URL
+                params.delete("error");
+
+                const newUrl =
+                    window.location.pathname +
+                    (params.toString() ? "?" + params.toString() : "");
+
+                window.history.replaceState(
+                    {},
+                    "",
+                    newUrl
+                );
 
                 const modal =
                     document.getElementById("order-success-modal");
@@ -769,9 +765,6 @@
             });
 
         </script>
-
-
-    <% } %>
 
 
 </body>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>คำสั่งซื้อของฉัน | UTK-Store</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/tabler.min.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- ========================= -->
+    <!-- Navbar -->
+    <!-- ========================= -->
+
+    <header class="navbar navbar-expand-md d-print-none">
+
+        <div class="container-xl">
+
+            <a
+                href="/"
+                class="navbar-brand navbar-brand-autodark"
+            >
+                UTK-Store
+            </a>
+
+
+            <div class="navbar-nav flex-row order-md-last ms-auto">
+
+                <a
+                    href="/products"
+                    class="btn btn-outline-secondary me-2"
+                >
+                    🛍️ สินค้า
+                </a>
+
+
+                <a
+                    href="/orders/my-orders"
+                    class="btn btn-primary me-2"
+                >
+                    📦 คำสั่งซื้อของฉัน
+                </a>
+
+
+                <a
+                    href="/cart"
+                    class="btn btn-primary"
+                >
+                    🛒 รถเข็น
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ========================= -->
+    <!-- Page -->
+    <!-- ========================= -->
+
+    <div class="page">
+
+        <div class="page-wrapper">
+
+
+            <!-- ========================= -->
+            <!-- Page Header -->
+            <!-- ========================= -->
+
+            <div class="page-header d-print-none">
+
+                <div class="container-xl">
+
+                    <div class="row align-items-center">
+
+                        <div class="col">
+
+                            <h2 class="page-title">
+                                คำสั่งซื้อของฉัน
+                            </h2>
+
+                            <div class="text-secondary mt-1">
+                                ตรวจสอบสถานะและรายละเอียดคำสั่งซื้อของคุณ
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- Page Body -->
+            <!-- ========================= -->
+
+            <div class="page-body">
+
+                <div class="container-xl">
+
+                    <div class="card">
+
+                        <!-- Card Header -->
+
+                        <div class="card-header">
+
+                            <h3 class="card-title">
+                                รายการคำสั่งซื้อ
+                            </h3>
+
+                        </div>
+
+
+                        <!-- ========================= -->
+                        <!-- Desktop -->
+                        <!-- ========================= -->
+
+                        <div class="d-none d-md-block">
+
+                            <% if (orders.length === 0) { %>
+
+                                <div class="empty py-5">
+
+                                    <div class="empty-img">
+                                        📦
+                                    </div>
+
+                                    <p class="empty-title">
+                                        ยังไม่มีคำสั่งซื้อ
+                                    </p>
+
+                                    <p class="empty-subtitle text-secondary">
+                                        เมื่อคุณสั่งซื้อสินค้า รายการคำสั่งซื้อจะแสดงที่นี่
+                                    </p>
+
+                                    <div class="empty-action">
+
+                                        <a
+                                            href="/products"
+                                            class="btn btn-primary"
+                                        >
+                                            🛍️ เลือกซื้อสินค้า
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            <% } else { %>
+
+
+                                <div class="table-responsive">
+
+                                    <table class="table table-vcenter card-table">
+
+                                        <thead>
+
+                                            <tr>
+
+                                                <th>
+                                                    Order
+                                                </th>
+
+                                                <th>
+                                                    วันที่สั่งซื้อ
+                                                </th>
+
+                                                <th>
+                                                    ยอดรวม
+                                                </th>
+
+                                                <th>
+                                                    สถานะ
+                                                </th>
+
+                                                <th class="text-center">
+                                                    รายละเอียด
+                                                </th>
+
+                                            </tr>
+
+                                        </thead>
+
+
+                                        <tbody>
+
+                                            <% orders.forEach(order => { %>
+
+                                                <tr>
+
+
+                                                    <!-- Order ID -->
+
+                                                    <td>
+
+                                                        <span class="badge bg-blue-lt">
+
+                                                            #<%= order.order_id %>
+
+                                                        </span>
+
+                                                    </td>
+
+
+                                                    <!-- Created At -->
+
+                                                    <td>
+
+                                                        <span class="text-secondary">
+
+                                                            <%= new Date(
+                                                                order.created_at
+                                                            ).toLocaleString("th-TH") %>
+
+                                                        </span>
+
+                                                    </td>
+
+
+                                                    <!-- Total -->
+
+                                                    <td>
+
+                                                        <strong>
+
+                                                            <%= Number(
+                                                                order.total_price
+                                                            ).toLocaleString() %>
+
+                                                        </strong>
+
+                                                        บาท
+
+                                                    </td>
+
+
+                                                    <!-- Status -->
+
+                                                    <td>
+
+                                                        <% if (order.status === "PENDING") { %>
+
+                                                            <span class="badge bg-yellow-lt">
+
+                                                                รอตรวจสอบ
+
+                                                            </span>
+
+                                                        <% } else if (order.status === "CONFIRMED") { %>
+
+                                                            <span class="badge bg-blue-lt">
+
+                                                                ยืนยันแล้ว
+
+                                                            </span>
+
+                                                        <% } else if (order.status === "COMPLETED") { %>
+
+                                                            <span class="badge bg-green-lt">
+
+                                                                สำเร็จ
+
+                                                            </span>
+
+                                                        <% } else if (order.status === "CANCELLED") { %>
+
+                                                            <span class="badge bg-red-lt">
+
+                                                                ยกเลิก
+
+                                                            </span>
+
+                                                        <% } else { %>
+
+                                                            <span class="badge bg-secondary-lt">
+
+                                                                <%= order.status %>
+
+                                                            </span>
+
+                                                        <% } %>
+
+                                                    </td>
+
+
+                                                    <!-- Detail -->
+
+                                                    <td class="text-center">
+
+                                                        <a
+                                                            href="/orders/<%= order.order_id %>"
+                                                            class="btn btn-sm btn-outline-primary"
+                                                        >
+                                                            ดูรายละเอียด
+                                                        </a>
+
+                                                    </td>
+
+
+                                                </tr>
+
+                                            <% }) %>
+
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+
+
+                            <% } %>
+
+                        </div>
+
+
+                        <!-- ========================= -->
+                        <!-- Mobile -->
+                        <!-- ========================= -->
+
+                        <div class="d-md-none">
+
+                            <% if (orders.length === 0) { %>
+
+                                <div class="empty py-5">
+
+                                    <div class="empty-img">
+                                        📦
+                                    </div>
+
+                                    <p class="empty-title">
+                                        ยังไม่มีคำสั่งซื้อ
+                                    </p>
+
+                                    <p class="empty-subtitle text-secondary">
+                                        เมื่อคุณสั่งซื้อสินค้า รายการคำสั่งซื้อจะแสดงที่นี่
+                                    </p>
+
+                                    <div class="empty-action">
+
+                                        <a
+                                            href="/products"
+                                            class="btn btn-primary"
+                                        >
+                                            🛍️ เลือกซื้อสินค้า
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            <% } else { %>
+
+
+                                <div class="card-body">
+
+
+                                    <% orders.forEach(order => { %>
+
+
+                                        <div class="card mb-3">
+
+                                            <div class="card-body">
+
+
+                                                <!-- Order Header -->
+
+                                                <div class="d-flex justify-content-between align-items-start mb-3">
+
+                                                    <div>
+
+                                                        <div class="text-secondary small">
+                                                            เลขที่คำสั่งซื้อ
+                                                        </div>
+
+                                                        <div class="fw-bold mt-1">
+
+                                                            #<%= order.order_id %>
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <!-- Status -->
+
+                                                    <div>
+
+                                                        <% if (order.status === "PENDING") { %>
+
+                                                            <span class="badge bg-yellow-lt">
+
+                                                                รอตรวจสอบ
+
+                                                            </span>
+
+                                                        <% } else if (order.status === "CONFIRMED") { %>
+
+                                                            <span class="badge bg-blue-lt">
+
+                                                                ยืนยันแล้ว
+
+                                                            </span>
+
+                                                        <% } else if (order.status === "COMPLETED") { %>
+
+                                                            <span class="badge bg-green-lt">
+
+                                                                สำเร็จ
+
+                                                            </span>
+
+                                                        <% } else if (order.status === "CANCELLED") { %>
+
+                                                            <span class="badge bg-red-lt">
+
+                                                                ยกเลิก
+
+                                                            </span>
+
+                                                        <% } else { %>
+
+                                                            <span class="badge bg-secondary-lt">
+
+                                                                <%= order.status %>
+
+                                                            </span>
+
+                                                        <% } %>
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <!-- Date -->
+
+                                                <div class="mb-3">
+
+                                                    <div class="text-secondary small">
+                                                        วันที่สั่งซื้อ
+                                                    </div>
+
+                                                    <div class="mt-1">
+
+                                                        <%= new Date(
+                                                            order.created_at
+                                                        ).toLocaleString("th-TH") %>
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <!-- Total -->
+
+                                                <div class="mb-4">
+
+                                                    <div class="text-secondary small">
+                                                        ยอดรวม
+                                                    </div>
+
+                                                    <div class="fs-2 fw-bold mt-1">
+
+                                                        <%= Number(
+                                                            order.total_price
+                                                        ).toLocaleString() %>
+
+                                                        บาท
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                <!-- Detail Button -->
+
+                                                <a
+                                                    href="/orders/<%= order.order_id %>"
+                                                    class="btn btn-outline-primary w-100"
+                                                >
+                                                    ดูรายละเอียด
+                                                </a>
+
+
+                                            </div>
+
+                                        </div>
+
+
+                                    <% }) %>
+
+
+                                </div>
+
+
+                            <% } %>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

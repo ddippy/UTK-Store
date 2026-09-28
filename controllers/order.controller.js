@@ -132,3 +132,23 @@ exports.checkout = async (req, res) => {
     res.status(500).send("เกิดข้อผิดพลาด");
   }
 };
+
+exports.myOrders = async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId);
+
+    if (!user) {
+      return res.status(404).send("ไม่พบข้อมูล User");
+    }
+
+    const orders = await Order.findByStudentId(user.student_id);
+
+    res.render("orders/my-orders", {
+      user,
+      orders,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("เกิดข้อผิดพลาด");
+  }
+};

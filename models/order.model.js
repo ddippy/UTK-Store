@@ -70,7 +70,14 @@ exports.createOrder = async (
                 ($1, $2, $3, $4, $5, $6)
             RETURNING *
         `,
-      [customerName, studentId, phone, totalPrice, payment_slip_path, checkout_token],
+      [
+        customerName,
+        studentId,
+        phone,
+        totalPrice,
+        payment_slip_path,
+        checkout_token,
+      ],
     );
 
     const order = orderResult.rows[0];
@@ -161,6 +168,28 @@ exports.findById = async (orderId) => {
   order.items = itemResult.rows;
 
   return order;
+};
+
+exports.findByStudentId = async (studentId) => {
+  const result = await pool.query(
+    `
+      SELECT
+        order_id,
+        customer_name,
+        student_id,
+        phone,
+        total_price,
+        status,
+        payment_slip_path,
+        created_at
+      FROM orders
+      WHERE student_id = $1
+      ORDER BY created_at DESC
+    `,
+    [studentId],
+  );
+
+  return result.rows;
 };
 
 exports.findAll = async () => {
@@ -314,4 +343,24 @@ exports.getCategorySales = async () => {
     `);
 
   return result.rows;
+};
+
+exports.myOrders = async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId);
+
+    if (!user) {
+      return res.status(404).send("ไม่พบข้อมูล User");
+    }
+
+    const orders = await Order.findByStudentId(user.student_id);
+
+    res.render("orders/my-orders", {
+      user,
+      orders,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("เกิดข้อผิดพลาด");
+  }
 };

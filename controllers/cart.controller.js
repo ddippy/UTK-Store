@@ -69,7 +69,7 @@ exports.add = async (req, res) => {
     });
   }
 
-  console.log(req.session.cart);
+  /* console.log(req.session.cart); */
 
   res.redirect("/cart");
 };

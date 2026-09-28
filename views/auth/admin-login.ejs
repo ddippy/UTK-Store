@@ -60,7 +60,7 @@
     <!-- Admin Login -->
     <!-- ========================= -->
 
-    <div class="page page-center flex-fill">
+    <div class="page flex-fill">
 
         <div class="container container-tight py-4">
 
@@ -93,6 +93,25 @@
                         Admin Login
                     </h2>
 
+                    <% if (error) { %>
+
+                        <div class="alert alert-danger" role="alert">
+
+                            <div>
+
+                                <h4 class="alert-title">
+                                    เข้าสู่ระบบไม่สำเร็จ
+                                </h4>
+
+                                <div class="text-secondary">
+                                    <%= error %>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    <% } %>
 
                     <form
                         action="/admin/login"
