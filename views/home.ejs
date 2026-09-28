@@ -17,39 +17,18 @@
         href="/css/tabler.min.css"
     >
 
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
 </head>
 
 
 <body>
 
     <!-- Navbar -->
-    <header class="navbar navbar-expand-md d-print-none">
-
-        <div class="container-xl">
-
-            <a
-                href="/"
-                class="navbar-brand navbar-brand-autodark"
-            >
-                UTK-Store
-            </a>
-
-
-            <div class="navbar-nav flex-row order-md-last ms-auto">
-
-                <a
-                    href="/products"
-                    class="btn btn-outline-primary"
-                >
-                    🛍️ ดูสินค้า
-                </a>
-
-            </div>
-
-        </div>
-
-    </header>
-
+    <%- include("./partials/user-navbar") %>
 
     <!-- Page -->
     <div class="page">

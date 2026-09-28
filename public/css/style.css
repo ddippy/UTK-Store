@@ -1,3 +1,57 @@
+html {
+  overflow-y: scroll;
+}
+
+
+/* ========================================
+   Navbar / Navbar Animation
+======================================== */
+
+.user-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1030;
+  background: #fff;
+  transition: box-shadow 0.25s ease;
+}
+
+.navbar-main {
+  padding: 16px 0;
+  transition: padding 0.25s ease;
+}
+
+.navbar-extra {
+  max-height: 70px;
+  opacity: 1;
+  overflow: hidden;
+  transition:
+    max-height 0.25s ease,
+    opacity 0.2s ease;
+}
+
+.user-navbar.scrolled {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.user-navbar.scrolled .navbar-extra {
+  max-height: 0;
+  opacity: 0;
+}
+
+.user-navbar.scrolled .navbar-main {
+  padding: 8px 0;
+}
+
+/* จองพื้นที่ใต้ Navbar */
+.user-navbar-spacer {
+  height: 180px;
+}
+
+
+
+
 /* ========================================
    Toast Animation
 ======================================== */
@@ -113,3 +167,7 @@
     opacity: 0;
   }
 }
+
+
+
+

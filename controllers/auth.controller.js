@@ -58,11 +58,13 @@ exports.adminLogin = async (req, res) => {
 
 
 
-
-
-
-
 // ==================== USER ====================
+
+exports.userRegisterForm = (req, res) => {
+  res.render("auth/user-register", {
+    error: null
+  });
+};
 
 exports.userLoginForm = (req, res) => {
 

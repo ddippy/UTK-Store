@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>สมัครสมาชิก | UTK-Store</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/tabler.min.css"
+    >
+
+</head>
+
+
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+
+    <!-- Navbar -->
+
+    <header class="navbar navbar-expand-md d-print-none">
+
+        <div class="container-xl">
+
+            <a
+                href="/"
+                class="navbar-brand navbar-brand-autodark"
+            >
+                UTK-Store
+            </a>
+
+
+            <div class="navbar-nav flex-row order-md-last">
+
+                <a
+                    href="/user/login"
+                    class="btn btn-outline-secondary"
+                >
+                    เข้าสู่ระบบ
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- Register -->
+
+    <div class="page flex-fill">
+
+        <div class="container container-tight py-4">
+
+            <div class="text-center mb-4">
+
+                <div
+                    class="fw-bold"
+                    style="font-size: 32px;"
+                >
+                    UTK-Store
+                </div>
+
+                <div class="text-secondary mt-1">
+                    สร้างบัญชีเพื่อสั่งซื้อสินค้า
+                </div>
+
+            </div>
+
+
+            <div class="card card-md">
+
+                <div class="card-body p-4">
+
+                    <h2 class="h2 text-center mb-4">
+                        สมัครสมาชิก
+                    </h2>
+
+
+                    <% if (error) { %>
+
+                        <div class="alert alert-danger" role="alert">
+
+                            <div>
+                                <h4 class="alert-title">
+                                    สมัครสมาชิกไม่สำเร็จ
+                                </h4>
+
+                                <div class="text-secondary">
+                                    <%= error %>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    <% } %>
+
+
+                    <form
+                        action="/user/register"
+                        method="POST"
+                    >
+
+                        <!-- Username -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Username
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="username"
+                                placeholder="กรอก Username"
+                                autocomplete="username"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Password -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Password
+                            </label>
+
+                            <input
+                                type="password"
+                                class="form-control"
+                                name="password"
+                                placeholder="กรอก Password"
+                                autocomplete="new-password"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Name -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                ชื่อ-นามสกุล
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="name"
+                                placeholder="กรอกชื่อ-นามสกุล"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Student ID -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                รหัสนักศึกษา
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="student_id"
+                                placeholder="กรอกรหัสนักศึกษา"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Phone -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                เบอร์โทรศัพท์
+                            </label>
+
+                            <input
+                                type="tel"
+                                class="form-control"
+                                name="phone"
+                                placeholder="กรอกเบอร์โทรศัพท์"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-footer">
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary w-100"
+                            >
+                                สมัครสมาชิก
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+                <div class="card-footer text-center">
+
+                    มีบัญชีอยู่แล้ว?
+
+                    <a href="/user/login">
+                        เข้าสู่ระบบ
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="/js/tabler.min.js"></script>
+
+</body>
+
+</html>
