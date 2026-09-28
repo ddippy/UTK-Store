@@ -120,9 +120,18 @@
                         <div class="col-lg-8">
 
                             <form
+                                id="checkout-form"
                                 action="/orders/create"
                                 method="POST"
+                                enctype="multipart/form-data"
                             >
+
+                                <!-- Input ของ Token -->
+                                <input 
+                                    type="hidden"
+                                    name="checkout_token"
+                                    value="<%= checkoutToken %>"
+                                >
 
                                 <div class="card">
 
@@ -265,100 +274,67 @@
 
                         <div class="col-lg-4">
 
+                            <div class="card mb-3">
 
-                            <div class="card">
+                                <!-- QR Code ร้าน -->
+                                <div class="card">
 
+                                    <div class="card-header">
+                                        <h3 class="card-title">
+                                            QR Code สำหรับชำระเงิน
+                                        </h3>
+                                    </div>
 
-                                <div class="card-header">
+                                    <div class="card-body text-center">
 
-                                    <h3 class="card-title">
-                                        ข้อมูลการสั่งซื้อ
-                                    </h3>
+                                        <!-- QR Code ของร้าน -->
+                                        <img
+                                            src="/images/payment-qr.png"
+                                            alt="QR Code สำหรับชำระเงิน"
+                                            class="img-fluid rounded"
+                                            style="max-width: 280px;"
+                                        >
+                                        <div class="text-secondary mt-3">
+                                            สแกน QR Code เพื่อชำระเงิน
+                                        </div>
 
+                                    </div>
+                                    
                                 </div>
 
+                            </div>
+
+
+                            <!-- แนบสลิปการชำระเงิน -->
+                            <div class="card mb-3">
+
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                    แนบสลิปการชำระเงิน
+                                    </h3>
+                                </div>
 
                                 <div class="card-body">
 
+                                    <!-- ช่องเลือกไฟล์สลิป -->
+                                    <label class="form-label">
+                                        หลักฐานการชำระเงิน
+                                    </label>
 
-                                    <div class="d-flex mb-4">
+                                    <input
+                                        type="file"
+                                        name="payment_slip"
+                                        form="checkout-form"
+                                        class="form-control"
+                                        accept="image/*"
+                                        required
+                                    >
 
-                                        <span
-                                            class="avatar bg-blue-lt me-3"
-                                        >
-                                            👤
-                                        </span>
-
-
-                                        <div>
-
-                                            <div class="fw-bold">
-                                                ผู้สั่งซื้อ
-                                            </div>
-
-                                            <div class="text-secondary mt-1">
-                                                ข้อมูลถูกดึงจากบัญชีผู้ใช้
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-
-
-                                    <div class="d-flex mb-4">
-
-                                        <span
-                                            class="avatar bg-green-lt me-3"
-                                        >
-                                            🛒
-                                        </span>
-
-
-                                        <div>
-
-                                            <div class="fw-bold">
-                                                ตะกร้าสินค้า
-                                            </div>
-
-                                            <div class="text-secondary mt-1">
-                                                ระบบจะใช้สินค้าที่อยู่ในตะกร้า
-                                                เพื่อสร้างคำสั่งซื้อ
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-
-
-                                    <div class="d-flex">
-
-                                        <span
-                                            class="avatar bg-yellow-lt me-3"
-                                        >
-                                            ✓
-                                        </span>
-
-
-                                        <div>
-
-                                            <div class="fw-bold">
-                                                ตรวจสอบข้อมูล
-                                            </div>
-
-                                            <div class="text-secondary mt-1">
-                                                กรุณาตรวจสอบข้อมูลให้ถูกต้อง
-                                                ก่อนกดยืนยัน
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-
+                                    <div class="form-hint mt-2">
+                                        รองรับไฟล์รูปภาพ JPG, PNG, WEBP ขนาดไม่เกิน 2 MB
                                 </div>
 
+                                </div>
 
                             </div>
 
@@ -366,7 +342,7 @@
 
                             <!-- Warning -->
 
-                            <div class="card mt-3">
+                            <div class="card">
 
                                 <div class="card-body">
 

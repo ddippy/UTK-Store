@@ -52,6 +52,8 @@ exports.createOrder = async (
   studentId,
   phone,
   totalPrice,
+  payment_slip_path,
+  checkout_token,
   items,
 ) => {
   const client = await pool.connect();
@@ -63,12 +65,12 @@ exports.createOrder = async (
     const orderResult = await client.query(
       `
             INSERT INTO orders
-                (customer_name, student_id, phone, total_price)
+                (customer_name, student_id, phone, total_price, payment_slip_path, checkout_token)
             VALUES
-                ($1, $2, $3, $4)
+                ($1, $2, $3, $4, $5, $6)
             RETURNING *
         `,
-      [customerName, studentId, phone, totalPrice],
+      [customerName, studentId, phone, totalPrice, payment_slip_path, checkout_token],
     );
 
     const order = orderResult.rows[0];
@@ -123,6 +125,7 @@ exports.findById = async (orderId) => {
             student_id,
             phone,
             total_price,
+            payment_slip_path,
             status,
             created_at
         FROM orders
@@ -168,6 +171,7 @@ exports.findAll = async () => {
             student_id,
             phone,
             total_price,
+            payment_slip_path,
             status,
             created_at
         FROM orders

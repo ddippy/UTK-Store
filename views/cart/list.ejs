@@ -17,6 +17,11 @@
         href="/css/tabler.min.css"
     >
 
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
 </head>
 
 
@@ -298,8 +303,11 @@
 
 
                                                         <button
-                                                            type="submit"
-                                                            class="btn btn-outline-danger"
+                                                            type="button"
+                                                            class="btn btn-outline-danger remove-product-btn"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#remove-modal"
+                                                            data-product-name="<%= item.name %>"
                                                         >
                                                             ลบ
                                                         </button>
@@ -451,15 +459,82 @@
     </div>
 
 
+    <!-- Modal ยืนยันการลบ -->
+    <div
+        class="modal modal-blur fade"
+        id="remove-modal"
+        tabindex="-1"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <!-- หัวข้อ -->
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        ลบสินค้า
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+
+                </div>
+
+
+                <!-- เนื้อหา -->
+                <div class="modal-body">
+
+                    <p class="mb-0">
+                        ต้องการลบ
+                        <strong id="remove-product-name"></strong>
+                        ออกจากตะกร้าหรือไม่?
+                    </p>
+
+                </div>
+
+
+                <!-- ปุ่ม -->
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        ยกเลิก
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        id="confirm-remove-btn"
+                    >
+                        ลบสินค้า
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
     <!-- Tabler JS -->
 
     <script src="/js/tabler.min.js"></script>
 
     <script>
 
-    // ======================================== 
-    // แสดง Toast
-    // ========================================
+        // ======================================== 
+        // แสดง Toast
+        // ========================================
 
 
         function showToast(message, type = "danger") {
@@ -543,15 +618,19 @@
 
                     // ถ้า Update สำเร็จ
                     // แสดงข้อความสำเร็จ
-                    showToast(
-                        "อัปเดตจำนวนสินค้าเรียบร้อย",
+                    // เก็บข้อความไว้ก่อน Reload
+                    sessionStorage.setItem(
+                        "toastMessage",
+                        "อัปเดตจำนวนสินค้าเรียบร้อย"
+                    );
+
+                    sessionStorage.setItem(
+                        "toastType",
                         "success"
                     );
 
-                    // รอให้เห็น Toast ก่อนแล้วค่อย Reload
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1000);
+                    // Reload หน้า
+                    location.reload();
 
                     } catch (error) {
 
@@ -578,18 +657,6 @@
 
                 // ป้องกัน Form ส่งแบบปกติ
                 event.preventDefault();
-
-
-                // ถามยืนยันก่อนลบ
-                const confirmRemove =
-                    confirm("ต้องการลบสินค้านี้ออกจากตะกร้าหรือไม่?");
-
-
-                // ถ้าไม่ยืนยัน ให้หยุด
-                if (!confirmRemove) {
-                    return;
-                }
-
 
                 // เก็บข้อมูลจาก Form
                 const formData =
@@ -651,6 +718,91 @@
             });
 
         });
+
+        // ========================================
+        // จัดการ Modal ลบสินค้า
+        // ========================================
+
+
+        // ========================================
+        // เก็บ Form ของสินค้าที่กำลังจะลบ
+        // ========================================
+
+        let selectedRemoveForm = null;
+
+        const removeButtons =
+            document.querySelectorAll(".remove-product-btn");
+
+        const removeProductName =
+            document.querySelector("#remove-product-name");
+
+
+        removeButtons.forEach(button => {
+
+            button.addEventListener("click", function () {
+
+                // จำว่าเรากดลบ Form ของสินค้าไหน
+                selectedRemoveForm =
+                    this.closest(".cart-remove-form");
+
+                // อ่านชื่อสินค้าจาก data-product-name
+                const productName =
+                    this.dataset.productName;
+
+                // เอาชื่อสินค้าไปแสดงใน Modal
+                removeProductName.textContent =
+                    productName;
+
+            });
+
+        });
+
+        // ========================================
+        // ปุ่มยืนยันการลบใน Modal
+        // ========================================
+
+        const confirmRemoveButton =
+            document.querySelector("#confirm-remove-btn");
+
+
+        confirmRemoveButton.addEventListener("click", function () {
+
+            // ถ้ามี Form ที่เลือกไว้
+            if (selectedRemoveForm) {
+
+                // ส่ง Form ของสินค้าที่เลือก
+                selectedRemoveForm.requestSubmit();
+
+                // ล้างค่าหลังใช้งาน
+                selectedRemoveForm = null;
+            }
+
+        });
+
+
+        // ========================================
+        // แสดง Toast หลัง Reload
+        // ========================================
+
+        const toastMessage =
+            sessionStorage.getItem("toastMessage");
+
+        const toastType =
+            sessionStorage.getItem("toastType");
+
+
+        if (toastMessage) {
+
+            // แสดง Toast หลังหน้าโหลดเสร็จ
+            showToast(
+                toastMessage,
+                toastType
+            );
+
+            // ล้างข้อมูลหลังใช้แล้ว
+            sessionStorage.removeItem("toastMessage");
+            sessionStorage.removeItem("toastType");
+        }
 
     </script>
 

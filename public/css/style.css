@@ -1,6 +1,23 @@
-/* button ของ product detail */
-.size-btn.active {
-    color: white;
-    background-color: #206bc4;
-    border-color: #206bc4;
+/* ========================================
+   Toast Animation
+======================================== */
+
+/* สถานะเริ่มต้น */
+#cart-toast {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease,
+        visibility 0.3s ease;
+}
+
+/* ตอนแสดง */
+#cart-toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }

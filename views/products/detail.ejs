@@ -265,6 +265,7 @@
                                     <form
                                         action="/cart/add"
                                         method="POST"
+                                        id="add-to-cart-form"
                                     >
 
 
@@ -382,111 +383,6 @@
                                                                 </div>
 
                                                             <% } %>
-
-
-
-
-
-
-
-
-
-                                                    <!-- <table class="table table-vcenter card-table">
-
-                                                        <thead>
-
-                                                            <tr>
-
-                                                                <th>
-                                                                    เลือก
-                                                                </th>
-
-                                                                <th>
-                                                                    Size
-                                                                </th>
-
-                                                                <th>
-                                                                    Color
-                                                                </th>
-
-                                                                <th class="text-end">
-                                                                    Stock
-                                                                </th>
-
-                                                            </tr>
-
-                                                        </thead>
-
-
-                                                        <tbody>
-
-                                                            <% product.variants.forEach(variant => { %>
-
-                                                                <tr>
-
-                                                                    <td>
-
-                                                                        <label
-                                                                            class="form-check"
-                                                                        >
-
-                                                                            <input
-                                                                                class="form-check-input"
-                                                                                type="radio"
-                                                                                name="variant_id"
-                                                                                value="<%= variant.variant_id %>"
-                                                                                <%= variant.stock <= 0 ? "disabled" : "" %>
-                                                                                required
-                                                                            >
-
-                                                                        </label>
-
-                                                                    </td>
-
-
-                                                                    <td>
-
-                                                                        <%= variant.size || "-" %>
-
-                                                                    </td>
-
-
-                                                                    <td>
-
-                                                                        <%= variant.color || "-" %>
-
-                                                                    </td>
-
-
-                                                                    <td class="text-end">
-
-                                                                        <% if (variant.stock > 0) { %>
-
-                                                                            <span class="badge bg-green-lt">
-
-                                                                                <%= variant.stock %>
-
-                                                                            </span>
-
-                                                                        <% } else { %>
-
-                                                                            <span class="badge bg-red-lt">
-
-                                                                                หมด
-
-                                                                            </span>
-
-                                                                        <% } %>
-
-                                                                    </td>
-
-                                                                </tr>
-
-                                                            <% }) %>
-
-                                                        </tbody>
-
-                                                    </table> -->
 
                                                 </div>
 
@@ -681,12 +577,171 @@
     </div>
 
 
+    <!-- Toast แจ้งเตือน -->
+    <div
+        id="cart-toast"
+        class="toast position-fixed top-0 end-0 m-3"
+        role="alert"
+        style="z-index: 9999;"
+    >
+        <div class="toast-body">
+            <span id="cart-toast-message"></span>
+        </div>
+    </div>
+
 
     <!-- Tabler JS -->
 
     <script src="/js/tabler.min.js"></script>
 
     <script>
+
+        // ======================================== 
+        // แสดง Toast
+        // ========================================
+
+        function showToast(message, type = "danger") {
+
+            const toast = document.querySelector("#cart-toast");
+
+            const messageBox = document.querySelector("#cart-toast-message");
+
+
+            // ล้างสีเดิมก่อน
+            toast.classList.remove(
+                "text-bg-danger",
+                "text-bg-success",
+                "text-bg-warning"
+            );
+
+
+            // กำหนดสีตามประเภท
+            toast.classList.add(
+                `text-bg-${type}`
+            );
+
+
+            // ใส่ข้อความ
+            messageBox.textContent = message;
+
+
+            // แสดง Toast
+            toast.classList.add("show");
+
+
+            // ซ่อนหลัง 3 วินาที
+            setTimeout(() => {
+
+                toast.classList.remove("show");
+
+            }, 3000);
+
+        }
+
+
+        // ========================================
+        // เพิ่มสินค้าลงตะกร้าโดยไม่เปลี่ยนหน้า
+        // ========================================
+
+        const addToCartForm =
+            document.querySelector("#add-to-cart-form");
+
+        addToCartForm.addEventListener(
+            "submit",
+            async function (event) {
+
+                // ป้องกัน Form ส่งแบบปกติ
+                event.preventDefault();
+
+
+                // เก็บข้อมูลจาก Form
+                const formData =
+                    new URLSearchParams(
+                        new FormData(this)
+                    );
+
+
+                try {
+
+                    // ส่งข้อมูลไป Backend
+                    const response =
+                        await fetch(
+                            this.action,
+                            {
+                                method: "POST",
+                                body: formData
+                            }
+                        );
+
+
+                    // ========================================
+                    // ถ้ามีการ Redirect
+                    // ========================================
+
+                    if (response.redirected) {
+
+                        const redirectUrl =
+                            new URL(response.url);
+
+                        // ถ้าไม่ได้ Login
+                        // ให้พาไปหน้า Login ตามระบบเดิม
+                        if (
+                            redirectUrl.pathname === "/user/login"
+                        ) {
+                            window.location.href =
+                                response.url;
+
+                            return;
+                        }
+
+                        // ถ้า Redirect ไป /cart
+                        // แปลว่าเพิ่มสินค้าเรียบร้อย
+                        if (
+                            redirectUrl.pathname === "/cart"
+                        ) {
+        
+                            showToast(
+                                "เพิ่มสินค้าลงตะกร้าแล้ว",
+                                "success"
+                            );
+
+                            return;
+                        }
+                    }
+
+
+                    // ========================================
+                    // ถ้า Backend ส่ง Error
+                    // ========================================
+
+                    if (!response.ok) {
+
+                        const message =
+                            await response.text();
+
+                        showToast(
+                            message,
+                            "danger"
+                        );
+
+                        return;
+                    }
+
+                } catch (error) {
+
+                    // กรณี Server มีปัญหา
+                    showToast(
+                        "เกิดข้อผิดพลาด กรุณาลองใหม่",
+                        "danger"
+                    );
+
+                    console.error(error);
+                }
+
+            }
+        );
+
+
 
         // ========================================
         // ตัวแปรเก็บ Size และ Color ที่ผู้ใช้เลือก
