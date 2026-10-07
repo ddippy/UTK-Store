@@ -3,10 +3,11 @@ const cartController = require("../controllers/cart.controller");
 const requireUser = require("../middleware/userAuth");
 const authorizeRoute = require("../middleware/permissionAuth");
 
-router.post("/add",
-    requireUser(req => req.body.returnTo),
+router.post(
+    "/add",
+    requireUser((req) => req.body.returnTo),
     authorizeRoute,
-    cartController.add
+    cartController.add,
 );
 
 router.post("/remove", requireUser("/cart"), authorizeRoute, cartController.remove);

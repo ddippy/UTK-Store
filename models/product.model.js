@@ -1,7 +1,8 @@
 const pool = require("../db/pool");
 
 exports.findAll = async (search = "", categoryId = null) => {
-  const result = await pool.query(`
+    const result = await pool.query(
+        `
         SELECT
             p.product_id,
             p.code,
@@ -30,14 +31,16 @@ exports.findAll = async (search = "", categoryId = null) => {
             p.product_id,
             c.name
         ORDER BY p.product_id DESC
-    `, [search, categoryId]);
+    `,
+        [search, categoryId],
+    );
 
-  return result.rows;
+    return result.rows;
 };
 
 exports.findById = async (id) => {
-  const productResult = await pool.query(
-    `
+    const productResult = await pool.query(
+        `
         SELECT
             p.product_id,
             p.code,
@@ -53,11 +56,11 @@ exports.findById = async (id) => {
             ON p.category_id = c.category_id
         WHERE p.product_id = $1
     `,
-    [id],
-  );
+        [id],
+    );
 
-  const variantResult = await pool.query(
-    `
+    const variantResult = await pool.query(
+        `
         SELECT
             variant_id,
             size,
@@ -67,53 +70,53 @@ exports.findById = async (id) => {
         WHERE product_id = $1
         ORDER BY variant_id
     `,
-    [id],
-  );
+        [id],
+    );
 
-  const product = productResult.rows[0];
+    const product = productResult.rows[0];
 
-  if (!product) {
-    return null;
-  }
+    if (!product) {
+        return null;
+    }
 
-  product.variants = variantResult.rows;
+    product.variants = variantResult.rows;
 
-  return product;
+    return product;
 };
 
 exports.create = async (code, name, categoryId, price, description) => {
-  const result = await pool.query(
-    `
+    const result = await pool.query(
+        `
         INSERT INTO products
             (code, name, category_id, price, description)
         VALUES
             ($1, $2, $3, $4, $5)
         RETURNING *
     `,
-    [code, name, categoryId, price, description],
-  );
+        [code, name, categoryId, price, description],
+    );
 
-  return result.rows[0];
+    return result.rows[0];
 };
 
 exports.createVariant = async (productId, size, color, stock) => {
-  const result = await pool.query(
-    `
+    const result = await pool.query(
+        `
         INSERT INTO product_variants
             (product_id, size, color, stock)
         VALUES
             ($1, $2, $3, $4)
         RETURNING *
     `,
-    [productId, size || null, color || null, stock],
-  );
+        [productId, size || null, color || null, stock],
+    );
 
-  return result.rows[0];
+    return result.rows[0];
 };
 
 exports.findVariants = async (productId) => {
-  const result = await pool.query(
-    `
+    const result = await pool.query(
+        `
         SELECT
             variant_id,
             size,
@@ -123,24 +126,24 @@ exports.findVariants = async (productId) => {
         WHERE product_id = $1
         ORDER BY variant_id
     `,
-    [productId],
-  );
+        [productId],
+    );
 
-  return result.rows;
+    return result.rows;
 };
 
 exports.update = async (
-  productId,
-  code,
-  name,
-  categoryId,
-  price,
-  description,
-  status,
-  imagePath,
+    productId,
+    code,
+    name,
+    categoryId,
+    price,
+    description,
+    status,
+    imagePath,
 ) => {
-  const result = await pool.query(
-    `
+    const result = await pool.query(
+        `
         UPDATE products
         SET
             code = $1,
@@ -153,29 +156,29 @@ exports.update = async (
         WHERE product_id = $8
         RETURNING *
     `,
-    [code, name, categoryId, price, description, status, imagePath, productId],
-  );
+        [code, name, categoryId, price, description, status, imagePath, productId],
+    );
 
-  return result.rows[0];
+    return result.rows[0];
 };
 
 exports.updateStatus = async (productId, status) => {
-  const result = await pool.query(
-    `
+    const result = await pool.query(
+        `
         UPDATE products
         SET status = $1
         WHERE product_id = $2
         RETURNING *
     `,
-    [status, productId],
-  );
+        [status, productId],
+    );
 
-  return result.rows[0];
+    return result.rows[0];
 };
 
 exports.updateVariant = async (variantId, size, color, stock) => {
-  const result = await pool.query(
-    `
+    const result = await pool.query(
+        `
         UPDATE product_variants
         SET
             size = $1,
@@ -184,39 +187,39 @@ exports.updateVariant = async (variantId, size, color, stock) => {
         WHERE variant_id = $4
         RETURNING *
     `,
-    [size || null, color || null, stock, variantId],
-  );
+        [size || null, color || null, stock, variantId],
+    );
 
-  return result.rows[0];
+    return result.rows[0];
 };
 
 exports.deleteVariant = async (variantId) => {
-  await pool.query(
-    `
+    await pool.query(
+        `
         DELETE FROM product_variants
         WHERE variant_id = $1
     `,
-    [variantId],
-  );
+        [variantId],
+    );
 };
 
 exports.findByCode = async (code) => {
-  const result = await pool.query(
-    `
+    const result = await pool.query(
+        `
         SELECT
             product_id,
             code
         FROM products
         WHERE code = $1
     `,
-    [code],
-  );
+        [code],
+    );
 
-  return result.rows[0];
+    return result.rows[0];
 };
 
 exports.findAllAdmin = async () => {
-  const result = await pool.query(`
+    const result = await pool.query(`
         SELECT
             p.product_id,
             p.code,
@@ -238,12 +241,12 @@ exports.findAllAdmin = async () => {
         ORDER BY p.product_id DESC
     `);
 
-  return result.rows;
+    return result.rows;
 };
 
 exports.findActiveVariant = async (variantId) => {
-  const result = await pool.query(
-    `
+    const result = await pool.query(
+        `
         SELECT
             v.variant_id,
             v.product_id,
@@ -255,8 +258,8 @@ exports.findActiveVariant = async (variantId) => {
         WHERE v.variant_id = $1
           AND p.status = 'ACTIVE'
     `,
-    [variantId],
-  );
+        [variantId],
+    );
 
-  return result.rows[0];
+    return result.rows[0];
 };

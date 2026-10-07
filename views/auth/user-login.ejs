@@ -1,81 +1,99 @@
 <!DOCTYPE html>
 <html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>เข้าสู่ระบบ | UTK-Store</title>
-    <link rel="stylesheet" href="/css/tabler.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body class="bg-light">
-    <%- include("../partials/user-navbar") %>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>เข้าสู่ระบบ | UTK-Store</title>
+        <link rel="stylesheet" href="/css/tabler.min.css" />
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
+    <body class="bg-light">
+        <%- include("../partials/user-navbar") %>
 
-    <main class="page page-wrapper">
-        <div class="container-xl py-5">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-8 col-lg-5">
-                    <section class="card">
-                        <div class="card-body p-4 p-md-5">
-                            <div class="text-center mb-4">
-                                <span class="avatar avatar-xl bg-primary-lt mb-3" aria-hidden="true">👤</span>
-                                <h1 class="h2 mb-2">เข้าสู่ระบบ</h1>
-                                <p class="text-secondary mb-0">เข้าสู่ระบบเพื่อสั่งซื้อสินค้าและติดตามคำสั่งซื้อ</p>
-                            </div>
+        <main class="page page-wrapper">
+            <div class="container-xl py-5">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-5">
+                        <section class="card">
+                            <div class="card-body p-4 p-md-5">
+                                <div class="text-center mb-4">
+                                    <span
+                                        class="avatar avatar-xl bg-primary-lt mb-3"
+                                        aria-hidden="true"
+                                        >👤</span
+                                    >
+                                    <h1 class="h2 mb-2">เข้าสู่ระบบ</h1>
+                                    <p class="text-secondary mb-0">
+                                        เข้าสู่ระบบเพื่อสั่งซื้อสินค้าและติดตามคำสั่งซื้อ
+                                    </p>
+                                </div>
 
-                            <% if (error) { %>
+                                <% if (error) { %>
                                 <div class="alert alert-danger" role="alert">
                                     <div class="fw-bold mb-1">เข้าสู่ระบบไม่สำเร็จ</div>
                                     <div><%= error %></div>
                                 </div>
-                            <% } %>
+                                <% } %>
 
-                            <form action="/user/login" method="POST">
-                                <input type="hidden" name="returnTo" value="<%= returnTo || '/' %>">
-
-                                <div class="mb-3">
-                                    <label class="form-label" for="login-username">ชื่อผู้ใช้</label>
+                                <form action="/user/login" method="POST">
                                     <input
-                                        id="login-username"
-                                        type="text"
-                                        class="form-control"
-                                        name="username"
-                                        placeholder="กรอกชื่อผู้ใช้"
-                                        autocomplete="username"
-                                        required
-                                        autofocus
+                                        type="hidden"
+                                        name="returnTo"
+                                        value="<%= returnTo || '/' %>"
+                                    />
+
+                                    <div class="mb-3">
+                                        <label class="form-label" for="login-username"
+                                            >ชื่อผู้ใช้</label
+                                        >
+                                        <input
+                                            id="login-username"
+                                            type="text"
+                                            class="form-control"
+                                            name="username"
+                                            placeholder="กรอกชื่อผู้ใช้"
+                                            autocomplete="username"
+                                            required
+                                            autofocus
+                                        />
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="login-password"
+                                            >รหัสผ่าน</label
+                                        >
+                                        <input
+                                            id="login-password"
+                                            type="password"
+                                            class="form-control"
+                                            name="password"
+                                            placeholder="กรอกรหัสผ่าน"
+                                            autocomplete="current-password"
+                                            required
+                                        />
+                                    </div>
+
+                                    <button class="btn btn-primary w-100" type="submit">
+                                        เข้าสู่ระบบ
+                                    </button>
+                                </form>
+
+                                <div class="text-center text-secondary mt-4">
+                                    ยังไม่มีบัญชี?
+                                    <a
+                                        href="/user/register"
+                                        class="fw-semibold text-decoration-none"
+                                        >สมัครสมาชิก</a
                                     >
                                 </div>
-
-                                <div class="mb-4">
-                                    <label class="form-label" for="login-password">รหัสผ่าน</label>
-                                    <input
-                                        id="login-password"
-                                        type="password"
-                                        class="form-control"
-                                        name="password"
-                                        placeholder="กรอกรหัสผ่าน"
-                                        autocomplete="current-password"
-                                        required
-                                    >
-                                </div>
-
-                                <button class="btn btn-primary w-100" type="submit">
-                                    เข้าสู่ระบบ
-                                </button>
-                            </form>
-
-                            <div class="text-center text-secondary mt-4">
-                                ยังไม่มีบัญชี?
-                                <a href="/user/register" class="fw-semibold text-decoration-none">สมัครสมาชิก</a>
                             </div>
-                        </div>
-                    </section>
+                        </section>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
 
-    <script src="/js/tabler.min.js"></script>
-    <%- include("../partials/store-footer") %>
-</body>
+        <script src="/js/tabler.min.js"></script>
+        <%- include("../partials/store-footer") %>
+    </body>
 </html>

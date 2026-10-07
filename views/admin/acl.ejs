@@ -65,13 +65,14 @@
         "roles.manage": ["จัดการบทบาทผู้ใช้", "เพิ่ม แก้ไข หรือลบบทบาทในระบบ"],
         "users.manage": ["จัดการผู้ใช้และกำหนดบทบาท", "ดูรายชื่อผู้ใช้และเลือกบทบาทให้แต่ละบัญชี"],
         "permissions.manage": ["จัดการรายการสิทธิ์ระบบ", "เพิ่มหรือแก้ไขรายการสิทธิ์ที่ระบบรองรับ"],
-        "acl.manage": ["กำหนดสิทธิ์ให้แต่ละบทบาท", "เปิดหรือปิดความสามารถของแต่ละบทบาทในหน้านี้"]
+        "acl.manage": ["กำหนดสิทธิ์ให้แต่ละบทบาท", "เปิดหรือปิดความสามารถของแต่ละบทบาทในหน้านี้"],
+        "logs.read": ["ดูประวัติการใช้งาน", "ค้นหาการเข้าสู่ระบบ การเปลี่ยนข้อมูล และการปฏิเสธสิทธิ์"],
       };
       const permissionGroups = [
         { title: "จัดการร้านค้า", match: ["dashboard.read", "products.read", "products.create", "products.update", "variants.manage"] },
         { title: "คำสั่งซื้อและการชำระเงิน", match: ["orders.read", "orders.update", "orders.own.read", "orders.own.create", "payment_slips.read", "payment_slips.own.read"] },
         { title: "ตะกร้าสินค้า", match: ["cart.manage"] },
-        { title: "ผู้ใช้และการตั้งค่าระบบ", match: ["roles.manage", "users.manage", "permissions.manage", "acl.manage"] }
+        { title: "ผู้ใช้และการตั้งค่าระบบ", match: ["roles.manage", "users.manage", "permissions.manage", "acl.manage", "logs.read"] }
       ];
       const getPermissionLabel = (permission) => permissionLabels[permission.name] || [permission.description || "สิทธิ์เพิ่มเติม", "อนุญาตให้ใช้ความสามารถนี้ในระบบ"];
       %>

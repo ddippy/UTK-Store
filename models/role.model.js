@@ -1,7 +1,7 @@
 const pool = require("../db/pool");
 
 exports.findAll = async () => {
-  const result = await pool.query(`
+    const result = await pool.query(`
     SELECT
       r.role_id,
       r.name,
@@ -16,38 +16,38 @@ exports.findAll = async () => {
     ORDER BY CASE WHEN r.name = 'ADMIN' THEN 0 ELSE 1 END, r.name
   `);
 
-  return result.rows;
+    return result.rows;
 };
 
 exports.findAssignableToUsers = async () => {
-  const result = await pool.query(
-    `SELECT role_id, name, description FROM roles WHERE UPPER(name) <> 'ADMIN' ORDER BY name`,
-  );
+    const result = await pool.query(
+        `SELECT role_id, name, description FROM roles WHERE UPPER(name) <> 'ADMIN' ORDER BY name`,
+    );
 
-  return result.rows;
+    return result.rows;
 };
 
 exports.create = async (name, description) => {
-  const result = await pool.query(
-    `INSERT INTO roles (name, description) VALUES ($1, $2) RETURNING role_id, name, description, is_system`,
-    [name, description],
-  );
+    const result = await pool.query(
+        `INSERT INTO roles (name, description) VALUES ($1, $2) RETURNING role_id, name, description, is_system`,
+        [name, description],
+    );
 
-  return result.rows[0];
+    return result.rows[0];
 };
 
 exports.updateCustom = async (roleId, name, description) => {
-  const result = await pool.query(
-    `UPDATE roles SET name = $1, description = $2 WHERE role_id = $3 AND is_system = FALSE RETURNING role_id`,
-    [name, description, roleId],
-  );
+    const result = await pool.query(
+        `UPDATE roles SET name = $1, description = $2 WHERE role_id = $3 AND is_system = FALSE RETURNING role_id`,
+        [name, description, roleId],
+    );
 
-  return result.rowCount > 0;
+    return result.rowCount > 0;
 };
 
 exports.deleteUnassignedCustom = async (roleId) => {
-  const result = await pool.query(
-    `
+    const result = await pool.query(
+        `
       DELETE FROM roles r
       WHERE r.role_id = $1
         AND r.is_system = FALSE
@@ -55,8 +55,8 @@ exports.deleteUnassignedCustom = async (roleId) => {
         AND NOT EXISTS (SELECT 1 FROM admins a WHERE a.role_id = r.role_id)
       RETURNING r.role_id
     `,
-    [roleId],
-  );
+        [roleId],
+    );
 
-  return result.rowCount > 0;
+    return result.rowCount > 0;
 };

@@ -1,788 +1,500 @@
 <!DOCTYPE html>
 <html lang="th">
+    <head>
+        <meta charset="UTF-8" />
 
-<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta charset="UTF-8">
+        <title>ตะกร้าสินค้า | UTK-Store</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
+        <link rel="stylesheet" href="/css/tabler.min.css" />
 
-    <title>ตะกร้าสินค้า | UTK-Store</title>
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
 
-    <link
-        rel="stylesheet"
-        href="/css/tabler.min.css"
-    >
+    <body>
+        <!-- ========================= -->
+        <!-- Navbar -->
+        <!-- ========================= -->
 
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
+        <%- include("../partials/user-navbar") %>
 
-</head>
+        <!-- ========================= -->
+        <!-- Page -->
+        <!-- ========================= -->
 
+        <div class="page">
+            <div class="page-wrapper">
+                <!-- Page Header -->
 
-<body>
+                <div class="page-header d-print-none">
+                    <div class="container-xl">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h2 class="page-title">ตะกร้าสินค้า</h2>
 
-
-    <!-- ========================= -->
-    <!-- Navbar -->
-    <!-- ========================= -->
-
-    <%- include("../partials/user-navbar") %>
-
-
-
-    <!-- ========================= -->
-    <!-- Page -->
-    <!-- ========================= -->
-
-    <div class="page">
-
-        <div class="page-wrapper">
-
-
-            <!-- Page Header -->
-
-            <div class="page-header d-print-none">
-
-                <div class="container-xl">
-
-                    <div class="row align-items-center">
-
-                        <div class="col">
-
-                            <h2 class="page-title">
-                                ตะกร้าสินค้า
-                            </h2>
-
-                            <div class="text-secondary mt-1">
-                                ตรวจสอบสินค้าและจำนวนก่อนสั่งซื้อ
+                                <div class="text-secondary mt-1">
+                                    ตรวจสอบสินค้าและจำนวนก่อนสั่งซื้อ
+                                </div>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
 
-            </div>
+                <!-- Page Body -->
 
-
-
-            <!-- Page Body -->
-
-            <div class="page-body">
-
-                <div class="container-xl">
-
-
-                    <% if (items.length === 0) { %>
-
+                <div class="page-body">
+                    <div class="container-xl">
+                        <% if (items.length === 0) { %>
 
                         <!-- ========================= -->
                         <!-- Empty Cart -->
                         <!-- ========================= -->
 
                         <div class="empty">
+                            <div class="empty-img">🛒</div>
 
-                            <div class="empty-img">
-                                🛒
-                            </div>
+                            <p class="empty-title">ตะกร้าสินค้าว่าง</p>
 
-                            <p class="empty-title">
-                                ตะกร้าสินค้าว่าง
-                            </p>
-
-                            <p class="empty-subtitle text-secondary">
-                                ยังไม่มีสินค้าในตะกร้า
-                            </p>
+                            <p class="empty-subtitle text-secondary">ยังไม่มีสินค้าในตะกร้า</p>
 
                             <div class="empty-action">
-
-                                <a
-                                    href="/products"
-                                    class="btn btn-primary"
-                                >
-                                    🛍️ เลือกสินค้า
-                                </a>
-
+                                <a href="/products" class="btn btn-primary"> 🛍️ เลือกสินค้า </a>
                             </div>
-
                         </div>
 
-
-                    <% } else { %>
-
+                        <% } else { %>
 
                         <div class="row row-cards">
-
-
                             <!-- ========================= -->
                             <!-- Cart Items -->
                             <!-- ========================= -->
 
                             <div class="col-lg-8">
-
-
                                 <% items.forEach(item => { %>
 
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <!-- Product Icon -->
 
-                                    <div class="card mb-3">
-
-
-                                        <div class="card-body">
-
-
-                                            <div class="row align-items-center">
-
-
-                                                <!-- Product Icon -->
-
-                                                <div class="col-auto">
-
-                                                    <span
-                                                        class="avatar avatar-lg bg-blue-lt"
-                                                    >
-                                                        🛍️
-                                                    </span>
-
-                                                </div>
-
-
-                                                <!-- Product Info -->
-
-                                                <div class="col">
-
-                                                    <h3 class="card-title mb-1">
-
-                                                        <%= item.name %>
-
-                                                    </h3>
-
-
-                                                    <div class="text-secondary">
-
-                                                        ราคา:
-                                                        <%= Number(item.price).toLocaleString("th-TH", {
-                                                            minimumFractionDigits: 2,
-                                                            maximumFractionDigits: 2
-                                                        }) %>
-                                                        บาท
-
-                                                    </div>
-
-
-                                                    <div class="mt-2">
-
-                                                        <% if (item.size) { %>
-                                                        <span class="badge bg-blue-lt me-1">
-
-                                                            Size:
-                                                            <%= item.size || "-" %>
-
-                                                        </span>
-                                                        <% } %>
-
-
-                                                        <% if (item.color) { %>
-                                                        <span class="badge bg-purple-lt">
-
-                                                            สี:
-                                                            <%= item.color || "-" %>
-
-                                                        </span>
-                                                        <% } %>
-
-                                                    </div>
-
-                                                </div>
-
-
-                                                <!-- Quantity -->
-
-                                                <div class="col-md-auto mt-3 mt-md-0">
-
-
-                                                    <form
-                                                        action="/cart/update"
-                                                        method="POST"
-                                                        class="cart-update-form"
-                                                    >
-
-                                                        <input
-                                                            type="hidden"
-                                                            name="variant_id"
-                                                            value="<%= item.variant_id %>"
-                                                        >
-
-
-                                                        <label class="form-label">
-                                                            จำนวน
-                                                        </label>
-
-
-                                                        <div class="input-group">
-
-                                                            <input
-                                                                type="number"
-                                                                name="quantity"
-                                                                value="<%= item.quantity %>"
-                                                                min="1"
-                                                                class="form-control"
-                                                                style="width: 80px;"
-                                                                required
-                                                            >
-
-
-                                                            <button
-                                                                type="submit"
-                                                                class="btn btn-outline-primary"
-                                                            >
-                                                                อัปเดต
-                                                            </button>
-
-                                                        </div>
-
-                                                    </form>
-
-
-                                                </div>
-
-
-                                                <!-- Remove -->
-
-                                                <div class="col-auto mt-3 mt-md-0" >
-
-                                                    <form
-                                                        action="/cart/remove"
-                                                        method="POST"
-                                                        class="cart-remove-form"
-                                                    >
-
-                                                        <input
-                                                            type="hidden"
-                                                            name="variant_id"
-                                                            value="<%= item.variant_id %>"
-                                                        >
-
-
-                                                        <button
-                                                            type="button"
-                                                            class="btn btn-outline-danger remove-product-btn"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#remove-modal"
-                                                            data-product-name="<%= item.name %>"
-                                                        >
-                                                            ลบ
-                                                        </button>
-
-                                                    </form>
-
-                                                </div>
-
-
+                                            <div class="col-auto">
+                                                <span class="avatar avatar-lg bg-blue-lt">
+                                                    🛍️
+                                                </span>
                                             </div>
 
+                                            <!-- Product Info -->
+
+                                            <div class="col">
+                                                <h3 class="card-title mb-1"><%= item.name %></h3>
+
+                                                <div class="text-secondary">
+                                                    ราคา: <%=
+                                                    Number(item.price).toLocaleString("th-TH", {
+                                                    minimumFractionDigits: 2, maximumFractionDigits:
+                                                    2 }) %> บาท
+                                                </div>
+
+                                                <div class="mt-2">
+                                                    <% if (item.size) { %>
+                                                    <span class="badge bg-blue-lt me-1">
+                                                        Size: <%= item.size || "-" %>
+                                                    </span>
+                                                    <% } %>
+
+                                                    <% if (item.color) { %>
+                                                    <span class="badge bg-purple-lt">
+                                                        สี: <%= item.color || "-" %>
+                                                    </span>
+                                                    <% } %>
+                                                </div>
+                                            </div>
+
+                                            <!-- Quantity -->
+
+                                            <div class="col-md-auto mt-3 mt-md-0">
+                                                <form
+                                                    action="/cart/update"
+                                                    method="POST"
+                                                    class="cart-update-form"
+                                                >
+                                                    <input
+                                                        type="hidden"
+                                                        name="variant_id"
+                                                        value="<%= item.variant_id %>"
+                                                    />
+
+                                                    <label class="form-label"> จำนวน </label>
+
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="number"
+                                                            name="quantity"
+                                                            value="<%= item.quantity %>"
+                                                            min="1"
+                                                            class="form-control"
+                                                            style="width: 80px"
+                                                            required
+                                                        />
+
+                                                        <button
+                                                            type="submit"
+                                                            class="btn btn-outline-primary"
+                                                        >
+                                                            อัปเดต
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                            <!-- Remove -->
+
+                                            <div class="col-auto mt-3 mt-md-0">
+                                                <form
+                                                    action="/cart/remove"
+                                                    method="POST"
+                                                    class="cart-remove-form"
+                                                >
+                                                    <input
+                                                        type="hidden"
+                                                        name="variant_id"
+                                                        value="<%= item.variant_id %>"
+                                                    />
+
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-outline-danger remove-product-btn"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#remove-modal"
+                                                        data-product-name="<%= item.name %>"
+                                                    >
+                                                        ลบ
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </div>
-
-
                                     </div>
-
+                                </div>
 
                                 <% }) %>
-
-
                             </div>
-
-
 
                             <!-- ========================= -->
                             <!-- Order Summary -->
                             <!-- ========================= -->
 
                             <div class="col-lg-4">
-
-
-                                <div
-                                    class="card"
-                                    style="position: sticky; top: 20px;"
-                                >
-
-
+                                <div class="card" style="position: sticky; top: 20px">
                                     <div class="card-header">
-
-                                        <h3 class="card-title">
-                                            สรุปคำสั่งซื้อ
-                                        </h3>
-
+                                        <h3 class="card-title">สรุปคำสั่งซื้อ</h3>
                                     </div>
-
 
                                     <div class="card-body">
-
-
                                         <div class="d-flex justify-content-between mb-3">
-
-                                            <span class="text-secondary">
-                                                จำนวนสินค้า
-                                            </span>
+                                            <span class="text-secondary"> จำนวนสินค้า </span>
 
                                             <span class="fw-bold">
-
-                                                <%= items.reduce((sum, item) => {
-                                                    return sum + Number(item.quantity);
-                                                }, 0) %>
-
-                                                ชิ้น
-
+                                                <%= items.reduce((sum, item) => { return sum +
+                                                Number(item.quantity); }, 0) %> ชิ้น
                                             </span>
-
                                         </div>
-
 
                                         <div class="d-flex justify-content-between mb-3">
-
-                                            <span class="text-secondary">
-                                                ยอดรวม
-                                            </span>
+                                            <span class="text-secondary"> ยอดรวม </span>
 
                                             <span class="h2 mb-0 text-primary">
-
                                                 <%= Number(total).toLocaleString("th-TH", {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                }) %>
-
-                                                บาท
-
+                                                minimumFractionDigits: 2, maximumFractionDigits: 2
+                                                }) %> บาท
                                             </span>
-
                                         </div>
 
+                                        <hr />
 
-                                        <hr>
-
-
-                                        <a
-                                            href="/orders/checkout"
-                                            class="btn btn-primary w-100"
-                                        >
+                                        <a href="/orders/checkout" class="btn btn-primary w-100">
                                             ดำเนินการสั่งซื้อ
                                         </a>
-
-
                                     </div>
-
-
                                 </div>
-
-
                             </div>
-
-
                         </div>
-
 
                         <!-- Back -->
 
                         <div class="mt-4">
-
-                            <a
-                                href="/products"
-                                class="btn btn-outline-secondary"
-                            >
-
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-left-dashed">
-	                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-	                                <path d="M5 12h6m3 0h1.5m3 0h.5" />
-	                                <path d="M5 12l4 4" />
-	                                <path d="M5 12l4 -4" />
+                            <a href="/products" class="btn btn-outline-secondary">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-left-dashed"
+                                >
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M5 12h6m3 0h1.5m3 0h.5" />
+                                    <path d="M5 12l4 4" />
+                                    <path d="M5 12l4 -4" />
                                 </svg>
 
                                 กลับไปเลือกสินค้า
                             </a>
-
                         </div>
 
-
-                    <% } %>
-
-
+                        <% } %>
+                    </div>
                 </div>
-
             </div>
-
-
         </div>
 
-    </div>
-
-
-    <!-- Toast แจ้งเตือน -->
-    <div
-        id="cart-toast"
-        class="toast position-fixed top-0 end-0 m-3"
-        role="alert"
-        style="z-index: 9999;"
-    >
-        <div class="toast-body">
-            <span id="cart-toast-message"></span>
-        </div>
-    </div>
-
-
-    <!-- Modal ยืนยันการลบ -->
-    <div
-        class="modal modal-blur fade"
-        id="remove-modal"
-        tabindex="-1"
-        aria-hidden="true"
-    >
-        <div class="modal-dialog modal-sm modal-dialog-centered">
-
-            <div class="modal-content">
-
-                <!-- หัวข้อ -->
-                <div class="modal-header">
-
-                    <h5 class="modal-title">
-                        ลบสินค้า
-                    </h5>
-
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                    ></button>
-
-                </div>
-
-
-                <!-- เนื้อหา -->
-                <div class="modal-body">
-
-                    <p class="mb-0">
-                        ต้องการลบ
-                        <strong id="remove-product-name"></strong>
-                        ออกจากตะกร้าหรือไม่?
-                    </p>
-
-                </div>
-
-
-                <!-- ปุ่ม -->
-                <div class="modal-footer">
-
-                    <button
-                        type="button"
-                        class="btn btn-outline-secondary"
-                        data-bs-dismiss="modal"
-                    >
-                        ยกเลิก
-                    </button>
-
-                    <button
-                        type="button"
-                        class="btn btn-danger"
-                        id="confirm-remove-btn"
-                    >
-                        ลบสินค้า
-                    </button>
-
-                </div>
-
+        <!-- Toast แจ้งเตือน -->
+        <div
+            id="cart-toast"
+            class="toast position-fixed top-0 end-0 m-3"
+            role="alert"
+            style="z-index: 9999"
+        >
+            <div class="toast-body">
+                <span id="cart-toast-message"></span>
             </div>
-
         </div>
-    </div>
 
+        <!-- Modal ยืนยันการลบ -->
+        <div class="modal modal-blur fade" id="remove-modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-dialog-centered">
+                <div class="modal-content">
+                    <!-- หัวข้อ -->
+                    <div class="modal-header">
+                        <h5 class="modal-title">ลบสินค้า</h5>
 
-    <!-- Tabler JS -->
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                    </div>
 
-    <script src="/js/tabler.min.js"></script>
+                    <!-- เนื้อหา -->
+                    <div class="modal-body">
+                        <p class="mb-0">
+                            ต้องการลบ
+                            <strong id="remove-product-name"></strong>
+                            ออกจากตะกร้าหรือไม่?
+                        </p>
+                    </div>
 
-    <script>
+                    <!-- ปุ่ม -->
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-outline-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            ยกเลิก
+                        </button>
 
-        // ======================================== 
-        // แสดง Toast
-        // ========================================
+                        <button type="button" class="btn btn-danger" id="confirm-remove-btn">
+                            ลบสินค้า
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Tabler JS -->
 
-        function showToast(message, type = "danger") {
+        <script src="/js/tabler.min.js"></script>
 
-            const toast = document.querySelector("#cart-toast");
-
-            const messageBox = document.querySelector("#cart-toast-message");
-
-
-            // ล้างสีเดิมก่อน
-            toast.classList.remove(
-                "text-bg-danger",
-                "text-bg-success",
-                "text-bg-warning"
-            );
-
-
-            // กำหนดสีตามประเภท
-            toast.classList.add(
-                `text-bg-${type}`
-            );
-
-
-            // ใส่ข้อความ
-            messageBox.textContent = message;
-
-
+        <script>
+            // ========================================
             // แสดง Toast
-            toast.classList.add("show");
+            // ========================================
 
+            function showToast(message, type = "danger") {
+                const toast = document.querySelector("#cart-toast");
 
-            // ซ่อนหลัง 3 วินาที
-            setTimeout(() => {
+                const messageBox = document.querySelector("#cart-toast-message");
 
-                toast.classList.remove("show");
+                // ล้างสีเดิมก่อน
+                toast.classList.remove("text-bg-danger", "text-bg-success", "text-bg-warning");
 
-            }, 3000);
+                // กำหนดสีตามประเภท
+                toast.classList.add(`text-bg-${type}`);
 
-        }
+                // ใส่ข้อความ
+                messageBox.textContent = message;
 
-        // ========================================
-        // ดักการกดปุ่ม "อัปเดต"
-        // ========================================
-        
-        const updateForms = document.querySelectorAll(".cart-update-form");
+                // แสดง Toast
+                toast.classList.add("show");
 
-        updateForms.forEach(form => {
-
-            form.addEventListener("submit", async function (event) {
-
-                // ป้องกัน Form ส่งแบบปกติ
-                event.preventDefault();
-
-
-                // เก็บข้อมูลจาก Form
-                const formData = new URLSearchParams(new FormData(this));
-                try {
-                    // ส่งข้อมูลไป Backend
-                    const response =
-                        await fetch(
-                            this.action,
-                            {
-                                method: "POST",
-                                body: formData
-                            }
-                        );
-
-
-                    // ถ้า Backend ตอบ Error
-                    if (!response.ok) {
-
-                        // อ่านข้อความ Error จาก Backend
-                        const message = await response.text();
-
-                        // แสดง Toast
-                        showToast(message, "danger");
-
-                        return;
-                    }
-
-
-                    // ถ้า Update สำเร็จ
-                    // แสดงข้อความสำเร็จ
-                    // เก็บข้อความไว้ก่อน Reload
-                    sessionStorage.setItem(
-                        "toastMessage",
-                        "อัปเดตจำนวนสินค้าเรียบร้อย"
-                    );
-
-                    sessionStorage.setItem(
-                        "toastType",
-                        "success"
-                    );
-
-                    // Reload หน้า
-                    location.reload();
-
-                    } catch (error) {
-
-                        // กรณีเชื่อมต่อ Server ไม่ได้
-                        showToast(
-                        "เกิดข้อผิดพลาด กรุณาลองใหม่"
-                    );
-
-                    console.error(error);
-                }
-
-            });
-
-        });
-
-        // ========================================
-        // ดักการกดปุ่ม "ลบ"
-        // ========================================
-        const removeForms = document.querySelectorAll(".cart-remove-form");
-
-        removeForms.forEach(form => {
-
-            form.addEventListener("submit", async function (event) {
-
-                // ป้องกัน Form ส่งแบบปกติ
-                event.preventDefault();
-
-                // เก็บข้อมูลจาก Form
-                const formData =
-                    new URLSearchParams(new FormData(this));
-
-
-                try {
-
-                    // ส่งไป Backend
-                    const response =
-                        await fetch(
-                            this.action,
-                            {
-                                method: "POST",
-                                body: formData
-                            }
-                        );
-
-
-                    // ถ้าลบไม่สำเร็จ
-                    if (!response.ok) {
-
-                        const message =
-                            await response.text();
-
-                        showToast(
-                            message,
-                            "danger"
-                        );
-
-                        return;
-                    }
-
-
-                    // ลบสำเร็จ
-                    showToast(
-                        "ลบสินค้าออกจากตะกร้าเรียบร้อย",
-                        "success"
-                    );
-
-
-                    // รอให้เห็น Toast ก่อน Reload
-                    setTimeout(() => {
-                        location.reload();
-                    }, 800);
-
-
-                } catch (error) {
-
-                    // กรณี Server มีปัญหา
-                    showToast(
-                        "เกิดข้อผิดพลาด กรุณาลองใหม่",
-                        "danger"
-                    );
-
-                    console.error(error);
-                }
-
-            });
-
-        });
-
-        // ========================================
-        // จัดการ Modal ลบสินค้า
-        // ========================================
-
-
-        // ========================================
-        // เก็บ Form ของสินค้าที่กำลังจะลบ
-        // ========================================
-
-        let selectedRemoveForm = null;
-
-        const removeButtons =
-            document.querySelectorAll(".remove-product-btn");
-
-        const removeProductName =
-            document.querySelector("#remove-product-name");
-
-
-        removeButtons.forEach(button => {
-
-            button.addEventListener("click", function () {
-
-                // จำว่าเรากดลบ Form ของสินค้าไหน
-                selectedRemoveForm =
-                    this.closest(".cart-remove-form");
-
-                // อ่านชื่อสินค้าจาก data-product-name
-                const productName =
-                    this.dataset.productName;
-
-                // เอาชื่อสินค้าไปแสดงใน Modal
-                removeProductName.textContent =
-                    productName;
-
-            });
-
-        });
-
-        // ========================================
-        // ปุ่มยืนยันการลบใน Modal
-        // ========================================
-
-        const confirmRemoveButton =
-            document.querySelector("#confirm-remove-btn");
-
-
-        confirmRemoveButton.addEventListener("click", function () {
-
-            // ถ้ามี Form ที่เลือกไว้
-            if (selectedRemoveForm) {
-
-                // ส่ง Form ของสินค้าที่เลือก
-                selectedRemoveForm.requestSubmit();
-
-                // ล้างค่าหลังใช้งาน
-                selectedRemoveForm = null;
+                // ซ่อนหลัง 3 วินาที
+                setTimeout(() => {
+                    toast.classList.remove("show");
+                }, 3000);
             }
 
-        });
+            // ========================================
+            // ดักการกดปุ่ม "อัปเดต"
+            // ========================================
 
+            const updateForms = document.querySelectorAll(".cart-update-form");
 
-        // ========================================
-        // แสดง Toast หลัง Reload
-        // ========================================
+            updateForms.forEach((form) => {
+                form.addEventListener("submit", async function (event) {
+                    // ป้องกัน Form ส่งแบบปกติ
+                    event.preventDefault();
 
-        const toastMessage =
-            sessionStorage.getItem("toastMessage");
+                    // เก็บข้อมูลจาก Form
+                    const formData = new URLSearchParams(new FormData(this));
+                    try {
+                        // ส่งข้อมูลไป Backend
+                        const response = await fetch(this.action, {
+                            method: "POST",
+                            body: formData,
+                        });
 
-        const toastType =
-            sessionStorage.getItem("toastType");
+                        // ถ้า Backend ตอบ Error
+                        if (!response.ok) {
+                            // อ่านข้อความ Error จาก Backend
+                            const message = await response.text();
 
+                            // แสดง Toast
+                            showToast(message, "danger");
 
-        if (toastMessage) {
+                            return;
+                        }
 
-            // แสดง Toast หลังหน้าโหลดเสร็จ
-            showToast(
-                toastMessage,
-                toastType
-            );
+                        // ถ้า Update สำเร็จ
+                        // แสดงข้อความสำเร็จ
+                        // เก็บข้อความไว้ก่อน Reload
+                        sessionStorage.setItem("toastMessage", "อัปเดตจำนวนสินค้าเรียบร้อย");
 
-            // ล้างข้อมูลหลังใช้แล้ว
-            sessionStorage.removeItem("toastMessage");
-            sessionStorage.removeItem("toastType");
-        }
+                        sessionStorage.setItem("toastType", "success");
 
-    </script>
+                        // Reload หน้า
+                        location.reload();
+                    } catch (error) {
+                        // กรณีเชื่อมต่อ Server ไม่ได้
+                        showToast("เกิดข้อผิดพลาด กรุณาลองใหม่");
 
-    <%- include("../partials/store-footer") %>
-</body>
+                        console.error(error);
+                    }
+                });
+            });
 
+            // ========================================
+            // ดักการกดปุ่ม "ลบ"
+            // ========================================
+            const removeForms = document.querySelectorAll(".cart-remove-form");
+
+            removeForms.forEach((form) => {
+                form.addEventListener("submit", async function (event) {
+                    // ป้องกัน Form ส่งแบบปกติ
+                    event.preventDefault();
+
+                    // เก็บข้อมูลจาก Form
+                    const formData = new URLSearchParams(new FormData(this));
+
+                    try {
+                        // ส่งไป Backend
+                        const response = await fetch(this.action, {
+                            method: "POST",
+                            body: formData,
+                        });
+
+                        // ถ้าลบไม่สำเร็จ
+                        if (!response.ok) {
+                            const message = await response.text();
+
+                            showToast(message, "danger");
+
+                            return;
+                        }
+
+                        // ลบสำเร็จ
+                        showToast("ลบสินค้าออกจากตะกร้าเรียบร้อย", "success");
+
+                        // รอให้เห็น Toast ก่อน Reload
+                        setTimeout(() => {
+                            location.reload();
+                        }, 800);
+                    } catch (error) {
+                        // กรณี Server มีปัญหา
+                        showToast("เกิดข้อผิดพลาด กรุณาลองใหม่", "danger");
+
+                        console.error(error);
+                    }
+                });
+            });
+
+            // ========================================
+            // จัดการ Modal ลบสินค้า
+            // ========================================
+
+            // ========================================
+            // เก็บ Form ของสินค้าที่กำลังจะลบ
+            // ========================================
+
+            let selectedRemoveForm = null;
+
+            const removeButtons = document.querySelectorAll(".remove-product-btn");
+
+            const removeProductName = document.querySelector("#remove-product-name");
+
+            removeButtons.forEach((button) => {
+                button.addEventListener("click", function () {
+                    // จำว่าเรากดลบ Form ของสินค้าไหน
+                    selectedRemoveForm = this.closest(".cart-remove-form");
+
+                    // อ่านชื่อสินค้าจาก data-product-name
+                    const productName = this.dataset.productName;
+
+                    // เอาชื่อสินค้าไปแสดงใน Modal
+                    removeProductName.textContent = productName;
+                });
+            });
+
+            // ========================================
+            // ปุ่มยืนยันการลบใน Modal
+            // ========================================
+
+            const confirmRemoveButton = document.querySelector("#confirm-remove-btn");
+
+            confirmRemoveButton.addEventListener("click", function () {
+                // ถ้ามี Form ที่เลือกไว้
+                if (selectedRemoveForm) {
+                    // ส่ง Form ของสินค้าที่เลือก
+                    selectedRemoveForm.requestSubmit();
+
+                    // ล้างค่าหลังใช้งาน
+                    selectedRemoveForm = null;
+                }
+            });
+
+            // ========================================
+            // แสดง Toast หลัง Reload
+            // ========================================
+
+            const toastMessage = sessionStorage.getItem("toastMessage");
+
+            const toastType = sessionStorage.getItem("toastType");
+
+            if (toastMessage) {
+                // แสดง Toast หลังหน้าโหลดเสร็จ
+                showToast(toastMessage, toastType);
+
+                // ล้างข้อมูลหลังใช้แล้ว
+                sessionStorage.removeItem("toastMessage");
+                sessionStorage.removeItem("toastType");
+            }
+        </script>
+
+        <%- include("../partials/store-footer") %>
+    </body>
 </html>

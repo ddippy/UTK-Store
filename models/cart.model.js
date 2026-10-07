@@ -1,10 +1,10 @@
 const pool = require("../db/pool");
 
 exports.findItems = async (cart) => {
-  const variantIds = cart.map((item) => item.variant_id);
+    const variantIds = cart.map((item) => item.variant_id);
 
-  const result = await pool.query(
-    `
+    const result = await pool.query(
+        `
         SELECT
             v.variant_id,
             p.name,
@@ -17,8 +17,8 @@ exports.findItems = async (cart) => {
             ON v.product_id = p.product_id
         WHERE v.variant_id = ANY($1)
     `,
-    [variantIds],
-  );
+        [variantIds],
+    );
 
-  return result.rows;
+    return result.rows;
 };

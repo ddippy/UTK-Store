@@ -1,469 +1,290 @@
 <!DOCTYPE html>
 <html lang="th">
+    <head>
+        <meta charset="UTF-8" />
 
-<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta charset="UTF-8">
+        <title>รายละเอียดคำสั่งซื้อ | UTK-Store</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
+        <link rel="stylesheet" href="/css/tabler.min.css" />
 
-    <title>รายละเอียดคำสั่งซื้อ | UTK-Store</title>
+        <!-- CSS ของเรา -->
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
 
-    <link
-        rel="stylesheet"
-        href="/css/tabler.min.css"
-    >
+    <body>
+        <!-- ========================= -->
+        <!-- Navbar -->
+        <!-- ========================= -->
 
-    <!-- CSS ของเรา -->
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
+        <%- include("../partials/user-navbar") %>
 
-</head>
+        <!-- ========================= -->
+        <!-- Page -->
+        <!-- ========================= -->
 
+        <div class="page">
+            <div class="page-wrapper">
+                <!-- ========================= -->
+                <!-- Page Header -->
+                <!-- ========================= -->
 
-<body>
+                <div class="page-header d-print-none">
+                    <div class="container-xl">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h2 class="page-title">รายละเอียดคำสั่งซื้อ</h2>
 
-    <!-- ========================= -->
-    <!-- Navbar -->
-    <!-- ========================= -->
-
-    <%- include("../partials/user-navbar") %>
-
-
-    <!-- ========================= -->
-    <!-- Page -->
-    <!-- ========================= -->
-
-    <div class="page">
-
-        <div class="page-wrapper">
-
-
-            <!-- ========================= -->
-            <!-- Page Header -->
-            <!-- ========================= -->
-
-            <div class="page-header d-print-none">
-
-                <div class="container-xl">
-
-                    <div class="row align-items-center">
-
-                        <div class="col">
-
-                            <h2 class="page-title">
-
-                                รายละเอียดคำสั่งซื้อ
-
-                            </h2>
-
-                            <div class="text-secondary mt-1">
-
-                                ตรวจสอบรายละเอียดคำสั่งซื้อของคุณ
-
+                                <div class="text-secondary mt-1">
+                                    ตรวจสอบรายละเอียดคำสั่งซื้อของคุณ
+                                </div>
                             </div>
 
+                            <div class="col-auto">
+                                <a href="/orders/my-orders" class="btn btn-outline-secondary">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-left-dashed"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12h6m3 0h1.5m3 0h.5" />
+                                        <path d="M5 12l4 4" />
+                                        <path d="M5 12l4 -4" />
+                                    </svg>
+                                    กลับคำสั่งซื้อ
+                                </a>
+                            </div>
                         </div>
-
-
-                        <div class="col-auto">
-
-                            <a
-                                href="/orders/my-orders"
-                                class="btn btn-outline-secondary"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-left-dashed">
-	                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-	                                <path d="M5 12h6m3 0h1.5m3 0h.5" />
-	                                <path d="M5 12l4 4" />
-	                                <path d="M5 12l4 -4" />
-                                </svg>
-                                กลับคำสั่งซื้อ
-                            </a>
-
-                        </div>
-
                     </div>
-
                 </div>
 
-            </div>
+                <!-- ========================= -->
+                <!-- Page Body -->
+                <!-- ========================= -->
 
+                <div class="page-body">
+                    <div class="container-xl">
+                        <div class="row row-cards">
+                            <!-- ========================= -->
+                            <!-- Order Information -->
+                            <!-- ========================= -->
 
-            <!-- ========================= -->
-            <!-- Page Body -->
-            <!-- ========================= -->
+                            <div class="col-lg-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">รายการสินค้า</h3>
+                                    </div>
 
-            <div class="page-body">
-
-                <div class="container-xl">
-
-                    <div class="row row-cards">
-
-
-                        <!-- ========================= -->
-                        <!-- Order Information -->
-                        <!-- ========================= -->
-
-                        <div class="col-lg-8">
-
-                            <div class="card">
-
-                                <div class="card-header">
-
-                                    <h3 class="card-title">
-
-                                        รายการสินค้า
-
-                                    </h3>
-
-                                </div>
-
-
-                                <div class="card-body">
-
-                                    <% if (order.items.length === 0) { %>
+                                    <div class="card-body">
+                                        <% if (order.items.length === 0) { %>
 
                                         <div class="empty">
-
-                                            <p class="empty-title">
-                                                ไม่มีรายการสินค้า
-                                            </p>
-
+                                            <p class="empty-title">ไม่มีรายการสินค้า</p>
                                         </div>
 
-                                    <% } %>
+                                        <% } %>
 
-
-                                    <% order.items.forEach(item => { %>
+                                        <% order.items.forEach(item => { %>
 
                                         <div class="row align-items-center">
-
                                             <!-- Product -->
 
                                             <div class="col">
-
-                                                <div class="fw-bold">
-
-                                                    <%= item.name %>
-
-                                                </div>
-
+                                                <div class="fw-bold"><%= item.name %></div>
 
                                                 <div class="text-secondary mt-1">
-
                                                     <% if (item.size) { %>
 
-                                                        <span class="badge bg-secondary-lt me-1">
-
-                                                            Size:
-                                                            <%= item.size %>
-
-                                                        </span>
+                                                    <span class="badge bg-secondary-lt me-1">
+                                                        Size: <%= item.size %>
+                                                    </span>
 
                                                     <% } %>
-
 
                                                     <% if (item.color) { %>
 
-                                                        <span class="badge bg-secondary-lt">
-
-                                                            สี:
-                                                            <%= item.color %>
-
-                                                        </span>
+                                                    <span class="badge bg-secondary-lt">
+                                                        สี: <%= item.color %>
+                                                    </span>
 
                                                     <% } %>
-
                                                 </div>
-
 
                                                 <div class="text-secondary mt-2">
-
-                                                    จำนวน:
-                                                    <%= item.quantity %>
-                                                    ชิ้น
-
+                                                    จำนวน: <%= item.quantity %> ชิ้น
                                                 </div>
-
                                             </div>
-
 
                                             <!-- Price -->
 
                                             <div class="col-auto">
-
                                                 <div class="text-end">
-
                                                     <div class="text-secondary">
-
                                                         <%= Number(item.price).toLocaleString() %>
                                                         บาท / ชิ้น
-
                                                     </div>
-
 
                                                     <div class="fw-bold">
-
-                                                        <%= Number(
-                                                            item.price * item.quantity
-                                                        ).toLocaleString() %>
-
-                                                        บาท
-
+                                                        <%= Number( item.price * item.quantity
+                                                        ).toLocaleString() %> บาท
                                                     </div>
-
                                                 </div>
+                                            </div>
+                                        </div>
 
+                                        <hr />
+
+                                        <% }) %>
+                                    </div>
+
+                                    <!-- Total -->
+
+                                    <div class="card-body border-top">
+                                        <div class="row">
+                                            <div class="col">
+                                                <strong> ยอดรวมทั้งหมด </strong>
                                             </div>
 
+                                            <div class="col-auto">
+                                                <strong class="fs-2">
+                                                    <%= Number( order.total_price ).toLocaleString()
+                                                    %> บาท
+                                                </strong>
+                                            </div>
                                         </div>
-
-
-                                        <hr>
-
-
-                                    <% }) %>
-
-                                </div>
-
-
-                                <!-- Total -->
-
-                                <div class="card-body border-top">
-
-                                    <div class="row">
-
-                                        <div class="col">
-
-                                            <strong>
-                                                ยอดรวมทั้งหมด
-                                            </strong>
-
-                                        </div>
-
-
-                                        <div class="col-auto">
-
-                                            <strong class="fs-2">
-
-                                                <%= Number(
-                                                    order.total_price
-                                                ).toLocaleString() %>
-
-                                                บาท
-
-                                            </strong>
-
-                                        </div>
-
                                     </div>
-
                                 </div>
-
                             </div>
 
-                        </div>
+                            <!-- ========================= -->
+                            <!-- Order Summary -->
+                            <!-- ========================= -->
 
+                            <div class="col-lg-4">
+                                <!-- Order Status -->
 
-                        <!-- ========================= -->
-                        <!-- Order Summary -->
-                        <!-- ========================= -->
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        <h3 class="card-title">สถานะคำสั่งซื้อ</h3>
+                                    </div>
 
-                        <div class="col-lg-4">
+                                    <div class="card-body">
+                                        <% if (order.status === "PENDING") { %>
 
-                            <!-- Order Status -->
+                                        <span class="badge bg-yellow-lt fs-3"> รอตรวจสอบ </span>
 
-                            <div class="card mb-3">
+                                        <% } else if (order.status === "CONFIRMED") { %>
 
-                                <div class="card-header">
+                                        <span class="badge bg-blue-lt fs-3"> ยืนยันแล้ว </span>
 
-                                    <h3 class="card-title">
+                                        <% } else if (order.status === "COMPLETED") { %>
 
-                                        สถานะคำสั่งซื้อ
+                                        <span class="badge bg-green-lt fs-3"> สำเร็จ </span>
 
-                                    </h3>
+                                        <% } else if (order.status === "CANCELLED") { %>
 
-                                </div>
+                                        <span class="badge bg-red-lt fs-3"> ยกเลิก </span>
 
-
-                                <div class="card-body">
-
-                                    <% if (order.status === "PENDING") { %>
-
-                                        <span class="badge bg-yellow-lt fs-3">
-
-                                            รอตรวจสอบ
-
-                                        </span>
-
-                                    <% } else if (order.status === "CONFIRMED") { %>
-
-                                        <span class="badge bg-blue-lt fs-3">
-
-                                            ยืนยันแล้ว
-
-                                        </span>
-
-                                    <% } else if (order.status === "COMPLETED") { %>
-
-                                        <span class="badge bg-green-lt fs-3">
-
-                                            สำเร็จ
-
-                                        </span>
-
-                                    <% } else if (order.status === "CANCELLED") { %>
-
-                                        <span class="badge bg-red-lt fs-3">
-
-                                            ยกเลิก
-
-                                        </span>
-
-                                    <% } else { %>
+                                        <% } else { %>
 
                                         <span class="badge bg-secondary-lt fs-3">
-
                                             <%= order.status %>
-
                                         </span>
 
-                                    <% } %>
-
+                                        <% } %>
+                                    </div>
                                 </div>
 
-                            </div>
+                                <!-- Customer Information -->
 
-
-                            <!-- Customer Information -->
-
-                            <div class="card mb-3">
-
-                                <div class="card-header">
-
-                                    <h3 class="card-title">
-
-                                        ข้อมูลผู้สั่งซื้อ
-
-                                    </h3>
-
-                                </div>
-
-
-                                <div class="card-body">
-
-                                    <div class="mb-3">
-
-                                        <div class="text-secondary">
-                                            ชื่อผู้สั่ง
-                                        </div>
-
-                                        <div class="fw-bold">
-                                            <%= order.customer_name %>
-                                        </div>
-
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        <h3 class="card-title">ข้อมูลผู้สั่งซื้อ</h3>
                                     </div>
 
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <div class="text-secondary">ชื่อผู้สั่ง</div>
 
-                                    <div class="mb-3">
-
-                                        <div class="text-secondary">
-                                            รหัสนักศึกษา
+                                            <div class="fw-bold"><%= order.customer_name %></div>
                                         </div>
 
-                                        <div class="fw-bold">
-                                            <%= order.student_id %>
+                                        <div class="mb-3">
+                                            <div class="text-secondary">รหัสนักศึกษา</div>
+
+                                            <div class="fw-bold"><%= order.student_id %></div>
                                         </div>
 
+                                        <div>
+                                            <div class="text-secondary">เบอร์โทรศัพท์</div>
+
+                                            <div class="fw-bold"><%= order.phone %></div>
+                                        </div>
                                     </div>
-
-
-                                    <div>
-
-                                        <div class="text-secondary">
-                                            เบอร์โทรศัพท์
-                                        </div>
-
-                                        <div class="fw-bold">
-                                            <%= order.phone %>
-                                        </div>
-
-                                    </div>
-
                                 </div>
 
-                            </div>
+                                <!-- Payment Slip -->
 
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">สลิปการชำระเงิน</h3>
+                                    </div>
 
-                            <!-- Payment Slip -->
-
-                            <div class="card">
-
-                                <div class="card-header">
-
-                                    <h3 class="card-title">
-
-                                        สลิปการชำระเงิน
-
-                                    </h3>
-
-                                </div>
-
-
-                                <div class="card-body">
-
-                                    <% if (order.payment_slip_path) { %>
+                                    <div class="card-body">
+                                        <% if (order.payment_slip_path) { %>
 
                                         <a
                                             href="/orders/<%= order.order_id %>/payment-slip"
                                             target="_blank"
                                             class="btn btn-outline-primary w-100"
                                         >
-
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-receipt-2">
-	                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-	                                            <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
-	                                            <path d="M14 8h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5m2 0v1.5m0 -9v1.5" />
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-receipt-2"
+                                            >
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                    d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2"
+                                                />
+                                                <path
+                                                    d="M14 8h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5m2 0v1.5m0 -9v1.5"
+                                                />
                                             </svg>
 
                                             ดูสลิปการชำระเงิน
-
                                         </a>
 
-                                    <% } else { %>
+                                        <% } else { %>
 
-                                        <div class="text-secondary">
+                                        <div class="text-secondary">ไม่พบสลิปการชำระเงิน</div>
 
-                                            ไม่พบสลิปการชำระเงิน
-
-                                        </div>
-
-                                    <% } %>
-
+                                        <% } %>
+                                    </div>
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
 
-    </div>
-
-
-    <%- include("../partials/store-footer") %>
-</body>
-
+        <%- include("../partials/store-footer") %>
+    </body>
 </html>

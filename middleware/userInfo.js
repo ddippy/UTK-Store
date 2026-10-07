@@ -9,7 +9,7 @@ const userInfo = (req, res, next) => {
     res.locals.cartCount = cart.reduce((total, item) => {
         return total + Number(item.quantity);
     }, 0);
-    
+
     next();
 };
 

@@ -1,11 +1,11 @@
 const requireAdmin = (req, res, next) => {
-  res.set("Cache-Control", "no-store");
+    res.set("Cache-Control", "no-store");
 
-  if (!req.session.adminId) {
-    return res.redirect("/admin/login");
-  }
+    if (!req.session.adminId) {
+        return res.redirect("/admin/login");
+    }
 
-  next();
+    next();
 };
 
 module.exports = requireAdmin;

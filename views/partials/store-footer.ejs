@@ -24,7 +24,13 @@
                 <ul class="store-footer-links">
                     <li><a href="/user/login">เข้าสู่ระบบ</a></li>
                     <li><a href="/user/register">สมัครสมาชิก</a></li>
-                    <li><a href="/orders/my-orders">คำสั่งซื้อของฉัน</a></li>
+                    <li>
+                        <% if (locals.isUserLoggedIn) { %>
+                            <a href="<%= ["MANAGER", "STAFF"].includes(String(locals.role || "USER").toUpperCase()) ? "/admin/orders" : "/orders/my-orders" %>">คำสั่งซื้อของฉัน</a>
+                        <% } else { %>
+                            <a href="/orders/my-orders" class="js-open-login-modal" data-login-return-to="/orders/my-orders">คำสั่งซื้อของฉัน</a>
+                        <% } %>
+                    </li>
                 </ul>
             </div>
         </div>

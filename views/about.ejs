@@ -1,127 +1,122 @@
 <!DOCTYPE html>
 <html lang="th">
+    <head>
+        <meta charset="UTF-8" />
 
-<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta charset="UTF-8">
+        <title>เกี่ยวกับเรา | UTK-Store</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
+        <link rel="stylesheet" href="/css/tabler.min.css" />
 
-    <title>เกี่ยวกับเรา | UTK-Store</title>
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
 
-    <link
-        rel="stylesheet"
-        href="/css/tabler.min.css"
-    >
+    <body class="bg-light">
+        <!-- Navbar -->
 
-    <link
-        rel="stylesheet"
-        href="/css/style.css"
-    >
+        <%- include("./partials/user-navbar") %>
 
-</head>
+        <!-- Page -->
 
+        <div class="page">
+            <div class="page-wrapper">
+                <!-- Header -->
 
-<body class="bg-light">
+                <div class="page-header d-print-none">
+                    <div class="container-xl">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h2 class="page-title">เกี่ยวกับเรา</h2>
 
-
-    <!-- Navbar -->
-
-    <%- include("./partials/user-navbar") %>
-
-
-    <!-- Page -->
-
-    <div class="page">
-
-        <div class="page-wrapper">
-
-
-            <!-- Header -->
-
-            <div class="page-header d-print-none">
-
-                <div class="container-xl">
-
-                    <div class="row align-items-center">
-
-                        <div class="col">
-
-                            <h2 class="page-title">
-                                เกี่ยวกับเรา
-                            </h2>
-
-                            <div class="text-secondary mt-1">
-                                รู้จัก UTK-Store และระบบของเรา
+                                <div class="text-secondary mt-1">
+                                    รู้จัก UTK-Store และระบบของเรา
+                                </div>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
 
-            </div>
+                <!-- Body -->
 
+                <div class="page-body">
+                    <div class="container-xl">
+                        <!-- About -->
 
-            <!-- Body -->
+                        <div class="card mb-4">
+                            <div class="card-body p-4 p-md-5">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-8">
+                                        <h1 class="mb-3">UTK-Store</h1>
 
-            <div class="page-body">
+                                        <p class="text-secondary fs-3">
+                                            ร้านค้าออนไลน์สำหรับนักศึกษา และสมาชิกของมหาวิทยาลัย
+                                        </p>
 
-                <div class="container-xl">
+                                        <p class="text-secondary">
+                                            UTK-Store เป็นระบบร้านค้าออนไลน์
+                                            ที่จัดทำขึ้นเพื่อใช้สำหรับการเลือกดูสินค้า
+                                            ตรวจสอบรายละเอียดสินค้า เพิ่มสินค้าลงรถเข็น
+                                            และดำเนินการสั่งซื้อผ่านระบบออนไลน์
+                                        </p>
 
+                                        <p class="text-secondary mb-0">
+                                            จุดประสงค์ของระบบคือช่วยให้การซื้อขายสินค้า
+                                            ภายในมหาวิทยาลัยมีความสะดวก เป็นระบบ
+                                            และสามารถตรวจสอบข้อมูลคำสั่งซื้อได้ง่าย
+                                        </p>
+                                    </div>
 
-                    <!-- About -->
+                                    <div class="col-lg-4 mt-4 mt-lg-0">
+                                        <div class="bg-primary-lt rounded-3 p-5 text-center">
+                                            <div
+                                                class="avatar avatar-xl bg-primary text-white mx-auto mb-3"
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="32"
+                                                    height="32"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                >
+                                                    <path stroke="none" d="M0 0h24v24H0z" />
+                                                    <path
+                                                        d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+                                                    />
+                                                    <path
+                                                        d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+                                                    />
+                                                    <path d="M6 17h11v-5h-9" />
+                                                    <path d="M8 12l-2 -8h-2" />
+                                                </svg>
+                                            </div>
 
-                    <div class="card mb-4">
+                                            <h3 class="mb-1">UTK-Store</h3>
 
-                        <div class="card-body p-4 p-md-5">
-
-                            <div class="row align-items-center">
-
-                                <div class="col-lg-8">
-
-                                    <h1 class="mb-3">
-                                        UTK-Store
-                                    </h1>
-
-                                    <p class="text-secondary fs-3">
-                                        ร้านค้าออนไลน์สำหรับนักศึกษา
-                                        และสมาชิกของมหาวิทยาลัย
-                                    </p>
-
-                                    <p class="text-secondary">
-                                        UTK-Store เป็นระบบร้านค้าออนไลน์
-                                        ที่จัดทำขึ้นเพื่อใช้สำหรับการเลือกดูสินค้า
-                                        ตรวจสอบรายละเอียดสินค้า เพิ่มสินค้าลงรถเข็น
-                                        และดำเนินการสั่งซื้อผ่านระบบออนไลน์
-                                    </p>
-
-                                    <p class="text-secondary mb-0">
-                                        จุดประสงค์ของระบบคือช่วยให้การซื้อขายสินค้า
-                                        ภายในมหาวิทยาลัยมีความสะดวก เป็นระบบ
-                                        และสามารถตรวจสอบข้อมูลคำสั่งซื้อได้ง่าย
-                                    </p>
-
+                                            <div class="text-secondary">
+                                                Online University Store
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
 
+                        <!-- Features -->
 
-                                <div class="col-lg-4 mt-4 mt-lg-0">
-
-                                    <div
-                                        class="bg-primary-lt rounded-3 p-5 text-center"
-                                    >
-
-                                        <div
-                                            class="avatar avatar-xl bg-primary text-white mx-auto mb-3"
-                                        >
+                        <div class="row row-cards mb-4">
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="avatar bg-blue-lt mb-3">
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                width="32"
-                                                height="32"
+                                                width="24"
+                                                height="24"
                                                 viewBox="0 0 24 24"
                                                 fill="none"
                                                 stroke="currentColor"
@@ -129,313 +124,141 @@
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
                                             >
-                                                <path
-                                                    stroke="none"
-                                                    d="M0 0h24v24H0z"
-                                                />
-                                                <path
-                                                    d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
-                                                />
-                                                <path
-                                                    d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
-                                                />
-                                                <path
-                                                    d="M6 17h11v-5h-9"
-                                                />
-                                                <path
-                                                    d="M8 12l-2 -8h-2"
-                                                />
+                                                <path stroke="none" d="M0 0h24v24H0z" />
+                                                <path d="M4 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                                <path d="M12.5 17h-6.5v-14h-2" />
+                                                <path d="M6 5l14 1l-1 7h-13" />
                                             </svg>
                                         </div>
 
-                                        <h3 class="mb-1">
-                                            UTK-Store
-                                        </h3>
+                                        <h3>สินค้า</h3>
 
-                                        <div class="text-secondary">
-                                            Online University Store
+                                        <p class="text-secondary mb-0">
+                                            รวมสินค้าสำหรับนักศึกษา
+                                            พร้อมรายละเอียดและข้อมูลที่จำเป็น
+                                            สำหรับการตัดสินใจก่อนสั่งซื้อ
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="avatar bg-green-lt mb-3">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                                <path stroke="none" d="M0 0h24v24H0z" />
+                                                <path d="M6 10h14" />
+                                                <path d="M6 14h14" />
+                                                <path d="M4 6v12" />
+                                            </svg>
                                         </div>
 
+                                        <h3>สั่งซื้อออนไลน์</h3>
+
+                                        <p class="text-secondary mb-0">
+                                            สามารถเพิ่มสินค้าในรถเข็น
+                                            และดำเนินการสั่งซื้อได้ผ่านระบบ
+                                            โดยไม่ต้องจัดการข้อมูลด้วยตนเอง
+                                        </p>
                                     </div>
-
                                 </div>
-
                             </div>
 
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="avatar bg-yellow-lt mb-3">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                                <path stroke="none" d="M0 0h24v24H0z" />
+                                                <path
+                                                    d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
+                                                />
+                                                <path d="M12 8v4l2 2" />
+                                            </svg>
+                                        </div>
+
+                                        <h3>ติดตามคำสั่งซื้อ</h3>
+
+                                        <p class="text-secondary mb-0">
+                                            ตรวจสอบรายการสั่งซื้อ และติดตามสถานะคำสั่งซื้อ
+                                            ได้จากบัญชีของผู้ใช้งาน
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
+                        <!-- Project Information -->
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">ข้อมูลโครงการ</h3>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <dl class="row">
+                                            <dt class="col-5">ชื่อระบบ</dt>
+
+                                            <dd class="col-7">UTK-Store</dd>
+
+                                            <dt class="col-5">ประเภท</dt>
+
+                                            <dd class="col-7">ระบบร้านค้าออนไลน์</dd>
+
+                                            <dt class="col-5">กลุ่มผู้ใช้งาน</dt>
+
+                                            <dd class="col-7">นักศึกษา / สมาชิกมหาวิทยาลัย</dd>
+                                        </dl>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <dl class="row">
+                                            <dt class="col-5">เทคโนโลยี</dt>
+
+                                            <dd class="col-7">Node.js / Express</dd>
+
+                                            <dt class="col-5">Database</dt>
+
+                                            <dd class="col-7">PostgreSQL</dd>
+
+                                            <dt class="col-5">Frontend</dt>
+
+                                            <dd class="col-7">EJS / Tabler</dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-
-                    <!-- Features -->
-
-                    <div class="row row-cards mb-4">
-
-
-                        <div class="col-md-4">
-
-                            <div class="card h-100">
-
-                                <div class="card-body">
-
-                                    <div
-                                        class="avatar bg-blue-lt mb-3"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <path
-                                                stroke="none"
-                                                d="M0 0h24v24H0z"
-                                            />
-                                            <path
-                                                d="M4 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"
-                                            />
-                                            <path
-                                                d="M12.5 17h-6.5v-14h-2"
-                                            />
-                                            <path
-                                                d="M6 5l14 1l-1 7h-13"
-                                            />
-                                        </svg>
-                                    </div>
-
-                                    <h3>
-                                        สินค้า
-                                    </h3>
-
-                                    <p class="text-secondary mb-0">
-                                        รวมสินค้าสำหรับนักศึกษา
-                                        พร้อมรายละเอียดและข้อมูลที่จำเป็น
-                                        สำหรับการตัดสินใจก่อนสั่งซื้อ
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="col-md-4">
-
-                            <div class="card h-100">
-
-                                <div class="card-body">
-
-                                    <div
-                                        class="avatar bg-green-lt mb-3"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <path
-                                                stroke="none"
-                                                d="M0 0h24v24H0z"
-                                            />
-                                            <path
-                                                d="M6 10h14"
-                                            />
-                                            <path
-                                                d="M6 14h14"
-                                            />
-                                            <path
-                                                d="M4 6v12"
-                                            />
-                                        </svg>
-                                    </div>
-
-                                    <h3>
-                                        สั่งซื้อออนไลน์
-                                    </h3>
-
-                                    <p class="text-secondary mb-0">
-                                        สามารถเพิ่มสินค้าในรถเข็น
-                                        และดำเนินการสั่งซื้อได้ผ่านระบบ
-                                        โดยไม่ต้องจัดการข้อมูลด้วยตนเอง
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="col-md-4">
-
-                            <div class="card h-100">
-
-                                <div class="card-body">
-
-                                    <div
-                                        class="avatar bg-yellow-lt mb-3"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                        >
-                                            <path
-                                                stroke="none"
-                                                d="M0 0h24v24H0z"
-                                            />
-                                            <path
-                                                d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
-                                            />
-                                            <path
-                                                d="M12 8v4l2 2"
-                                            />
-                                        </svg>
-                                    </div>
-
-                                    <h3>
-                                        ติดตามคำสั่งซื้อ
-                                    </h3>
-
-                                    <p class="text-secondary mb-0">
-                                        ตรวจสอบรายการสั่งซื้อ
-                                        และติดตามสถานะคำสั่งซื้อ
-                                        ได้จากบัญชีของผู้ใช้งาน
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-
-                    <!-- Project Information -->
-
-                    <div class="card">
-
-                        <div class="card-header">
-
-                            <h3 class="card-title">
-                                ข้อมูลโครงการ
-                            </h3>
-
-                        </div>
-
-                        <div class="card-body">
-
-                            <div class="row">
-
-
-                                <div class="col-md-6">
-
-                                    <dl class="row">
-
-                                        <dt class="col-5">
-                                            ชื่อระบบ
-                                        </dt>
-
-                                        <dd class="col-7">
-                                            UTK-Store
-                                        </dd>
-
-
-                                        <dt class="col-5">
-                                            ประเภท
-                                        </dt>
-
-                                        <dd class="col-7">
-                                            ระบบร้านค้าออนไลน์
-                                        </dd>
-
-
-                                        <dt class="col-5">
-                                            กลุ่มผู้ใช้งาน
-                                        </dt>
-
-                                        <dd class="col-7">
-                                            นักศึกษา / สมาชิกมหาวิทยาลัย
-                                        </dd>
-
-                                    </dl>
-
-                                </div>
-
-
-                                <div class="col-md-6">
-
-                                    <dl class="row">
-
-                                        <dt class="col-5">
-                                            เทคโนโลยี
-                                        </dt>
-
-                                        <dd class="col-7">
-                                            Node.js / Express
-                                        </dd>
-
-
-                                        <dt class="col-5">
-                                            Database
-                                        </dt>
-
-                                        <dd class="col-7">
-                                            PostgreSQL
-                                        </dd>
-
-
-                                        <dt class="col-5">
-                                            Frontend
-                                        </dt>
-
-                                        <dd class="col-7">
-                                            EJS / Tabler
-                                        </dd>
-
-                                    </dl>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
                 </div>
-
             </div>
-
         </div>
 
-    </div>
+        <script src="/js/tabler.min.js"></script>
 
-
-    <script src="/js/tabler.min.js"></script>
-
-    <%- include("./partials/store-footer") %>
-</body>
-
+        <%- include("./partials/store-footer") %>
+    </body>
 </html>

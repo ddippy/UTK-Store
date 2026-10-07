@@ -1,378 +1,228 @@
 <!DOCTYPE html>
 <html lang="th">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
+        <title>จัดการสินค้า | Admin</title>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/css/tabler.min.css" />
 
-    <title>จัดการสินค้า | Admin</title>
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
 
-    <link rel="stylesheet" href="/css/tabler.min.css">
+    <body>
+        <!-- Navbar -->
 
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+        <header class="navbar navbar-expand-md d-print-none">
+            <div class="container-xl">
+                <a href="/admin" class="navbar-brand navbar-brand-autodark"> UTK-Store Admin </a>
 
-<body>
-
-    <!-- Navbar -->
-
-    <header class="navbar navbar-expand-md d-print-none">
-
-        <div class="container-xl">
-
-            <a
-                href="/admin"
-                class="navbar-brand navbar-brand-autodark"
-            >
-                UTK-Store Admin
-            </a>
-
-            <div class="navbar-nav flex-row order-md-last ms-auto">
-
-                <a
-                    href="/products"
-                    class="btn btn-outline-primary"
-                >
-                    🛍️ หน้าร้าน
-                </a>
-
+                <div class="navbar-nav flex-row order-md-last ms-auto">
+                    <a href="/products" class="btn btn-outline-primary"> 🛍️ หน้าร้าน </a>
+                </div>
             </div>
+        </header>
 
-        </div>
+        <!-- Page -->
 
-    </header>
+        <div class="page">
+            <div class="page-wrapper">
+                <!-- Page Header -->
 
+                <div class="page-header d-print-none">
+                    <div class="container-xl">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h2 class="page-title">จัดการสินค้า</h2>
 
-    <!-- Page -->
-
-    <div class="page">
-
-        <div class="page-wrapper">
-
-
-            <!-- Page Header -->
-
-            <div class="page-header d-print-none">
-
-                <div class="container-xl">
-
-                    <div class="row align-items-center">
-
-                        <div class="col">
-
-                            <h2 class="page-title">
-                                จัดการสินค้า
-                            </h2>
-
-                            <div class="text-secondary mt-1">
-                                เพิ่ม แก้ไข และจัดการสินค้าภายในร้าน
+                                <div class="text-secondary mt-1">
+                                    เพิ่ม แก้ไข และจัดการสินค้าภายในร้าน
+                                </div>
                             </div>
 
+                            <div class="col-auto">
+                                <a href="/admin/products/create" class="btn btn-primary">
+                                    + เพิ่มสินค้า
+                                </a>
+                            </div>
                         </div>
-
-                        <div class="col-auto">
-
-                            <a
-                                href="/admin/products/create"
-                                class="btn btn-primary"
-                            >
-                                + เพิ่มสินค้า
-                            </a>
-
-                        </div>
-
                     </div>
-
                 </div>
 
-            </div>
+                <!-- Page Body -->
 
-
-            <!-- Page Body -->
-
-            <div class="page-body">
-
-                <div class="container-xl">
-
-
-                    <% if (products.length === 0) { %>
-
+                <div class="page-body">
+                    <div class="container-xl">
+                        <% if (products.length === 0) { %>
 
                         <!-- Empty -->
 
                         <div class="card">
-
                             <div class="empty">
+                                <div class="empty-img">📦</div>
 
-                                <div class="empty-img">
-                                    📦
-                                </div>
-
-                                <p class="empty-title">
-                                    ยังไม่มีสินค้า
-                                </p>
+                                <p class="empty-title">ยังไม่มีสินค้า</p>
 
                                 <p class="empty-subtitle text-secondary">
                                     เริ่มเพิ่มสินค้าเพื่อแสดงในร้านค้า
                                 </p>
 
                                 <div class="empty-action">
-
-                                    <a
-                                        href="/admin/products/create"
-                                        class="btn btn-primary"
-                                    >
+                                    <a href="/admin/products/create" class="btn btn-primary">
                                         + เพิ่มสินค้า
                                     </a>
-
                                 </div>
-
                             </div>
-
                         </div>
 
-
-                    <% } else { %>
-
+                        <% } else { %>
 
                         <!-- Product List -->
 
                         <div class="card">
-
-
                             <div class="card-header">
-
                                 <div>
-
-                                    <h3 class="card-title">
-                                        รายการสินค้า
-                                    </h3>
+                                    <h3 class="card-title">รายการสินค้า</h3>
 
                                     <div class="text-secondary mt-1">
                                         ทั้งหมด <%= products.length %> รายการ
                                     </div>
-
                                 </div>
-
                             </div>
-
 
                             <div class="table-responsive">
-
                                 <table class="table table-vcenter card-table">
-
                                     <thead>
-
                                         <tr>
+                                            <th>รูป</th>
 
-                                            <th>
-                                                รูป
-                                            </th>
+                                            <th>รหัสสินค้า</th>
 
-                                            <th>
-                                                รหัสสินค้า
-                                            </th>
+                                            <th>ชื่อสินค้า</th>
 
-                                            <th>
-                                                ชื่อสินค้า
-                                            </th>
+                                            <th>หมวดหมู่</th>
 
-                                            <th>
-                                                หมวดหมู่
-                                            </th>
+                                            <th>ราคา</th>
 
-                                            <th>
-                                                ราคา
-                                            </th>
+                                            <th>สถานะ</th>
 
-                                            <th>
-                                                สถานะ
-                                            </th>
-
-                                            <th class="text-end">
-                                                จัดการ
-                                            </th>
-
+                                            <th class="text-end">จัดการ</th>
                                         </tr>
-
                                     </thead>
 
-
                                     <tbody>
-
-
                                         <% products.forEach(product => { %>
 
+                                        <tr>
+                                            <!-- Image -->
 
-                                            <tr>
+                                            <td>
+                                                <% if (product.image_path) { %>
 
+                                                <img
+                                                    src="<%= product.image_path %>"
+                                                    class="rounded"
+                                                    style="
+                                                        width: 50px;
+                                                        height: 50px;
+                                                        object-fit: cover;
+                                                    "
+                                                    alt="<%= product.name %>"
+                                                />
 
-                                                <!-- Image -->
+                                                <% } else { %>
 
-                                                <td>
+                                                <span class="avatar"> 📦 </span>
 
-                                                    <% if (product.image_path) { %>
+                                                <% } %>
+                                            </td>
 
-                                                        <img
-                                                            src="<%= product.image_path %>"
-                                                            class="rounded"
-                                                            style="
-                                                                width: 50px;
-                                                                height: 50px;
-                                                                object-fit: cover;
-                                                            "
-                                                            alt="<%= product.name %>"
-                                                        >
+                                            <!-- Code -->
 
-                                                    <% } else { %>
+                                            <td>
+                                                <span class="text-secondary">
+                                                    <%= product.code %>
+                                                </span>
+                                            </td>
 
-                                                        <span class="avatar">
-                                                            📦
-                                                        </span>
+                                            <!-- Name -->
 
-                                                    <% } %>
+                                            <td>
+                                                <div class="fw-bold"><%= product.name %></div>
+                                            </td>
 
-                                                </td>
+                                            <!-- Category -->
 
+                                            <td>
+                                                <%= product.category_name %>
+                                            </td>
 
-                                                <!-- Code -->
+                                            <!-- Price -->
 
-                                                <td>
+                                            <td>
+                                                <strong>
+                                                    <%= Number(product.price).toLocaleString() %>
+                                                </strong>
 
-                                                    <span class="text-secondary">
-                                                        <%= product.code %>
-                                                    </span>
+                                                บาท
+                                            </td>
 
-                                                </td>
+                                            <!-- Status -->
 
+                                            <td>
+                                                <% if (product.status === "ACTIVE") { %>
 
-                                                <!-- Name -->
+                                                <span class="badge bg-green-lt"> ACTIVE </span>
 
-                                                <td>
+                                                <% } else { %>
 
-                                                    <div class="fw-bold">
-                                                        <%= product.name %>
-                                                    </div>
+                                                <span class="badge bg-red-lt"> INACTIVE </span>
 
-                                                </td>
+                                                <% } %>
+                                            </td>
 
+                                            <!-- Actions -->
 
-                                                <!-- Category -->
+                                            <td>
+                                                <div class="d-flex justify-content-end gap-2">
+                                                    <a
+                                                        href="/admin/products/<%= product.product_id %>/edit"
+                                                        class="btn btn-sm btn-outline-primary"
+                                                    >
+                                                        แก้ไข
+                                                    </a>
 
-                                                <td>
-
-                                                    <%= product.category_name %>
-
-                                                </td>
-
-
-                                                <!-- Price -->
-
-                                                <td>
-
-                                                    <strong>
-                                                        <%= Number(product.price).toLocaleString() %>
-                                                    </strong>
-
-                                                    บาท
-
-                                                </td>
-
-
-                                                <!-- Status -->
-
-                                                <td>
-
-                                                    <% if (product.status === "ACTIVE") { %>
-
-                                                        <span class="badge bg-green-lt">
-                                                            ACTIVE
-                                                        </span>
-
-                                                    <% } else { %>
-
-                                                        <span class="badge bg-red-lt">
-                                                            INACTIVE
-                                                        </span>
-
-                                                    <% } %>
-
-                                                </td>
-
-
-                                                <!-- Actions -->
-
-                                                <td>
-
-                                                    <div class="d-flex justify-content-end gap-2">
-
-
-                                                        <a
-                                                            href="/admin/products/<%= product.product_id %>/edit"
-                                                            class="btn btn-sm btn-outline-primary"
-                                                        >
-                                                            แก้ไข
-                                                        </a>
-
-
-                                                        <a
-                                                            href="/admin/products/<%= product.product_id %>/variants"
-                                                            class="btn btn-sm btn-outline-secondary"
-                                                        >
-                                                            Variant
-                                                        </a>
-
-
-                                                    </div>
-
-                                                </td>
-
-
-                                            </tr>
-
+                                                    <a
+                                                        href="/admin/products/<%= product.product_id %>/variants"
+                                                        class="btn btn-sm btn-outline-secondary"
+                                                    >
+                                                        Variant
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
 
                                         <% }) %>
-
-
                                     </tbody>
-
                                 </table>
-
                             </div>
-
 
                             <!-- Footer -->
 
                             <div class="card-footer">
-
-                                <a
-                                    href="/admin"
-                                    class="btn btn-outline-secondary"
-                                >
+                                <a href="/admin" class="btn btn-outline-secondary">
                                     ← กลับ Dashboard
                                 </a>
-
                             </div>
-
-
                         </div>
 
-
-                    <% } %>
-
-
+                        <% } %>
+                    </div>
                 </div>
-
             </div>
-
         </div>
 
-    </div>
-
-
-    <script src="/js/tabler.min.js"></script>
-
-</body>
-
+        <script src="/js/tabler.min.js"></script>
+    </body>
 </html>

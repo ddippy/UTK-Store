@@ -234,6 +234,8 @@
                                         action="/cart/add"
                                         method="POST"
                                         id="add-to-cart-form"
+                                        <% if (!locals.isUserLoggedIn) { %>data-require-login<% } %>
+                                        data-login-return-to="/products/<%= product.product_id %>"
                                     >
 
 
@@ -627,6 +629,15 @@
 
                 // ป้องกัน Form ส่งแบบปกติ
                 event.preventDefault();
+
+                // ผู้ใช้ที่ยังไม่ Login เปิด Modal แล้วเก็บฟอร์มไว้ส่งต่อหลัง Login
+                if (addToCartForm.hasAttribute("data-require-login")) {
+                    window.openStoreLoginModal?.(
+                        addToCartForm.getAttribute("data-login-return-to"),
+                        addToCartForm,
+                    );
+                    return;
+                }
 
 
                 // เก็บข้อมูลจาก Form

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="th">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>ประวัติการใช้งาน | UTK-Store Admin</title>
+        <link rel="stylesheet" href="/css/tabler.min.css" />
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
+    <body>
+        <header class="navbar navbar-expand-md d-print-none">
+            <div class="container-xl">
+                <a class="navbar-brand" href="/admin">UTK-Store Admin</a>
+                <nav class="navbar-nav flex-row ms-auto gap-3 align-items-center">
+                    <a class="nav-link" href="/admin/logs" aria-current="page">ประวัติการใช้งาน</a>
+                    <a class="nav-link" href="/admin">Dashboard</a>
+                    <form action="/logout" method="POST">
+                        <button class="btn btn-outline-danger" type="submit">ออกจากระบบ</button>
+                    </form>
+                </nav>
+            </div>
+        </header>
+
+        <main class="page-wrapper">
+            <div class="page-header">
+                <div class="container-xl">
+                    <h1 class="page-title">ประวัติการใช้งาน</h1>
+                    <p class="text-secondary mb-0">
+                        ตรวจสอบว่าใครทำอะไร กับข้อมูลส่วนไหน และผลเป็นอย่างไร
+                    </p>
+                </div>
+            </div>
+
+            <div class="page-body">
+                <div class="container-xl">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">ค้นหาและกรองรายการ</h2>
+                                <div class="text-secondary mt-1">พบทั้งหมด <%= total %> รายการ</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form action="/admin/logs" method="GET" class="row g-3 align-items-end">
+                                <div class="col-12 col-md-6 col-xl-3">
+                                    <label class="form-label" for="log-from">ตั้งแต่วันที่</label>
+                                    <input class="form-control" id="log-from" type="date" name="from" value="<%= filters.from %>">
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-3">
+                                    <label class="form-label" for="log-to">ถึงวันที่</label>
+                                    <input class="form-control" id="log-to" type="date" name="to" value="<%= filters.to %>">
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-3">
+                                    <label class="form-label" for="log-username">บัญชีผู้ใช้</label>
+                                    <input class="form-control" id="log-username" name="username" maxlength="100" value="<%= filters.username %>" placeholder="ค้นหาชื่อบัญชี">
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-3">
+                                    <label class="form-label" for="log-event">ประเภทเหตุการณ์</label>
+                                    <select class="form-select" id="log-event" name="eventType">
+                                        <option value="">ทุกประเภท</option>
+                                        <% Object.entries(eventLabels).forEach(([value, label]) => { %>
+                                            <option value="<%= value %>" <%= filters.eventType === value ? "selected" : "" %>><%= label %></option>
+                                        <% }) %>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-3">
+                                    <label class="form-label" for="log-outcome">ผลการทำงาน</label>
+                                    <select class="form-select" id="log-outcome" name="outcome">
+                                        <option value="">ทุกผลลัพธ์</option>
+                                        <option value="success" <%= filters.outcome === "success" ? "selected" : "" %>>สำเร็จ</option>
+                                        <option value="failure" <%= filters.outcome === "failure" ? "selected" : "" %>>ไม่สำเร็จ</option>
+                                        <option value="denied" <%= filters.outcome === "denied" ? "selected" : "" %>>ถูกปฏิเสธ</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 d-flex gap-2">
+                                    <button class="btn btn-primary" type="submit">ค้นหา</button>
+                                    <a class="btn btn-outline-secondary" href="/admin/logs">ล้างตัวกรอง</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">รายการประวัติการใช้งาน</h2>
+                                <div class="text-secondary mt-1">แสดงหน้าละ 50 รายการ เรียงจากใหม่ไปเก่า</div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-vcenter card-table">
+                                <thead>
+                                    <tr>
+                                        <th>วันและเวลา</th>
+                                        <th>บัญชี</th>
+                                        <th>เหตุการณ์</th>
+                                        <th>ข้อมูลที่เกี่ยวข้อง</th>
+                                        <th>ผล</th>
+                                        <th>รายละเอียด</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% logs.forEach(log => { %>
+                                        <tr>
+                                            <td class="text-nowrap"><%= new Date(log.occurred_at).toLocaleString("th-TH") %></td>
+                                            <td>
+                                                <strong><%= log.actor_username %></strong>
+                                                <div class="text-secondary small"><%= log.actor_role || (log.actor_type === "admin" ? "ผู้ดูแลระบบ" : log.actor_type === "user" ? "ผู้ใช้" : "ไม่เข้าสู่ระบบ") %></div>
+                                            </td>
+                                            <td>
+                                                <%= eventLabels[log.event_type] || log.event_type %>
+                                                <div class="text-secondary small"><%= log.http_method || "" %> <%= log.request_path || "" %></div>
+                                            </td>
+                                            <td>
+                                                <%= log.resource_type %>
+                                                <% if (log.resource_id) { %><div class="text-secondary small">รหัส: <%= log.resource_id %></div><% } %>
+                                            </td>
+                                            <td>
+                                                <% if (log.outcome === "success") { %>
+                                                    <span class="badge bg-green-lt">สำเร็จ</span>
+                                                <% } else if (log.outcome === "denied") { %>
+                                                    <span class="badge bg-orange-lt">ถูกปฏิเสธ</span>
+                                                <% } else { %>
+                                                    <span class="badge bg-red-lt">ไม่สำเร็จ</span>
+                                                <% } %>
+                                            </td>
+                                            <td class="text-secondary small"><%= JSON.stringify(log.details) %></td>
+                                        </tr>
+                                    <% }) %>
+                                    <% if (logs.length === 0) { %>
+                                        <tr>
+                                            <td colspan="6" class="text-center text-secondary py-4">ไม่พบประวัติตามตัวกรอง</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <span class="text-secondary">หน้า <%= page %> จาก <%= pageCount %></span>
+                            <div class="btn-list">
+                                <a class="btn btn-outline-secondary <%= page <= 1 ? "disabled" : "" %>" href="<%= previousUrl %>" aria-disabled="<%= page <= 1 %>">ก่อนหน้า</a>
+                                <a class="btn btn-outline-secondary <%= page >= pageCount ? "disabled" : "" %>" href="<%= nextUrl %>" aria-disabled="<%= page >= pageCount %>">ถัดไป</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script src="/js/tabler.min.js"></script>
+    </body>
+</html>

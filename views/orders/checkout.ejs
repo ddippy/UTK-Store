@@ -1,388 +1,295 @@
 <!DOCTYPE html>
 <html lang="th">
+    <head>
+        <meta charset="UTF-8" />
 
-<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta charset="UTF-8">
+        <title>สั่งซื้อ | UTK-Store</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
+        <link rel="stylesheet" href="/css/tabler.min.css" />
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
 
-    <title>สั่งซื้อ | UTK-Store</title>
+    <body>
+        <!-- ========================= -->
+        <!-- Navbar -->
+        <!-- ========================= -->
 
-    <link
-        rel="stylesheet"
-        href="/css/tabler.min.css"
-    >
-    <link rel="stylesheet" href="/css/style.css">
+        <%- include("../partials/user-navbar") %>
 
-</head>
+        <!-- ========================= -->
+        <!-- Page -->
+        <!-- ========================= -->
 
+        <div class="page">
+            <div class="page-wrapper">
+                <!-- ========================= -->
+                <!-- Page Header -->
+                <!-- ========================= -->
 
-<body>
+                <div class="page-header d-print-none">
+                    <div class="container-xl">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h2 class="page-title">ยืนยันการสั่งซื้อ</h2>
 
-
-    <!-- ========================= -->
-    <!-- Navbar -->
-    <!-- ========================= -->
-
-    <%- include("../partials/user-navbar") %>
-
-
-    <!-- ========================= -->
-    <!-- Page -->
-    <!-- ========================= -->
-
-    <div class="page">
-
-        <div class="page-wrapper">
-
-
-            <!-- ========================= -->
-            <!-- Page Header -->
-            <!-- ========================= -->
-
-            <div class="page-header d-print-none">
-
-                <div class="container-xl">
-
-                    <div class="row align-items-center">
-
-                        <div class="col">
-
-                            <h2 class="page-title">
-                                ยืนยันการสั่งซื้อ
-                            </h2>
-
-                            <div class="text-secondary mt-1">
-                                ตรวจสอบข้อมูลผู้สั่งซื้อก่อนยืนยันคำสั่งซื้อ
+                                <div class="text-secondary mt-1">
+                                    ตรวจสอบข้อมูลผู้สั่งซื้อก่อนยืนยันคำสั่งซื้อ
+                                </div>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
 
-            </div>
+                <!-- ========================= -->
+                <!-- Page Body -->
+                <!-- ========================= -->
 
+                <div class="page-body">
+                    <div class="container-xl">
+                        <div class="row row-cards">
+                            <!-- ========================= -->
+                            <!-- Customer Information -->
+                            <!-- ========================= -->
 
-
-            <!-- ========================= -->
-            <!-- Page Body -->
-            <!-- ========================= -->
-
-            <div class="page-body">
-
-                <div class="container-xl">
-
-                    <div class="row row-cards">
-
-
-                        <!-- ========================= -->
-                        <!-- Customer Information -->
-                        <!-- ========================= -->
-
-                        <div class="col-lg-8">
-
-                            <form
-                                id="checkout-form"
-                                action="/orders/create"
-                                method="POST"
-                                enctype="multipart/form-data"
-                            >
-
-                                <!-- Input ของ Token -->
-                                <input 
-                                    type="hidden"
-                                    name="checkout_token"
-                                    value="<%= checkoutToken %>"
+                            <div class="col-lg-8">
+                                <form
+                                    id="checkout-form"
+                                    action="/orders/create"
+                                    method="POST"
+                                    enctype="multipart/form-data"
                                 >
+                                    <!-- Input ของ Token -->
+                                    <input
+                                        type="hidden"
+                                        name="checkout_token"
+                                        value="<%= checkoutToken %>"
+                                    />
 
-                                <div class="card">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">ข้อมูลผู้สั่งซื้อ</h3>
+                                        </div>
 
+                                        <div class="card-body">
+                                            <!-- Name -->
 
-                                    <div class="card-header">
+                                            <div class="mb-4">
+                                                <label class="form-label"> ชื่อ-นามสกุล </label>
 
-                                        <h3 class="card-title">
-                                            ข้อมูลผู้สั่งซื้อ
-                                        </h3>
+                                                <input
+                                                    type="text"
+                                                    name="customer_name"
+                                                    value="<%= user.name %>"
+                                                    class="form-control"
+                                                    required
+                                                />
 
+                                                <div class="form-hint">
+                                                    ชื่อที่ใช้สำหรับคำสั่งซื้อ
+                                                </div>
+                                            </div>
+
+                                            <!-- Student ID -->
+
+                                            <div class="mb-4">
+                                                <label class="form-label"> รหัสนักศึกษา </label>
+
+                                                <input
+                                                    type="text"
+                                                    name="student_id"
+                                                    value="<%= user.student_id %>"
+                                                    class="form-control"
+                                                    required
+                                                />
+
+                                                <div class="form-hint">
+                                                    รหัสนักศึกษาของผู้สั่งซื้อ
+                                                </div>
+                                            </div>
+
+                                            <!-- Phone -->
+
+                                            <div class="mb-4">
+                                                <label class="form-label"> เบอร์โทรศัพท์ </label>
+
+                                                <input
+                                                    type="text"
+                                                    name="phone"
+                                                    value="<%= user.phone %>"
+                                                    class="form-control"
+                                                    required
+                                                />
+
+                                                <div class="form-hint">
+                                                    เบอร์โทรศัพท์สำหรับติดต่อ
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Footer -->
+
+                                        <div class="card-footer d-flex justify-content-between">
+                                            <a href="/cart" class="btn btn-outline-secondary">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="24"
+                                                    height="24"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-left-dashed"
+                                                >
+                                                    <path
+                                                        stroke="none"
+                                                        d="M0 0h24v24H0z"
+                                                        fill="none"
+                                                    />
+                                                    <path d="M5 12h6m3 0h1.5m3 0h.5" />
+                                                    <path d="M5 12l4 4" />
+                                                    <path d="M5 12l4 -4" />
+                                                </svg>
+
+                                                กลับไปตะกร้า
+                                            </a>
+
+                                            <button type="submit" class="btn btn-primary">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="24"
+                                                    height="24"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-check"
+                                                >
+                                                    <path
+                                                        stroke="none"
+                                                        d="M0 0h24v24H0z"
+                                                        fill="none"
+                                                    />
+                                                    <path d="M5 12l5 5l10 -10" />
+                                                </svg>
+
+                                                ยืนยันการสั่งซื้อ
+                                            </button>
+                                        </div>
                                     </div>
+                                </form>
+                            </div>
 
+                            <!-- ========================= -->
+                            <!-- Information -->
+                            <!-- ========================= -->
 
+                            <div class="col-lg-4">
+                                <div class="card mb-3">
+                                    <!-- QR Code ร้าน -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">QR Code สำหรับชำระเงิน</h3>
+                                        </div>
+
+                                        <div class="card-body text-center">
+                                            <!-- QR Code ของร้าน -->
+                                            <img
+                                                src="/images/payment-qr.jpg"
+                                                alt="QR Code สำหรับชำระเงิน"
+                                                class="img-fluid rounded"
+                                                style="max-width: 280px"
+                                            />
+                                            <div class="text-secondary mt-3">
+                                                สแกน QR Code เพื่อชำระเงิน
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- แนบสลิปการชำระเงิน -->
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        <h3 class="card-title">แนบสลิปการชำระเงิน</h3>
+                                    </div>
 
                                     <div class="card-body">
+                                        <!-- ช่องเลือกไฟล์สลิป -->
+                                        <label class="form-label"> หลักฐานการชำระเงิน </label>
 
+                                        <input
+                                            type="file"
+                                            name="payment_slip"
+                                            form="checkout-form"
+                                            class="form-control"
+                                            accept="image/*"
+                                            required
+                                        />
 
-                                        <!-- Name -->
-
-                                        <div class="mb-4">
-
-                                            <label class="form-label">
-
-                                                ชื่อ-นามสกุล
-
-                                            </label>
-
-
-                                            <input
-                                                type="text"
-                                                name="customer_name"
-                                                value="<%= user.name %>"
-                                                class="form-control"
-                                                required
-                                            >
-
-
-                                            <div class="form-hint">
-                                                ชื่อที่ใช้สำหรับคำสั่งซื้อ
-                                            </div>
-
+                                        <div class="form-hint mt-2">
+                                            รองรับไฟล์รูปภาพ JPG, PNG, WEBP ขนาดไม่เกิน 2 MB
                                         </div>
-
-
-
-                                        <!-- Student ID -->
-
-                                        <div class="mb-4">
-
-                                            <label class="form-label">
-
-                                                รหัสนักศึกษา
-
-                                            </label>
-
-
-                                            <input
-                                                type="text"
-                                                name="student_id"
-                                                value="<%= user.student_id %>"
-                                                class="form-control"
-                                                required
-                                            >
-
-
-                                            <div class="form-hint">
-                                                รหัสนักศึกษาของผู้สั่งซื้อ
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <!-- Phone -->
-
-                                        <div class="mb-4">
-
-                                            <label class="form-label">
-
-                                                เบอร์โทรศัพท์
-
-                                            </label>
-
-
-                                            <input
-                                                type="text"
-                                                name="phone"
-                                                value="<%= user.phone %>"
-                                                class="form-control"
-                                                required
-                                            >
-
-
-                                            <div class="form-hint">
-                                                เบอร์โทรศัพท์สำหรับติดต่อ
-                                            </div>
-
-                                        </div>
-
-
                                     </div>
-
-
-
-                                    <!-- Footer -->
-
-                                    <div class="card-footer d-flex justify-content-between">
-
-
-                                        <a
-                                            href="/cart"
-                                            class="btn btn-outline-secondary"
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-left-dashed">
-	                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-	                                            <path d="M5 12h6m3 0h1.5m3 0h.5" />
-	                                            <path d="M5 12l4 4" />
-	                                            <path d="M5 12l4 -4" />
-                                            </svg>
-
-                                            กลับไปตะกร้า
-                                        </a>
-
-
-                                        <button
-                                            type="submit"
-                                            class="btn btn-primary"
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-check">
-	                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-	                                            <path d="M5 12l5 5l10 -10" />
-                                            </svg>
-
-                                            ยืนยันการสั่งซื้อ
-                                        </button>
-
-
-                                    </div>
-
-
                                 </div>
 
-                            </form>
+                                <!-- Warning -->
 
-                        </div>
-
-
-
-                        <!-- ========================= -->
-                        <!-- Information -->
-                        <!-- ========================= -->
-
-                        <div class="col-lg-4">
-
-                            <div class="card mb-3">
-
-                                <!-- QR Code ร้าน -->
                                 <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <span class="avatar bg-orange-lt me-3">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="24"
+                                                    height="24"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-alert-circle"
+                                                >
+                                                    <path
+                                                        stroke="none"
+                                                        d="M0 0h24v24H0z"
+                                                        fill="none"
+                                                    />
+                                                    <path
+                                                        d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"
+                                                    />
+                                                    <path d="M12 8v4" />
+                                                    <path d="M12 16h.01" />
+                                                </svg>
+                                            </span>
 
-                                    <div class="card-header">
-                                        <h3 class="card-title">
-                                            QR Code สำหรับชำระเงิน
-                                        </h3>
-                                    </div>
+                                            <div>
+                                                <div class="fw-bold">ก่อนยืนยัน</div>
 
-                                    <div class="card-body text-center">
-
-                                        <!-- QR Code ของร้าน -->
-                                        <img
-                                            src="/images/payment-qr.jpg"
-                                            alt="QR Code สำหรับชำระเงิน"
-                                            class="img-fluid rounded"
-                                            style="max-width: 280px;"
-                                        >
-                                        <div class="text-secondary mt-3">
-                                            สแกน QR Code เพื่อชำระเงิน
-                                        </div>
-
-                                    </div>
-                                    
-                                </div>
-
-                            </div>
-
-
-                            <!-- แนบสลิปการชำระเงิน -->
-                            <div class="card mb-3">
-
-                                <div class="card-header">
-                                    <h3 class="card-title">
-                                    แนบสลิปการชำระเงิน
-                                    </h3>
-                                </div>
-
-                                <div class="card-body">
-
-                                    <!-- ช่องเลือกไฟล์สลิป -->
-                                    <label class="form-label">
-                                        หลักฐานการชำระเงิน
-                                    </label>
-
-                                    <input
-                                        type="file"
-                                        name="payment_slip"
-                                        form="checkout-form"
-                                        class="form-control"
-                                        accept="image/*"
-                                        required
-                                    >
-
-                                    <div class="form-hint mt-2">
-                                        รองรับไฟล์รูปภาพ JPG, PNG, WEBP ขนาดไม่เกิน 2 MB
-                                </div>
-
-                                </div>
-
-                            </div>
-
-
-
-                            <!-- Warning -->
-
-                            <div class="card">
-
-                                <div class="card-body">
-
-                                    <div class="d-flex">
-
-                                        <span
-                                            class="avatar bg-orange-lt me-3"
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-alert-circle">
-	                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-	                                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-	                                            <path d="M12 8v4" />
-	                                            <path d="M12 16h.01" />
-                                            </svg>
-                                        </span>
-
-
-                                        <div>
-
-                                            <div class="fw-bold">
-                                                ก่อนยืนยัน
+                                                <div class="text-secondary mt-1">
+                                                    เมื่อยืนยันแล้ว ระบบจะสร้างคำสั่งซื้อ
+                                                    จากสินค้าในตะกร้าของคุณ
+                                                </div>
                                             </div>
-
-                                            <div class="text-secondary mt-1">
-                                                เมื่อยืนยันแล้ว
-                                                ระบบจะสร้างคำสั่งซื้อ
-                                                จากสินค้าในตะกร้าของคุณ
-                                            </div>
-
                                         </div>
-
                                     </div>
-
                                 </div>
-
                             </div>
-
-
                         </div>
-
-
                     </div>
-
                 </div>
-
             </div>
-
-
         </div>
 
-    </div>
+        <!-- Tabler JS -->
 
+        <script src="/js/tabler.min.js"></script>
 
-
-    <!-- Tabler JS -->
-
-    <script src="/js/tabler.min.js"></script>
-
-
-    <%- include("../partials/store-footer") %>
-</body>
-
+        <%- include("../partials/store-footer") %>
+    </body>
 </html>

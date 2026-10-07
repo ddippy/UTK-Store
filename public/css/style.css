@@ -1,59 +1,58 @@
 html {
-  scrollbar-gutter: stable;
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
 }
 
 body.modal-open {
     padding-right: 0 !important;
 }
 
-
 /* ========================================
    Navbar / Navbar Animation
 ======================================== */
 
 .user-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1030;
-  background: #fff;
-  transition: box-shadow 0.25s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1030;
+    background: #fff;
+    transition: box-shadow 0.25s ease;
 }
 
 .navbar-main {
-  padding: 16px 0;
-  transition: padding 0.25s ease;
+    padding: 16px 0;
+    transition: padding 0.25s ease;
 }
 
 .navbar-extra {
-  max-height: 70px;
-  opacity: 1;
-  overflow: visible;
-  transition:
-    max-height 0.25s ease,
-    opacity 0.2s ease;
+    max-height: 70px;
+    opacity: 1;
+    overflow: visible;
+    transition:
+        max-height 0.25s ease,
+        opacity 0.2s ease;
 }
 
 .user-navbar.scrolled {
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 .user-navbar.scrolled .navbar-extra {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
 }
 
 .user-navbar.scrolled .navbar-main {
-  padding: 8px 0;
+    padding: 8px 0;
 }
 
 /* จองพื้นที่ใต้ Navbar */
 .user-navbar-spacer {
-  height: 180px;
+    height: 180px;
 }
-
 
 .user-navbar .btn-icon {
     width: 40px;
@@ -70,29 +69,28 @@ body.modal-open {
     border-radius: 50%;
 }
 
-
 /* ========================================
    Toast Animation
 ======================================== */
 
 /* สถานะเริ่มต้น */
 #cart-toast {
-  display: block;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-20px);
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
 
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease,
-    visibility 0.3s ease;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease,
+        visibility 0.3s ease;
 }
 
 /* ตอนแสดง */
 #cart-toast.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 #product-toast {
@@ -112,81 +110,79 @@ body.modal-open {
     transform: translateY(0);
 }
 
-
 /* ========================================
    Order Success Modal
 ======================================== */
 
 #order-success-modal {
-  opacity: 0;
-  transition: opacity 0.25s ease;
+    opacity: 0;
+    transition: opacity 0.25s ease;
 }
 
 #order-success-modal.show {
-  opacity: 1;
+    opacity: 1;
 }
 
 #order-success-box {
-  opacity: 0;
-  transform: translateY(35px) scale(0.9);
-  transition:
-    opacity 0.35s ease,
-    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    opacity: 0;
+    transform: translateY(35px) scale(0.9);
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 #order-success-modal.show #order-success-box {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
 /* Success Icon */
 
 #success-icon {
-  transform: scale(0);
+    transform: scale(0);
 }
 
 #order-success-modal.show #success-icon {
-  animation: successPop 0.5s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation: successPop 0.5s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 @keyframes successPop {
-  0% {
-    transform: scale(0);
-  }
+    0% {
+        transform: scale(0);
+    }
 
-  70% {
-    transform: scale(1.15);
-  }
+    70% {
+        transform: scale(1.15);
+    }
 
-  100% {
-    transform: scale(1);
-  }
+    100% {
+        transform: scale(1);
+    }
 }
 
 /* Confetti */
 
 .confetti {
-  position: fixed;
-  top: -20px;
-  width: 9px;
-  height: 14px;
-  z-index: 10000;
-  pointer-events: none;
-  animation: confettiFall linear forwards;
+    position: fixed;
+    top: -20px;
+    width: 9px;
+    height: 14px;
+    z-index: 10000;
+    pointer-events: none;
+    animation: confettiFall linear forwards;
 }
 
 @keyframes confettiFall {
-  0% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-    opacity: 1;
-  }
+    0% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+        opacity: 1;
+    }
 
-  100% {
-    transform: translate3d(var(--x), 110vh, 0) rotate(var(--rotate));
-    opacity: 0;
-  }
+    100% {
+        transform: translate3d(var(--x), 110vh, 0) rotate(var(--rotate));
+        opacity: 0;
+    }
 }
-
 
 /* ========================================
    User Login Modal (Hardware & CPU Optimized)
@@ -288,7 +284,6 @@ body.modal-open {
 }
 
 @media (max-width: 576px) {
-
     #user-login-modal .modal-dialog {
         margin: 12px;
     }
@@ -307,158 +302,158 @@ body.modal-open {
 ======================================== */
 
 .store-footer {
-  margin-top: 2rem;
-  background: #fff;
-  border-top: 1px solid #e6e8eb;
+    margin-top: 2rem;
+    background: #fff;
+    border-top: 1px solid #e6e8eb;
 }
 
 .store-footer-brand {
-  display: inline-block;
-  margin-bottom: .5rem;
-  text-decoration: none;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    text-decoration: none;
 }
 
 .store-logo-link {
-  align-items: center;
-  display: inline-flex;
-  flex: 0 0 auto;
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
 }
 
 .store-logo-navbar {
-  display: block;
-  height: auto;
-  max-height: 48px;
-  width: 138px;
+    display: block;
+    height: auto;
+    max-height: 48px;
+    width: 138px;
 }
 
 .store-logo-footer {
-  display: block;
-  height: auto;
-  max-height: 64px;
-  width: 192px;
+    display: block;
+    height: auto;
+    max-height: 64px;
+    width: 192px;
 }
 
 .store-footer-description {
-  color: #667382;
-  max-width: 22rem;
+    color: #667382;
+    max-width: 22rem;
 }
 
 .store-footer-heading {
-  color: #182433;
-  font-size: .95rem;
-  font-weight: 700;
-  margin: 0 0 .75rem;
+    color: #182433;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
 }
 
 .store-footer-links {
-  display: grid;
-  gap: .5rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    display: grid;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .store-footer-links a {
-  color: #667382;
-  text-decoration: none;
+    color: #667382;
+    text-decoration: none;
 }
 
 .store-footer-links a:hover {
-  color: var(--tblr-primary);
+    color: var(--tblr-primary);
 }
 
 .store-footer-bottom {
-  border-top: 1px solid #e6e8eb;
-  color: #8491a1;
-  display: flex;
-  flex-wrap: wrap;
-  font-size: .8rem;
-  gap: .5rem 1.5rem;
-  justify-content: space-between;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
+    border-top: 1px solid #e6e8eb;
+    color: #8491a1;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+    gap: 0.5rem 1.5rem;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
 }
 
 .store-category-dropdown {
-  position: relative;
+    position: relative;
 }
 
 .store-category-dropdown > summary {
-  align-items: center;
-  cursor: pointer;
-  display: inline-flex;
-  gap: .4rem;
-  list-style: none;
+    align-items: center;
+    cursor: pointer;
+    display: inline-flex;
+    gap: 0.4rem;
+    list-style: none;
 }
 
 .store-category-dropdown > summary::-webkit-details-marker {
-  display: none;
+    display: none;
 }
 
 .store-category-chevron {
-  transition: transform .15s ease;
+    transition: transform 0.15s ease;
 }
 
 .store-category-dropdown[open] .store-category-chevron {
-  transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 
 .store-category-menu {
-  background: #fff;
-  border: 1px solid #e6e8eb;
-  border-radius: .5rem;
-  box-shadow: 0 .5rem 1.25rem rgba(24, 36, 51, .12);
-  left: 0;
-  min-width: 220px;
-  padding: .4rem;
-  position: absolute;
-  top: calc(100% + .5rem);
-  z-index: 1040;
+    background: #fff;
+    border: 1px solid #e6e8eb;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1.25rem rgba(24, 36, 51, 0.12);
+    left: 0;
+    min-width: 220px;
+    padding: 0.4rem;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    z-index: 1040;
 }
 
 .store-category-link,
 .store-category-empty {
-  border-radius: .35rem;
-  color: #182433;
-  display: block;
-  padding: .55rem .7rem;
-  text-decoration: none;
+    border-radius: 0.35rem;
+    color: #182433;
+    display: block;
+    padding: 0.55rem 0.7rem;
+    text-decoration: none;
 }
 
 .store-category-link:hover,
 .store-category-link:focus-visible {
-  background: #f2f5f9;
-  color: var(--tblr-primary);
+    background: #f2f5f9;
+    color: var(--tblr-primary);
 }
 
 .store-category-empty {
-  color: #667382;
+    color: #667382;
 }
 
 .btn.user-role-ring {
-  border-width: 2px;
-  border-style: solid;
-  box-shadow: 0 0 0 2px #fff;
+    border-width: 2px;
+    border-style: solid;
+    box-shadow: 0 0 0 2px #fff;
 }
 
 .btn.user-role-ring-admin {
-  border-color: #7c3aed;
-  color: #7c3aed;
+    border-color: #7c3aed;
+    color: #7c3aed;
 }
 
 .btn.user-role-ring-manager {
-  border-color: #206bc4;
-  color: #206bc4;
+    border-color: #206bc4;
+    color: #206bc4;
 }
 
 .btn.user-role-ring-staff {
-  border-color: #0ca678;
-  color: #0ca678;
+    border-color: #0ca678;
+    color: #0ca678;
 }
 
 .btn.user-role-ring-user {
-  border-color: #8a94a6;
-  color: #667085;
+    border-color: #8a94a6;
+    color: #667085;
 }
 
 /* Links use color and focus states for affordance instead of underlines. */
@@ -466,8 +461,5 @@ a,
 a:hover,
 a:focus,
 a:focus-visible {
-  text-decoration: none;
+    text-decoration: none;
 }
-
-
-

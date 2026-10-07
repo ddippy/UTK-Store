@@ -1,4 +1,5 @@
-SET client_encoding = 'UTF8';
+SET
+    client_encoding = 'UTF8';
 
 INSERT INTO
     categories (name)

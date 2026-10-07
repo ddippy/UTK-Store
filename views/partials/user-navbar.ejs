@@ -59,7 +59,7 @@
         </a>
     <% } else { %>
         <!-- ยังไม่ล็อกอิน -> เด้ง Modal ล็อกอิน -->
-        <button type="button" class="btn btn-icon rounded-circle bg-light" data-bs-toggle="modal" data-bs-target="#user-login-modal" title="สถานะคำสั่งซื้อ">
+        <button type="button" class="btn btn-icon rounded-circle bg-light js-open-login-modal" data-login-return-to="/orders/my-orders" title="สถานะคำสั่งซื้อ">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-progress-alert">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                 <path d="M10 20.777a8.942 8.942 0 0 1 -2.48 -.969" />
@@ -78,22 +78,21 @@
         const navbarRoleName = String(locals.role || "USER").toUpperCase();
         const navbarRoleClass = ({ ADMIN: "admin", MANAGER: "manager", STAFF: "staff", USER: "user" })[navbarRoleName] || "user";
         const navbarRoleLabel = ({ ADMIN: "ผู้ดูแลระบบ", MANAGER: "ผู้จัดการ", STAFF: "เจ้าหน้าที่", USER: "ผู้ใช้ทั่วไป" })[navbarRoleName] || navbarRoleName;
-        const navbarRoleHref = ["MANAGER", "STAFF"].includes(navbarRoleName) ? "/admin/orders" : "/orders/my-orders";
     %>
         <% if (locals.isUserLoggedIn) { %>
-            <a
-                href="<%= navbarRoleHref %>"
+            <button
+                type="button"
                 class="btn btn-icon rounded-circle bg-light user-role-ring user-role-ring-<%= navbarRoleClass %>"
-                title="บทบาท: <%= navbarRoleLabel %>"
-                aria-label="บัญชีผู้ใช้ บทบาท <%= navbarRoleLabel %>"
+                title="ออกจากระบบ (<%= navbarRoleLabel %>)"
+                aria-label="ออกจากระบบ บัญชีบทบาท <%= navbarRoleLabel %>"
+                data-bs-toggle="modal"
+                data-bs-target="#user-logout-modal"
             >
         <% } else { %>
             <button
                 id="user-login-button"
                 type="button"
-                class="btn btn-icon rounded-circle bg-light"
-                data-bs-toggle="modal"
-                data-bs-target="#user-login-modal"
+                class="btn btn-icon rounded-circle bg-light js-open-login-modal"
                 title="เข้าสู่ระบบ"
                 aria-label="เข้าสู่ระบบ"
             >
@@ -104,7 +103,7 @@
                     <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
                 </svg>
         <% if (locals.isUserLoggedIn) { %>
-            </a>
+            </button>
         <% } else { %>
             </button>
         <% } %>
@@ -122,7 +121,7 @@
         </a>
     <% } else { %>
         <!-- ยังไม่ล็อกอิน -> เด้ง Modal ล็อกอิน -->
-        <button type="button" class="btn btn-icon rounded-circle bg-light" data-bs-toggle="modal" data-bs-target="#user-login-modal" title="ตะกร้าสินค้า">
+        <button type="button" class="btn btn-icon rounded-circle bg-light js-open-login-modal" data-login-return-to="/cart" title="ตะกร้าสินค้า">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-bag">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                 <path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304" />
@@ -172,7 +171,11 @@
         		<nav class="d-flex gap-4">
             		<a href="/" class="text-dark text-decoration-none">หน้าแรก</a>
             		<a href="/products" class="text-dark text-decoration-none">สินค้า</a>
-            		<a href="/orders/my-orders" class="text-dark text-decoration-none">คำสั่งซื้อ</a>
+                    <% if (locals.isUserLoggedIn) { %>
+                        <a href="<%= ["MANAGER", "STAFF"].includes(String(locals.role || "USER").toUpperCase()) ? "/admin/orders" : "/orders/my-orders" %>" class="text-dark text-decoration-none">คำสั่งซื้อ</a>
+                    <% } else { %>
+                        <a href="/orders/my-orders" class="text-dark text-decoration-none js-open-login-modal" data-login-return-to="/orders/my-orders">คำสั่งซื้อ</a>
+                    <% } %>
             		<a href="/about" class="text-dark text-decoration-none">เกี่ยวกับเรา</a>
         		</nav>
 
@@ -302,7 +305,29 @@
     </div>
 </div>
 
-<script src="/js/tabler.min.js"></script>
+<% if (locals.isUserLoggedIn) { %>
+<div class="modal modal-blur fade" id="user-logout-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-3">ออกจากระบบ</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="ปิด"></button>
+            </div>
+            <div class="modal-body">
+                ต้องการออกจากระบบใช่หรือไม่?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                <form action="/logout" method="POST">
+                    <button type="submit" class="btn btn-danger">ออกจากระบบ</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<% } %>
+
+<script src="/js/bootstrap.bundle.min.js"></script>
 
 <script>
     const navbar = document.getElementById("user-navbar");
@@ -323,33 +348,46 @@
 
     window.addEventListener("pageshow", updateNavbar);
 
-	// Login สำเร็จแล้วกลับมาหน้าเดิม
 	const loginReturnTo = document.getElementById("login-return-to");
+    const loginModalElement = document.getElementById("user-login-modal");
+    const loginForm = document.querySelector("#user-login-form");
+    let pendingProtectedForm = null;
+    let requestedLoginReturnTo = null;
 
-    if (loginReturnTo) {
-        loginReturnTo.value =
-            window.location.pathname + window.location.search;
-    }
+    const currentPageUrl = () => window.location.pathname + window.location.search;
+    const openLoginModal = (returnTo) => {
+        requestedLoginReturnTo = returnTo || currentPageUrl();
+        if (!loginModalElement || !window.bootstrap?.Modal) return;
+        window.bootstrap.Modal.getOrCreateInstance(loginModalElement).show();
+    };
 
-	document.addEventListener("DOMContentLoaded", function () {
-
-    	const loginButton = document.getElementById("user-login-button");
-    	const loginModalElement = document.getElementById("user-login-modal");
-
-    	if (loginButton && loginModalElement) {
-
-        	const loginModal =
-            	bootstrap.Modal.getOrCreateInstance(loginModalElement);
-
-        	loginButton.addEventListener("click", function () {
-            	loginModal.show();
+    if (loginModalElement && loginReturnTo) {
+        loginModalElement.addEventListener("show.bs.modal", (event) => {
+            const triggerReturnTo = event.relatedTarget?.getAttribute("data-login-return-to");
+            loginReturnTo.value = requestedLoginReturnTo || triggerReturnTo || currentPageUrl();
+            requestedLoginReturnTo = null;
         });
 
-    	}
+        loginModalElement.addEventListener("hidden.bs.modal", () => {
+            pendingProtectedForm = null;
+        });
+    }
 
-	});
+    document.addEventListener("click", (event) => {
+        const loginTrigger = event.target.closest?.(".js-open-login-modal");
+        if (!loginTrigger) return;
 
-	const loginForm = document.querySelector("#user-login-form");
+        event.preventDefault();
+        openLoginModal(
+            loginTrigger.getAttribute("data-login-return-to") || currentPageUrl(),
+        );
+    });
+
+    window.openStoreLoginModal = (returnTo, formToResume = null) => {
+        pendingProtectedForm = formToResume;
+        openLoginModal(returnTo || currentPageUrl());
+        loginForm?.elements.username?.focus();
+    };
 
 if (loginForm) {
 
@@ -389,8 +427,16 @@ if (loginForm) {
                 return;
             }
 
-            // Login สำเร็จ
-            window.location.href = result.redirect;
+            // Login สำเร็จ: ถ้ามี action ที่รออยู่ ให้ส่งฟอร์มนั้นต่อทันที
+            if (pendingProtectedForm && pendingProtectedForm.isConnected) {
+                const formToResume = pendingProtectedForm;
+                pendingProtectedForm = null;
+                window.bootstrap.Modal.getOrCreateInstance(loginModalElement).hide();
+                formToResume.submit();
+                return;
+            }
+
+            window.location.href = result.redirect || loginReturnTo.value || "/";
 
         } catch (error) {
 

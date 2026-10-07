@@ -7,17 +7,17 @@ const crypto = require("crypto");
 // ========================================
 
 const storage = multer.diskStorage({
-  // เก็บรูปสินค้าใน public/uploads
-  destination: (req, file, cb) => {
-    cb(null, "public/uploads");
-  },
+    // เก็บรูปสินค้าใน public/uploads
+    destination: (req, file, cb) => {
+        cb(null, "public/uploads");
+    },
 
-  // ตั้งชื่อไฟล์ใหม่ ป้องกันชื่อซ้ำ
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
+    // ตั้งชื่อไฟล์ใหม่ ป้องกันชื่อซ้ำ
+    filename: (req, file, cb) => {
+        const ext = path.extname(file.originalname).toLowerCase();
 
-    cb(null, `product-${Date.now()}-${crypto.randomUUID()}${ext}`);
-  },
+        cb(null, `product-${Date.now()}-${crypto.randomUUID()}${ext}`);
+    },
 });
 
 // ========================================
@@ -25,13 +25,13 @@ const storage = multer.diskStorage({
 // ========================================
 
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
 
-  if (allowedTypes.includes(file.mimetype)) {
-    return cb(null, true);
-  }
+    if (allowedTypes.includes(file.mimetype)) {
+        return cb(null, true);
+    }
 
-  cb(new Error("อนุญาตเฉพาะไฟล์ JPG, PNG หรือ WEBP"));
+    cb(new Error("อนุญาตเฉพาะไฟล์ JPG, PNG หรือ WEBP"));
 };
 
 // ========================================
@@ -39,14 +39,14 @@ const fileFilter = (req, file, cb) => {
 // ========================================
 
 const upload = multer({
-  storage,
+    storage,
 
-  fileFilter,
+    fileFilter,
 
-  // จำกัดขนาดไฟล์ 2 MB
-  limits: {
-    fileSize: 2 * 1024 * 1024,
-  },
+    // จำกัดขนาดไฟล์ 2 MB
+    limits: {
+        fileSize: 2 * 1024 * 1024,
+    },
 });
 
 module.exports = upload;
