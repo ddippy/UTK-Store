@@ -1,6 +1,6 @@
 const pool = require("../db/pool");
 
-exports.findAll = async () => {
+exports.findAll = async (search = "", categoryId = null) => {
   const result = await pool.query(`
         SELECT
             p.product_id,
@@ -18,11 +18,19 @@ exports.findAll = async () => {
         LEFT JOIN product_variants v
             ON p.product_id = v.product_id
         WHERE p.status = 'ACTIVE'
+          AND (
+              $1 = ''
+              OR p.name ILIKE '%' || $1 || '%'
+              OR p.code ILIKE '%' || $1 || '%'
+              OR p.description ILIKE '%' || $1 || '%'
+              OR c.name ILIKE '%' || $1 || '%'
+          )
+          AND ($2::INTEGER IS NULL OR p.category_id = $2)
         GROUP BY
             p.product_id,
             c.name
         ORDER BY p.product_id DESC
-    `);
+    `, [search, categoryId]);
 
   return result.rows;
 };

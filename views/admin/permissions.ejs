@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>จัดการ Permission | UTK-Store</title>
+  <link rel="stylesheet" href="/css/tabler.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="navbar navbar-expand-md d-print-none"><div class="container-xl">
+    <a class="navbar-brand" href="/admin">UTK-Store Admin</a>
+    <nav class="navbar-nav flex-row ms-auto gap-3">
+      <a class="nav-link" href="/admin/roles">Role</a><a class="nav-link" href="/admin/users">ผู้ใช้</a><a class="nav-link" href="/admin/acl">ACL</a>
+      <form action="/logout" method="POST"><button class="btn btn-outline-danger" type="submit">ออกจากระบบ</button></form>
+    </nav>
+  </div></header>
+
+  <main class="page-wrapper">
+    <div class="page-header"><div class="container-xl"><h1 class="page-title">จัดการ Permission</h1><p class="text-secondary mb-0">Permission แต่ละรายการต้องผูกกับ Route ที่ระบบรองรับ จึงจะใช้ตรวจสิทธิ์จริงได้</p></div></div>
+    <div class="page-body"><div class="container-xl">
+      <% if (message) { %><div class="alert alert-success" role="status">บันทึก Permission แล้ว</div><% } %>
+      <div class="card mb-4"><div class="card-header"><h2 class="card-title">เพิ่ม Permission</h2></div>
+        <div class="card-body">
+          <form action="/admin/permissions" method="POST" class="row g-3">
+            <div class="col-lg-3"><label class="form-label" for="permission-name">ชื่อ Permission</label><input class="form-control" id="permission-name" name="name" placeholder="inventory.adjust" maxlength="100" pattern="[a-z][a-z0-9._-]*" required></div>
+            <div class="col-lg-3"><label class="form-label" for="permission-description">คำอธิบาย</label><input class="form-control" id="permission-description" name="description" maxlength="255"></div>
+            <div class="col-lg-4"><label class="form-label" for="route-target">ฟังก์ชัน/Route ที่ควบคุม</label><select class="form-select" id="route-target" name="route_target" required><option value="" disabled selected>เลือก Route</option><% functionCatalog.forEach(item => { %><option value="<%= item.method %> <%= item.path %>"><%= item.method %> <%= item.path %> — <%= item.label %></option><% }) %></select></div>
+            <div class="col-lg-2 d-flex align-items-end"><button class="btn btn-primary w-100" type="submit">เพิ่ม</button></div>
+          </form>
+          <p class="form-hint mt-3 mb-0">Permission ใหม่จะเชื่อมกับ Route ที่เลือกและให้ ADMIN โดยอัตโนมัติ จากนั้นเปิดหน้า ACL เพื่อกำหนดให้ Role อื่น</p>
+        </div>
+      </div>
+
+      <div class="card"><div class="table-responsive"><table class="table table-vcenter card-table">
+        <thead><tr><th>Permission</th><th>คำอธิบาย</th><th>Route ที่ตรวจ</th><th>Role ที่ได้รับ</th><th></th></tr></thead>
+        <tbody>
+          <% permissions.forEach(permission => { %><tr>
+            <td><strong><%= permission.name %></strong><% if (permission.is_system) { %><span class="badge bg-blue-lt ms-2">ระบบ</span><% } %></td>
+            <td>
+              <% if (permission.is_system) { %><%= permission.description %><% } else { %>
+                <form id="edit-permission-<%= permission.permission_id %>" action="/admin/permissions/<%= permission.permission_id %>/edit" method="POST"></form>
+                <input class="form-control mb-2" form="edit-permission-<%= permission.permission_id %>" name="name" value="<%= permission.name %>" maxlength="100" pattern="[a-z][a-z0-9._-]*" required aria-label="ชื่อ Permission">
+                <input class="form-control" form="edit-permission-<%= permission.permission_id %>" name="description" value="<%= permission.description %>" maxlength="255" aria-label="คำอธิบาย">
+              <% } %>
+            </td>
+            <td>
+              <% if (permission.is_system) { %><% (permission.routes || []).forEach(route => { %><div><code><%= route %></code></div><% }) %><% } else { %>
+                  <select class="form-select" form="edit-permission-<%= permission.permission_id %>" name="route_target" aria-label="Route ของ Permission">
+                    <% functionCatalog.forEach(item => { const target = `${item.method} ${item.path}`; %><option value="<%= target %>" <%= (permission.routes || []).includes(target) ? "selected" : "" %>><%= target %> — <%= item.label %></option><% }) %>
+                  </select>
+              <% } %>
+            </td>
+            <td><%= permission.role_count %></td>
+            <td class="text-nowrap">
+              <% if (!permission.is_system) { %>
+                <button class="btn btn-outline-primary" type="submit" form="edit-permission-<%= permission.permission_id %>">บันทึก</button>
+                <form class="d-inline" action="/admin/permissions/<%= permission.permission_id %>/delete" method="POST" onsubmit="return confirm('ลบ Permission นี้และการกำหนด Role ทั้งหมดหรือไม่')"><button class="btn btn-outline-danger" type="submit">ลบ</button></form>
+              <% } else { %><span class="text-secondary">สงวนไว้</span><% } %>
+            </td>
+          </tr><% }) %>
+        </tbody>
+      </table></div></div>
+    </div></div>
+  </main>
+  <script src="/js/tabler.min.js"></script>
+</body>
+</html>

@@ -42,10 +42,9 @@ exports.adminLogin = async (req, res) => {
     });
   }
 
-  req.session.userId = Admin.user_id;
-  req.session.username = Admin.username;
-  req.session.userName = Admin.name;
-  req.session.role = "ADMIN";
+  req.session.adminId = admin.admin_id;
+  req.session.adminUsername = admin.username;
+  req.session.role = admin.role;
 
   res.redirect(returnTo);
 };
@@ -125,7 +124,7 @@ exports.userLogin = async (req, res) => {
   req.session.userId = user.user_id;
   req.session.username = user.username;
   req.session.userName = user.name;
-  req.session.role = "USER";
+  req.session.role = user.role || "USER";
 
   if (wantsJson) {
     return res.json({

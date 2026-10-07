@@ -6,9 +6,11 @@ exports.findByUsername = async (username) => {
         SELECT
             admin_id,
             username,
-            password_hash
-        FROM admins
-        WHERE username = $1
+            password_hash,
+            r.name AS role
+        FROM admins a
+        JOIN roles r ON r.role_id = a.role_id
+        WHERE a.username = $1
     `,
     [username],
   );

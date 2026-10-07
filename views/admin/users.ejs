@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>จัดการผู้ใช้ | UTK-Store</title>
+  <link rel="stylesheet" href="/css/tabler.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="navbar navbar-expand-md d-print-none">
+    <div class="container-xl">
+      <a class="navbar-brand" href="/admin">UTK-Store Admin</a>
+      <nav class="navbar-nav flex-row ms-auto gap-3">
+        <a class="nav-link" href="/admin/roles">Role</a><a class="nav-link" href="/admin/permissions">Permission</a><a class="nav-link" href="/admin/acl">ACL</a>
+        <a class="nav-link" href="/admin">Dashboard</a>
+        <form action="/logout" method="POST"><button class="btn btn-outline-danger" type="submit">ออกจากระบบ</button></form>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-wrapper">
+    <div class="page-header"><div class="container-xl"><h1 class="page-title">จัดการผู้ใช้</h1><p class="text-secondary mb-0">กำหนด Role ให้บัญชีผู้ใช้ โดยบัญชีผู้ดูแลระบบจัดการแยกต่างหาก</p></div></div>
+    <div class="page-body"><div class="container-xl">
+      <% if (message) { %><div class="alert alert-success" role="status">เปลี่ยน Role ผู้ใช้แล้ว</div><% } %>
+      <div class="card"><div class="table-responsive">
+        <table class="table table-vcenter card-table">
+          <thead><tr><th>Username</th><th>ชื่อ</th><th>รหัสนักศึกษา</th><th>โทรศัพท์</th><th>Role</th><th></th></tr></thead>
+          <tbody>
+            <% users.forEach(user => { %>
+              <tr>
+                <td><%= user.username %></td><td><%= user.name %></td><td><%= user.student_id %></td><td><%= user.phone %></td>
+                <td colspan="2">
+                  <form action="/admin/users/<%= user.user_id %>/role" method="POST" class="d-flex gap-2">
+                    <select class="form-select" name="role_id" aria-label="Role ของ <%= user.username %>">
+                      <% roles.forEach(role => { %><option value="<%= role.role_id %>" <%= Number(role.role_id) === Number(user.role_id) ? "selected" : "" %>><%= role.name %></option><% }) %>
+                    </select>
+                    <button class="btn btn-outline-primary" type="submit">บันทึก</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+            <% if (users.length === 0) { %><tr><td colspan="6" class="text-center text-secondary">ยังไม่มีบัญชีผู้ใช้</td></tr><% } %>
+          </tbody>
+        </table>
+      </div></div>
+    </div></div>
+  </main>
+  <script src="/js/tabler.min.js"></script>
+</body>
+</html>

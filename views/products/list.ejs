@@ -62,6 +62,20 @@
                                 เลือกสินค้าและสั่งซื้อจาก UTK-Store
                             </div>
 
+                            <% if (search) { %>
+                                <div class="text-secondary mt-2">
+                                    ผลการค้นหา “<strong><%= search %></strong>” พบ <%= products.length %> รายการ
+                                    <a href="/products" class="ms-2">ล้างคำค้น</a>
+                                </div>
+                            <% } %>
+                            <% if (selectedCategory) { %>
+                                <div class="text-secondary mt-2">
+                                    หมวดหมู่: <strong><%= selectedCategory.name %></strong>
+                                    · พบ <%= products.length %> รายการ
+                                    <a href="/products" class="ms-2">ดูทั้งหมด</a>
+                                </div>
+                            <% } %>
+
                         </div>
 
                     </div>
@@ -90,12 +104,14 @@
                             </div>
 
                             <p class="empty-title">
-                                ยังไม่มีสินค้า
+                                <%= search ? "ไม่พบสินค้าที่ค้นหา" : (selectedCategory ? "ยังไม่มีสินค้าในหมวดหมู่นี้" : "ยังไม่มีสินค้า") %>
                             </p>
 
                             <p class="empty-subtitle text-secondary">
-                                ขณะนี้ยังไม่มีสินค้าในร้าน
+                                <%= search ? "ลองตรวจสอบคำค้นหรือใช้คำอื่น" : (selectedCategory ? "ลองเลือกหมวดหมู่อื่นหรือดูสินค้าทั้งหมด" : "ขณะนี้ยังไม่มีสินค้าในร้าน") %>
                             </p>
+
+                            <% if (search || selectedCategory) { %><a href="/products" class="btn btn-outline-primary">ดูสินค้าทั้งหมด</a><% } %>
 
                         </div>
 
@@ -737,6 +753,7 @@
         </script>
 
 
+    <%- include("../partials/store-footer") %>
 </body>
 
 </html>

@@ -1,6 +1,7 @@
 const userInfo = (req, res, next) => {
     res.locals.userName = req.session.userName || null;
     res.locals.role = req.session.role || null;
+    res.locals.isUserLoggedIn = Boolean(req.session.userId);
     res.locals.currentPath = req.path;
 
     const cart = req.session.cart || [];

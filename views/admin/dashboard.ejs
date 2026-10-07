@@ -8,6 +8,16 @@
     <title>Admin Dashboard | UTK-Store</title>
 
     <link rel="stylesheet" href="/css/tabler.min.css">
+    <style>
+        .dashboard-summary-card {
+            height: 100%;
+        }
+
+        .dashboard-summary-card .card-body {
+            min-height: 100px;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
@@ -86,7 +96,7 @@
                         <!-- Orders -->
                         <div class="col-sm-6 col-lg-4">
 
-                            <div class="card">
+                            <div class="card dashboard-summary-card">
 
                                 <div class="card-body">
 
@@ -124,7 +134,7 @@
                         <!-- Total Sales -->
                         <div class="col-sm-6 col-lg-4">
 
-                            <div class="card">
+                            <div class="card dashboard-summary-card">
 
                                 <div class="card-body">
 
@@ -168,7 +178,7 @@
                         <!-- Average -->
                         <div class="col-sm-6 col-lg-4">
 
-                            <div class="card">
+                            <div class="card dashboard-summary-card">
 
                                 <div class="card-body">
 
@@ -653,6 +663,56 @@
 
                             </a>
 
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <a href="/admin/roles" class="card card-link card-link-pop">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <span class="avatar bg-purple-lt me-3">🔐</span>
+                                        <div>
+                                            <h3 class="mb-1">จัดการ Role</h3>
+                                            <div class="text-secondary">เพิ่ม แก้ไข และลบ Role ของระบบ</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <a href="/admin/users" class="card card-link card-link-pop">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <span class="avatar bg-cyan-lt me-3">👥</span>
+                                        <div>
+                                            <h3 class="mb-1">จัดการผู้ใช้</h3>
+                                            <div class="text-secondary">ดูบัญชีและกำหนด Role ให้ผู้ใช้</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <a href="/admin/permissions" class="card card-link card-link-pop">
+                                <div class="card-body d-flex align-items-center">
+                                    <span class="avatar bg-orange-lt me-3">🧩</span>
+                                    <div><h3 class="mb-1">จัดการ Permission</h3><div class="text-secondary">เพิ่ม Permission และผูกกับฟังก์ชัน</div></div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-6">
+                            <a href="/admin/acl" class="card card-link card-link-pop">
+                                <div class="card-body d-flex align-items-center">
+                                    <span class="avatar bg-indigo-lt me-3">▦</span>
+                                    <div><h3 class="mb-1">กำหนด ACL</h3><div class="text-secondary">จัดการตาราง Role × Permission</div></div>
+                                </div>
+                            </a>
                         </div>
 
                     </div>

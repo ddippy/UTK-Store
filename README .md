@@ -5,6 +5,24 @@ Terminal Database
 ออก      → \q
 
 
+การติดตั้งตาราง Role
+หลังสร้างตาราง users และ admins ในฐานข้อมูลแล้ว ให้รัน migration หนึ่งครั้งจากโฟลเดอร์โปรเจกต์:
+
+psql -U postgres -d utk_store -f db/migrations/001_roles.sql
+
+Migration จะสร้าง Role เริ่มต้น ADMIN, USER, STAFF และ MANAGER และผูกบัญชีเดิมเข้ากับ Role ที่ตรงกัน
+บัญชีผู้ดูแลระบบใช้ตาราง admins ส่วนผู้ใช้ทั่วไปกำหนด Role ได้จากหน้า Admin → จัดการผู้ใช้
+รัน migration แต่ละไฟล์เพียงครั้งเดียวตามลำดับ:
+
+psql -U postgres -d utk_store -f db/migrations/002_permissions_acl.sql
+
+psql -U postgres -d utk_store -f db/migrations/003_payment_slip_acl.sql
+
+ADMIN เข้าได้ทุกฟังก์ชัน, MANAGER ดู Dashboard และจัดการสินค้า/ออเดอร์, STAFF ดูสินค้า/สต็อก/ออเดอร์,
+และ USER ใช้ตะกร้ากับดู/สร้างคำสั่งซื้อของตนเอง หน้า /admin/acl ใช้เปลี่ยนสิทธิ์ได้โดยมีผลกับ Request ถัดไป
+ไฟล์สลิปเปิดผ่าน Route ที่ตรวจสิทธิ์ของเจ้าของคำสั่งซื้อหรือเจ้าหน้าที่ ไม่เปิดไฟล์สลิปผ่าน URL สาธารณะ
+
+
 Github
 คำสั่ง	          ความหมาย
 git add .	เตรียมสิ่งที่จะแบ่งบันทึก

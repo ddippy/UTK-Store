@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>กำหนดสิทธิ์ผู้ใช้ | UTK-Store</title>
+  <link rel="stylesheet" href="/css/tabler.min.css">
+  <style>
+    .acl-intro { max-width: 760px; }
+    .acl-role-card { height: 100%; }
+    .acl-role-card.admin-role { border-color: #b8d6fb; }
+    .acl-role-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+    .acl-role-name { font-size: 1.1rem; font-weight: 700; }
+    .acl-group + .acl-group { border-top: 1px solid var(--tblr-border-color); margin-top: 1rem; padding-top: 1rem; }
+    .acl-group-title { color: var(--tblr-secondary); font-size: .75rem; font-weight: 700; letter-spacing: .04em; margin-bottom: .35rem; text-transform: uppercase; }
+    .acl-permission { align-items: center; display: flex; gap: .75rem; justify-content: space-between; min-height: 54px; padding: .5rem 0; }
+    .acl-permission + .acl-permission { border-top: 1px dashed var(--tblr-border-color); }
+    .acl-permission-label { font-weight: 600; }
+    .acl-permission-help { color: var(--tblr-secondary); font-size: .8rem; line-height: 1.35; margin-top: .15rem; }
+    .acl-toggle { align-items: center; display: inline-flex; flex: 0 0 auto; gap: .45rem; }
+    .acl-toggle .form-check-input { cursor: pointer; float: none; margin: 0; }
+    .acl-admin-note { background: #f1f7ff; border-radius: .5rem; color: #1b4e8a; font-size: .85rem; padding: .5rem .65rem; }
+    @media (max-width: 575px) {
+      .acl-permission { align-items: flex-start; }
+      .acl-toggle { padding-top: .15rem; }
+      .acl-toggle-label { display: none; }
+    }
+  </style>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="navbar navbar-expand-md d-print-none"><div class="container-xl">
+    <a class="navbar-brand" href="/admin">UTK-Store Admin</a>
+    <nav class="navbar-nav flex-row ms-auto gap-3">
+      <a class="nav-link" href="/admin/roles">บทบาท</a><a class="nav-link" href="/admin/users">ผู้ใช้</a><a class="nav-link" href="/admin/permissions">สิทธิ์ระบบ</a>
+      <form action="/logout" method="POST"><button class="btn btn-outline-danger" type="submit">ออกจากระบบ</button></form>
+    </nav>
+  </div></header>
+
+  <main class="page-wrapper">
+    <div class="page-header"><div class="container-xl">
+      <h1 class="page-title">กำหนดสิทธิ์ตามบทบาท</h1>
+      <p class="text-secondary mb-0 acl-intro">เลือกว่าผู้ใช้แต่ละบทบาททำอะไรได้บ้าง เปิดสวิตช์เพื่ออนุญาต และปิดเพื่อระงับสิทธิ์ การเปลี่ยนแปลงมีผลกับการเข้าใช้งานครั้งถัดไปทันที</p>
+    </div></div>
+    <div class="page-body"><div class="container-xl">
+      <% if (message) { %><div class="alert alert-success" role="status">บันทึกการเปลี่ยนแปลงสิทธิ์แล้ว</div><% } %>
+
+      <div class="alert alert-info" role="note">
+        <strong>วิธีใช้:</strong> ปรับสวิตช์ในการ์ดของแต่ละบทบาทได้เลย ระบบจะบันทึกทันทีเมื่อกด
+      </div>
+
+      <% const permissionLabels = {
+        "dashboard.read": ["ดูภาพรวมร้าน", "เข้าดู Dashboard และสรุปยอดขาย"],
+        "products.read": ["ดูรายการสินค้าในระบบจัดการ", "เข้าดูรายการสินค้าในหน้าผู้ดูแล"],
+        "products.create": ["เพิ่มสินค้าใหม่", "สร้างรายการสินค้าในร้าน"],
+        "products.update": ["แก้ไขข้อมูลสินค้า", "แก้รายละเอียดและเปิดหรือปิดการขายสินค้า"],
+        "variants.manage": ["จัดการตัวเลือกและสต็อก", "เพิ่มหรือลบตัวเลือกสินค้า เช่น สี/ขนาด และปรับจำนวนคงเหลือ"],
+        "orders.read": ["ดูคำสั่งซื้อทั้งหมด", "ดูรายการและรายละเอียดคำสั่งซื้อของลูกค้าทุกคน"],
+        "orders.update": ["เปลี่ยนสถานะคำสั่งซื้อ", "ยืนยัน ยกเลิก หรือทำเครื่องหมายว่าจัดส่ง/ดำเนินการแล้ว"],
+        "orders.own.read": ["ดูคำสั่งซื้อของตัวเอง", "ดูประวัติและรายละเอียดคำสั่งซื้อของบัญชีนี้"],
+        "orders.own.create": ["สั่งซื้อสินค้า", "ทำรายการสั่งซื้อและส่งหลักฐานการชำระเงิน"],
+        "payment_slips.read": ["ดูหลักฐานชำระเงินของลูกค้าทุกคน", "ตรวจสอบสลิปที่แนบมากับคำสั่งซื้อทั้งหมด"],
+        "payment_slips.own.read": ["ดูหลักฐานชำระเงินของตัวเอง", "เปิดดูสลิปที่แนบมากับคำสั่งซื้อของบัญชีนี้"],
+        "cart.manage": ["จัดการตะกร้าสินค้าของตัวเอง", "เพิ่มสินค้า เปลี่ยนจำนวน หรือนำสินค้าออกจากตะกร้า"],
+        "roles.manage": ["จัดการบทบาทผู้ใช้", "เพิ่ม แก้ไข หรือลบบทบาทในระบบ"],
+        "users.manage": ["จัดการผู้ใช้และกำหนดบทบาท", "ดูรายชื่อผู้ใช้และเลือกบทบาทให้แต่ละบัญชี"],
+        "permissions.manage": ["จัดการรายการสิทธิ์ระบบ", "เพิ่มหรือแก้ไขรายการสิทธิ์ที่ระบบรองรับ"],
+        "acl.manage": ["กำหนดสิทธิ์ให้แต่ละบทบาท", "เปิดหรือปิดความสามารถของแต่ละบทบาทในหน้านี้"]
+      };
+      const permissionGroups = [
+        { title: "จัดการร้านค้า", match: ["dashboard.read", "products.read", "products.create", "products.update", "variants.manage"] },
+        { title: "คำสั่งซื้อและการชำระเงิน", match: ["orders.read", "orders.update", "orders.own.read", "orders.own.create", "payment_slips.read", "payment_slips.own.read"] },
+        { title: "ตะกร้าสินค้า", match: ["cart.manage"] },
+        { title: "ผู้ใช้และการตั้งค่าระบบ", match: ["roles.manage", "users.manage", "permissions.manage", "acl.manage"] }
+      ];
+      const getPermissionLabel = (permission) => permissionLabels[permission.name] || [permission.description || "สิทธิ์เพิ่มเติม", "อนุญาตให้ใช้ความสามารถนี้ในระบบ"];
+      %>
+
+      <div class="row row-cards">
+        <% roles.forEach(role => { %>
+          <div class="col-12 col-xl-6">
+            <section class="card acl-role-card <%= role.name === 'ADMIN' ? 'admin-role' : '' %>">
+              <div class="card-header"><div class="acl-role-head w-100">
+                <div>
+                  <div class="acl-role-name"><%= role.name %>
+                    <% if (role.is_system) { %><span class="badge bg-blue-lt ms-1">บทบาทระบบ</span><% } %>
+                  </div>
+                  <div class="text-secondary small"><%= role.description || "กำหนดความสามารถให้ผู้ใช้บทบาทนี้" %></div>
+                </div>
+                <% if (role.name === "ADMIN") { %><span class="badge bg-green-lt">สิทธิ์ทั้งหมด</span><% } %>
+              </div></div>
+              <div class="card-body">
+                <% if (role.name === "ADMIN") { %>
+                  <div class="acl-admin-note mb-3">ผู้ดูแลระบบเข้าถึงทุกส่วนได้เสมอ ระบบสงวนบทบาทนี้ไว้และไม่สามารถปิดสิทธิ์ได้</div>
+                <% } %>
+                <% permissionGroups.forEach(group => {
+                  const groupPermissions = permissions.filter(permission => group.match.includes(permission.name));
+                  if (groupPermissions.length) { %>
+                    <div class="acl-group">
+                      <div class="acl-group-title"><%= group.title %></div>
+                      <% groupPermissions.forEach(permission => {
+                        const assigned = Boolean(assignments[role.role_id] && assignments[role.role_id][permission.permission_id]);
+                        const label = getPermissionLabel(permission);
+                      %>
+                        <div class="acl-permission">
+                          <div>
+                            <div class="acl-permission-label"><%= label[0] %></div>
+                            <div class="acl-permission-help"><%= label[1] %></div>
+                          </div>
+                          <% if (role.name === "ADMIN") { %>
+                            <label class="acl-toggle" title="ผู้ดูแลระบบมีสิทธิ์นี้เสมอ"><input class="form-check-input" type="checkbox" checked disabled><span class="acl-toggle-label text-success small">อนุญาต</span></label>
+                          <% } else { %>
+                            <form action="/admin/acl/<%= role.role_id %>/<%= permission.permission_id %>" method="POST" class="acl-toggle-form">
+                              <input type="hidden" name="enabled" value="<%= assigned ? "0" : "1" %>">
+                              <label class="acl-toggle">
+                                <input class="form-check-input" type="checkbox" <%= assigned ? "checked" : "" %>
+                                  aria-label="<%= assigned ? "ปิด" : "เปิด" %>สิทธิ์ <%= label[0] %> สำหรับ <%= role.name %>"
+                                  onchange="this.form.submit()">
+                                <span class="acl-toggle-label small <%= assigned ? "text-success" : "text-secondary" %>"><%= assigned ? "อนุญาต" : "ไม่อนุญาต" %></span>
+                              </label>
+                            </form>
+                          <% } %>
+                        </div>
+                      <% }) %>
+                    </div>
+                <% } }); %>
+                <% const knownPermissionNames = permissionGroups.flatMap(group => group.match);
+                   const extraPermissions = permissions.filter(permission => !knownPermissionNames.includes(permission.name));
+                   if (extraPermissions.length) { %>
+                  <div class="acl-group">
+                    <div class="acl-group-title">สิทธิ์เพิ่มเติม</div>
+                    <% extraPermissions.forEach(permission => {
+                      const assigned = Boolean(assignments[role.role_id] && assignments[role.role_id][permission.permission_id]);
+                      const label = getPermissionLabel(permission);
+                    %>
+                      <div class="acl-permission">
+                        <div><div class="acl-permission-label"><%= label[0] %></div><div class="acl-permission-help"><%= label[1] %></div></div>
+                        <% if (role.name === "ADMIN") { %>
+                          <label class="acl-toggle"><input class="form-check-input" type="checkbox" checked disabled><span class="acl-toggle-label text-success small">อนุญาต</span></label>
+                        <% } else { %>
+                          <form action="/admin/acl/<%= role.role_id %>/<%= permission.permission_id %>" method="POST" class="acl-toggle-form">
+                            <input type="hidden" name="enabled" value="<%= assigned ? "0" : "1" %>">
+                            <label class="acl-toggle"><input class="form-check-input" type="checkbox" <%= assigned ? "checked" : "" %> aria-label="<%= assigned ? "ปิด" : "เปิด" %>สิทธิ์ <%= label[0] %> สำหรับ <%= role.name %>" onchange="this.form.submit()"><span class="acl-toggle-label small <%= assigned ? "text-success" : "text-secondary" %>"><%= assigned ? "อนุญาต" : "ไม่อนุญาต" %></span></label>
+                          </form>
+                        <% } %>
+                      </div>
+                    <% }) %>
+                  </div>
+                <% } %>
+                <% if (permissions.length === 0) { %><p class="text-secondary mb-0">ยังไม่มีรายการสิทธิ์</p><% } %>
+              </div>
+            </section>
+          </div>
+        <% }) %>
+      </div>
+
+      <p class="text-secondary mt-3 small">สิทธิ์ของบทบาท ADMIN ถูกสงวนไว้ ส่วนการเปลี่ยนแปลงบทบาทอื่นจะถูกบันทึกทันที</p>
+    </div></div>
+  </main>
+  <script src="/js/tabler.min.js"></script>
+</body>
+</html>

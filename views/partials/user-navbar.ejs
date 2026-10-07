@@ -9,38 +9,41 @@
             <div class="d-flex align-items-center gap-3">
 
             	<!-- Logo -->
-            	<a href="/" class="text-decoration-none text-dark fw-bold fs-2">
-                	UTK-Store
-            	</a>
+                <a href="/" class="store-logo-link" aria-label="UTK-Store หน้าแรก">
+                    <img src="/images/utk-logo.png" class="store-logo-navbar" alt="UTK-Store">
+                </a>
 
             	<!-- Search -->
-            	<form action="/products" method="GET" class="flex-fill mx-4">
+                <form action="/products" method="GET" class="flex-fill mx-4" role="search">
 
                 	<div class="input-icon">
 
-                    	<span class="input-icon-addon">
+                        <button type="submit" class="input-icon-addon border-0 bg-transparent" aria-label="ค้นหา">
                         	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-search">
 	                        	<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 	                        	<path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
 	                        	<path d="M21 21l-6 -6" />
                         	</svg>
-                    	</span>
+                        </button>
 
                 		<input
-                    		type="text"
-                    		name="search"
-                    		class="form-control rounded-pill"
-                    		placeholder="ค้นหาสินค้า"
+                            type="search"
+                            name="search"
+                            class="form-control rounded-pill"
+                            placeholder="ค้นหาสินค้า"
+                            aria-label="ค้นหาสินค้า"
+                            value="<%= typeof search !== 'undefined' ? search : '' %>"
+                            maxlength="100"
                 		>
                 	</div>
 
-            	</form>
+                </form>
 
         		<!-- Icons -->
 <div class="d-flex gap-2">
 
     <!-- 1. ปุ่มสถานะคำสั่งซื้อ (Status) -->
-    <% if (locals.user || locals.session?.userId) { %>
+    <% if (locals.isUserLoggedIn) { %>
         <!-- ล็อกอินแล้ว -> ไปหน้าคำสั่งซื้อ -->
         <a href="/orders/my-orders" class="btn btn-icon rounded-circle bg-light" title="สถานะคำสั่งซื้อ">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-progress-alert">
@@ -71,23 +74,44 @@
     <% } %>
 
     <!-- 2. ปุ่มเข้าสู่ระบบ (User) -->
-    <button
-        id="user-login-button"
-        type="button"
-        class="btn btn-icon rounded-circle bg-light"
-        data-bs-toggle="modal"
-        data-bs-target="#user-login-modal"
-        title="เข้าสู่ระบบ"
-    >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-            <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-        </svg>
-    </button>
+    <% {
+        const navbarRoleName = String(locals.role || "USER").toUpperCase();
+        const navbarRoleClass = ({ ADMIN: "admin", MANAGER: "manager", STAFF: "staff", USER: "user" })[navbarRoleName] || "user";
+        const navbarRoleLabel = ({ ADMIN: "ผู้ดูแลระบบ", MANAGER: "ผู้จัดการ", STAFF: "เจ้าหน้าที่", USER: "ผู้ใช้ทั่วไป" })[navbarRoleName] || navbarRoleName;
+        const navbarRoleHref = ["MANAGER", "STAFF"].includes(navbarRoleName) ? "/admin/orders" : "/orders/my-orders";
+    %>
+        <% if (locals.isUserLoggedIn) { %>
+            <a
+                href="<%= navbarRoleHref %>"
+                class="btn btn-icon rounded-circle bg-light user-role-ring user-role-ring-<%= navbarRoleClass %>"
+                title="บทบาท: <%= navbarRoleLabel %>"
+                aria-label="บัญชีผู้ใช้ บทบาท <%= navbarRoleLabel %>"
+            >
+        <% } else { %>
+            <button
+                id="user-login-button"
+                type="button"
+                class="btn btn-icon rounded-circle bg-light"
+                data-bs-toggle="modal"
+                data-bs-target="#user-login-modal"
+                title="เข้าสู่ระบบ"
+                aria-label="เข้าสู่ระบบ"
+            >
+        <% } %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                    <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                </svg>
+        <% if (locals.isUserLoggedIn) { %>
+            </a>
+        <% } else { %>
+            </button>
+        <% } %>
+    <% } %>
 
     <!-- 3. ปุ่มตะกร้าสินค้า (Bag) -->
-    <% if (locals.user || locals.session?.userId) { %>
+    <% if (locals.isUserLoggedIn) { %>
         <!-- ล็อกอินแล้ว -> ไปหน้าตะกร้า -->
         <a href="/cart" class="btn btn-icon rounded-circle bg-light" title="ตะกร้าสินค้า">	
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-bag">
@@ -123,15 +147,27 @@
 
     		<div class="d-flex justify-content-between align-items-center">
 
-        		<a href="/products" class="btn bg-light">
-            		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-burger">
-	            		<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-	            		<path d="M4 15h16a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4" />
-	            		<path d="M12 4c3.783 0 6.953 2.133 7.786 5h-15.572c.833 -2.867 4.003 -5 7.786 -5" />
-	            		<path d="M5 12h14" />
-            		</svg>
-            		&nbsp; หมวดหมู่สินค้า
-        		</a>
+                <details class="store-category-dropdown">
+                    <summary class="btn bg-light">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M4 15h16a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4" />
+                            <path d="M12 4c3.783 0 6.953 2.133 7.786 5h-15.572c.833 -2.867 4.003 -5 7.786 -5" />
+                            <path d="M5 12h14" />
+                        </svg>
+                        <span>หมวดหมู่สินค้า</span>
+                        <svg class="store-category-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                    </summary>
+                    <div class="store-category-menu">
+                        <a href="/products" class="store-category-link">สินค้าทั้งหมด</a>
+                        <% (locals.storeCategories || []).forEach(category => { %>
+                            <a href="/products?category_id=<%= category.category_id %>" class="store-category-link"><%= category.name %></a>
+                        <% }) %>
+                        <% if (!(locals.storeCategories || []).length) { %>
+                            <span class="store-category-empty">ยังไม่มีหมวดหมู่สินค้า</span>
+                        <% } %>
+                    </div>
+                </details>
 
         		<nav class="d-flex gap-4">
             		<a href="/" class="text-dark text-decoration-none">หน้าแรก</a>
@@ -147,6 +183,22 @@
     </div>
 
 </header>
+
+<script>
+    document.addEventListener("click", (event) => {
+        document.querySelectorAll(".store-category-dropdown[open]").forEach((menu) => {
+            if (!menu.contains(event.target)) menu.open = false;
+        });
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            document.querySelectorAll(".store-category-dropdown[open]").forEach((menu) => {
+                menu.open = false;
+            });
+        }
+    });
+</script>
 
 
 <!-- เพิ่มตัวจองพื้นที่ไว้ใต้ Navbar -->

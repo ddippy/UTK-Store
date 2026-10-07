@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>จัดการ Role | UTK-Store</title>
+  <link rel="stylesheet" href="/css/tabler.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="navbar navbar-expand-md d-print-none">
+    <div class="container-xl">
+      <a class="navbar-brand" href="/admin">UTK-Store Admin</a>
+      <nav class="navbar-nav flex-row ms-auto gap-3">
+        <a class="nav-link" href="/admin/users">ผู้ใช้</a><a class="nav-link" href="/admin/permissions">Permission</a><a class="nav-link" href="/admin/acl">ACL</a>
+        <a class="nav-link" href="/admin">Dashboard</a>
+        <form action="/logout" method="POST"><button class="btn btn-outline-danger" type="submit">ออกจากระบบ</button></form>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-wrapper">
+    <div class="page-header"><div class="container-xl"><h1 class="page-title">จัดการ Role</h1><p class="text-secondary mb-0">Role เริ่มต้นมีไว้ให้ระบบใช้งานและลบไม่ได้ ส่วน Role ที่เพิ่มเองแก้ไขและลบได้เมื่อไม่มีผู้ใช้ผูกอยู่</p></div></div>
+    <div class="page-body"><div class="container-xl">
+      <% if (message) { %><div class="alert alert-success" role="status">บันทึกการเปลี่ยนแปลง Role แล้ว</div><% } %>
+
+      <div class="card mb-4">
+        <div class="card-header"><h2 class="card-title">เพิ่ม Role</h2></div>
+        <div class="card-body">
+          <form action="/admin/roles" method="POST" class="row g-3">
+            <div class="col-md-4"><label class="form-label" for="new-name">ชื่อ Role</label><input class="form-control" id="new-name" name="name" maxlength="50" required></div>
+            <div class="col-md-6"><label class="form-label" for="new-description">คำอธิบาย</label><input class="form-control" id="new-description" name="description" maxlength="500"></div>
+            <div class="col-md-2 d-flex align-items-end"><button class="btn btn-primary w-100" type="submit">เพิ่ม Role</button></div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="table-responsive">
+          <table class="table table-vcenter card-table">
+            <thead><tr><th>Role</th><th>คำอธิบาย</th><th>บัญชีผู้ใช้</th><th>ผู้ดูแล</th><th>การจัดการ</th></tr></thead>
+            <tbody>
+              <% roles.forEach(role => { %>
+                <tr>
+                  <td><strong><%= role.name %></strong><% if (role.is_system) { %><span class="badge bg-blue-lt ms-2">เริ่มต้น</span><% } %></td>
+                  <td>
+                    <% if (role.is_system) { %><%= role.description %><% } else { %>
+                      <form action="/admin/roles/<%= role.role_id %>/edit" method="POST" class="d-flex gap-2">
+                        <input class="form-control" name="name" value="<%= role.name %>" maxlength="50" required aria-label="ชื่อ Role">
+                        <input class="form-control" name="description" value="<%= role.description %>" maxlength="500" aria-label="คำอธิบาย">
+                        <button class="btn btn-outline-primary" type="submit">บันทึก</button>
+                      </form>
+                    <% } %>
+                  </td>
+                  <td><%= role.user_count %></td><td><%= role.admin_count %></td>
+                  <td>
+                    <% if (!role.is_system) { %>
+                      <% if (Number(role.user_count) === 0 && Number(role.admin_count) === 0) { %>
+                        <form action="/admin/roles/<%= role.role_id %>/delete" method="POST" onsubmit="return confirm('ยืนยันการลบ Role นี้หรือไม่')"><button class="btn btn-outline-danger" type="submit">ลบ</button></form>
+                      <% } else { %><span class="text-secondary">มีบัญชีใช้งาน</span><% } %>
+                    <% } else { %><span class="text-secondary">ระบบสงวนไว้</span><% } %>
+                  </td>
+                </tr>
+              <% }) %>
+              <% if (roles.length === 0) { %><tr><td colspan="5" class="text-center text-secondary">ยังไม่มี Role</td></tr><% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div></div>
+  </main>
+  <script src="/js/tabler.min.js"></script>
+</body>
+</html>

@@ -7,7 +7,7 @@ const crypto = require("crypto");
 // ========================================
 
 const storage = multer.diskStorage({
-  // เก็บสลิปไว้ใน public/uploads
+  // เก็บสลิปไว้ใน public/uploads; app.js กัน URL สาธารณะและเปิดผ่าน Route ที่ตรวจ ACL
   destination: (req, file, cb) => {
     cb(null, "public/uploads");
   },
@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
 
-    cb(null, `slip-${Date.now()}-${crypto.randomUUID()}${ext}`);
+    cb(null, `payment-${Date.now()}-${crypto.randomUUID()}${ext}`);
   },
 });
 

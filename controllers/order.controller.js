@@ -1,6 +1,7 @@
 const Order = require("../models/order.model");
 const Cart = require("../models/cart.model");
 const User = require("../models/user.model");
+const Permission = require("../models/permission.model");
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
@@ -109,9 +110,47 @@ exports.detail = async (req, res) => {
     return res.status(404).send("ไม่พบคำสั่งซื้อ");
   }
 
+  const canViewOrder = await mayViewOrder(req, order);
+  if (!canViewOrder) return res.status(403).send("คุณไม่มีสิทธิ์ดูคำสั่งซื้อนี้");
+
   res.render("orders/detail", {
     order,
   });
+};
+
+exports.paymentSlip = async (req, res) => {
+  const order = await Order.findById(req.params.id);
+  if (!order || !order.payment_slip_path) {
+    return res.status(404).send("ไม่พบไฟล์");
+  }
+
+  const canViewOrder = await mayViewOrder(req, order, ["orders.read", "payment_slips.read"]);
+  if (!canViewOrder) return res.status(403).send("คุณไม่มีสิทธิ์ดูไฟล์นี้");
+
+  if (!order.payment_slip_path.startsWith("/uploads/")) {
+    return res.status(404).send("ไม่พบไฟล์");
+  }
+  const uploadDirectory = path.resolve("public", "uploads");
+  const filePath = path.resolve(uploadDirectory, path.basename(order.payment_slip_path));
+  if (!filePath.startsWith(`${uploadDirectory}${path.sep}`)) {
+    return res.status(404).send("ไม่พบไฟล์");
+  }
+
+  res.sendFile(filePath, (error) => {
+    if (error && !res.headersSent) res.status(404).send("ไม่พบไฟล์");
+  });
+};
+
+const mayViewOrder = async (req, order, fullAccessPermissions = ["orders.read"]) => {
+  if (req.session.adminId) return true;
+  const user = await User.findById(req.session.userId);
+  if (!user) return false;
+
+  const canViewAllOrders = await Permission.userHasAnyPermission(
+    user.user_id,
+    fullAccessPermissions,
+  );
+  return canViewAllOrders || String(order.student_id) === String(user.student_id);
 };
 
 exports.checkout = async (req, res) => {
