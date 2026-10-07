@@ -41,6 +41,10 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/about", (req, res) => {
+    res.render("about");
+});
+
 app.listen(PORT, () => {
   // เริ่ม Server
   console.log(`Server running at http://localhost:${PORT}`);

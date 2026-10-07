@@ -17,217 +17,302 @@
         href="/css/tabler.min.css"
     >
 
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
 </head>
 
 
-<body class="d-flex flex-column min-vh-100 bg-light">
+<body class="bg-light">
 
 
+    <!-- ========================= -->
     <!-- Navbar -->
+    <!-- ========================= -->
 
-    <header class="navbar navbar-expand-md d-print-none">
-
-        <div class="container-xl">
-
-            <a
-                href="/"
-                class="navbar-brand navbar-brand-autodark"
-            >
-                UTK-Store
-            </a>
+    <%- include("../partials/user-navbar") %>
 
 
-            <div class="navbar-nav flex-row order-md-last">
-
-                <a
-                    href="/user/login"
-                    class="btn btn-outline-secondary"
-                >
-                    เข้าสู่ระบบ
-                </a>
-
-            </div>
-
-        </div>
-
-    </header>
-
-
+    <!-- ========================= -->
     <!-- Register -->
+    <!-- ========================= -->
 
-    <div class="page flex-fill">
+    <div class="page">
 
-        <div class="container container-tight py-4">
+        <div class="page-wrapper">
 
-            <div class="text-center mb-4">
+            <div class="container-xl py-5">
 
-                <div
-                    class="fw-bold"
-                    style="font-size: 32px;"
-                >
-                    UTK-Store
-                </div>
+                <div class="row justify-content-center">
 
-                <div class="text-secondary mt-1">
-                    สร้างบัญชีเพื่อสั่งซื้อสินค้า
-                </div>
+                    <!-- Register Form -->
 
-            </div>
+                    <div class="col-lg-8">
 
+                        <div class="card register-card">
 
-            <div class="card card-md">
+                            <div class="card-body p-4 p-md-5">
 
-                <div class="card-body p-4">
+                                <!-- Title -->
 
-                    <h2 class="h2 text-center mb-4">
-                        สมัครสมาชิก
-                    </h2>
+                                <div class="text-center mb-5">
 
+                                    <h1 class="register-title">
+                                        สมัครสมาชิก
+                                    </h1>
 
-                    <% if (error) { %>
+                                    <div class="text-secondary mt-2">
+                                        สร้างบัญชีเพื่อใช้งาน UTK-Store
+                                    </div>
 
-                        <div class="alert alert-danger" role="alert">
-
-                            <div>
-                                <h4 class="alert-title">
-                                    สมัครสมาชิกไม่สำเร็จ
-                                </h4>
-
-                                <div class="text-secondary">
-                                    <%= error %>
                                 </div>
+
+
+                                <!-- Error -->
+
+                                <% if (error) { %>
+
+                                    <div
+                                        class="alert alert-danger"
+                                        role="alert"
+                                    >
+                                        <div>
+
+                                            <h4 class="alert-title">
+                                                สมัครสมาชิกไม่สำเร็จ
+                                            </h4>
+
+                                            <div class="text-secondary">
+                                                <%= error %>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                <% } %>
+
+
+                                <form
+                                    action="/user/register"
+                                    method="POST"
+                                >
+
+
+                                    <!-- ชื่อ + รหัสนักศึกษา -->
+
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+
+                                            <div class="mb-4">
+
+                                                <label class="form-label">
+                                                    ชื่อ-นามสกุล
+                                                </label>
+
+                                                <input
+                                                    type="text"
+                                                    name="name"
+                                                    class="form-control"
+                                                    placeholder="กรอกชื่อ-นามสกุล"
+                                                    autocomplete="name"
+                                                    required
+                                                >
+
+                                                <div class="form-hint">
+                                                    ใช้ชื่อจริงของคุณ
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="col-md-6">
+
+                                            <div class="mb-4">
+
+                                                <label class="form-label">
+                                                    รหัสนักศึกษา
+                                                </label>
+
+                                                <input
+                                                    type="text"
+                                                    name="student_id"
+                                                    class="form-control"
+                                                    placeholder="กรอกรหัสนักศึกษา"
+                                                    required
+                                                >
+
+                                                <div class="form-hint">
+                                                    ใช้สำหรับระบุตัวตนในระบบ
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Username + Phone -->
+
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+
+                                            <div class="mb-4">
+
+                                                <label class="form-label">
+                                                    Username
+                                                </label>
+
+                                                <input
+                                                    type="text"
+                                                    name="username"
+                                                    class="form-control"
+                                                    placeholder="กรอก Username"
+                                                    autocomplete="username"
+                                                    required
+                                                >
+
+                                                <div class="form-hint">
+                                                    ใช้สำหรับเข้าสู่ระบบ
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="col-md-6">
+
+                                            <div class="mb-4">
+
+                                                <label class="form-label">
+                                                    เบอร์โทรศัพท์
+                                                </label>
+
+                                                <input
+                                                    type="tel"
+                                                    name="phone"
+                                                    class="form-control"
+                                                    placeholder="กรอกเบอร์โทรศัพท์"
+                                                    autocomplete="tel"
+                                                    required
+                                                >
+
+                                                <div class="form-hint">
+                                                    เช่น 0812345678
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Password -->
+
+                                    <div class="mb-4">
+
+                                        <label class="form-label">
+                                            Password
+                                        </label>
+
+                                        <input
+                                            type="password"
+                                            name="password"
+                                            class="form-control"
+                                            placeholder="กรอกรหัสผ่าน"
+                                            autocomplete="new-password"
+                                            required
+                                        >
+
+                                        <div class="form-hint">
+                                            ตั้งรหัสผ่านสำหรับเข้าสู่ระบบ
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Submit -->
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-primary w-100 register-submit"
+                                    >
+                                        สมัครสมาชิก
+                                    </button>
+
+
+                                </form>
+
                             </div>
 
                         </div>
 
-                    <% } %>
+                    </div>
 
 
-                    <form
-                        action="/user/register"
-                        method="POST"
-                    >
+                    <!-- Already have account -->
 
-                        <!-- Username -->
+                    <div class="col-lg-4 mt-4 mt-lg-0">
 
-                        <div class="mb-3">
+                        <div class="card register-side-card">
 
-                            <label class="form-label">
-                                Username
-                            </label>
+                            <div class="card-body p-4 text-center">
 
-                            <input
-                                type="text"
-                                class="form-control"
-                                name="username"
-                                placeholder="กรอก Username"
-                                autocomplete="username"
-                                required
-                            >
+                                <div
+                                    class="avatar avatar-lg bg-primary-lt mx-auto mb-3"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="28"
+                                        height="28"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path
+                                            stroke="none"
+                                            d="M0 0h24v24H0z"
+                                        />
+                                        <path
+                                            d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"
+                                        />
+                                        <path
+                                            d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
+                                        />
+                                    </svg>
+                                </div>
 
-                        </div>
+                                <h3 class="mb-2">
+                                    มีบัญชีอยู่แล้ว?
+                                </h3>
 
+                                <div class="text-secondary mb-4">
+                                    เข้าสู่ระบบเพื่อใช้งาน UTK-Store
+                                </div>
 
-                        <!-- Password -->
+                                <a
+                                    href="/"
+                                    class="btn btn-outline-primary w-100"
+                                >
+                                    เข้าสู่ระบบ
+                                </a>
 
-                        <div class="mb-3">
-
-                            <label class="form-label">
-                                Password
-                            </label>
-
-                            <input
-                                type="password"
-                                class="form-control"
-                                name="password"
-                                placeholder="กรอก Password"
-                                autocomplete="new-password"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- Name -->
-
-                        <div class="mb-3">
-
-                            <label class="form-label">
-                                ชื่อ-นามสกุล
-                            </label>
-
-                            <input
-                                type="text"
-                                class="form-control"
-                                name="name"
-                                placeholder="กรอกชื่อ-นามสกุล"
-                                required
-                            >
+                            </div>
 
                         </div>
 
-
-                        <!-- Student ID -->
-
-                        <div class="mb-3">
-
-                            <label class="form-label">
-                                รหัสนักศึกษา
-                            </label>
-
-                            <input
-                                type="text"
-                                class="form-control"
-                                name="student_id"
-                                placeholder="กรอกรหัสนักศึกษา"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- Phone -->
-
-                        <div class="mb-3">
-
-                            <label class="form-label">
-                                เบอร์โทรศัพท์
-                            </label>
-
-                            <input
-                                type="tel"
-                                class="form-control"
-                                name="phone"
-                                placeholder="กรอกเบอร์โทรศัพท์"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="form-footer">
-
-                            <button
-                                type="submit"
-                                class="btn btn-primary w-100"
-                            >
-                                สมัครสมาชิก
-                            </button>
-
-                        </div>
-
-                    </form>
-
-                </div>
-
-
-                <div class="card-footer text-center">
-
-                    มีบัญชีอยู่แล้ว?
-
-                    <a href="/user/login">
-                        เข้าสู่ระบบ
-                    </a>
+                    </div>
 
                 </div>
 

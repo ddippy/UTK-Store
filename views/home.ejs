@@ -232,6 +232,31 @@
 
     <script src="/js/tabler.min.js"></script>
 
+    <script>
+        const params = new URLSearchParams(window.location.search);
+const shouldOpenLogin = params.get("login");
+
+if (shouldOpenLogin === "1") {
+    const loginModalElement = document.getElementById("user-login-modal");
+
+    if (loginModalElement) {
+        const loginModal =
+            bootstrap.Modal.getOrCreateInstance(loginModalElement);
+
+        loginModal.show();
+    }
+
+    // เอา login=1 ออกจาก URL
+    params.delete("login");
+
+    const newUrl =
+        window.location.pathname +
+        (params.toString() ? "?" + params.toString() : "");
+
+    window.history.replaceState({}, "", newUrl);
+}
+    </script>
+
 </body>
 
 </html>

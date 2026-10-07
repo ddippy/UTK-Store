@@ -37,41 +37,77 @@
             	</form>
 
         		<!-- Icons -->
-        		<div class="d-flex gap-2">
+<div class="d-flex gap-2">
 
-					<!-- Status -->
-            		<a href="/orders/my-orders" class="btn btn-icon rounded-circle bg-light">
-                		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-progress-alert">
-	                		<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-	                		<path d="M10 20.777a8.942 8.942 0 0 1 -2.48 -.969" />
-	                		<path d="M14 3.223a9.003 9.003 0 0 1 0 17.554" />
-	                		<path d="M4.579 17.093a8.961 8.961 0 0 1 -1.227 -2.592" />
-	                		<path d="M3.124 10.5c.16 -.95 .468 -1.85 .9 -2.675l.169 -.305" />
-	                		<path d="M6.907 4.579a8.954 8.954 0 0 1 3.093 -1.356" />
-	                		<path d="M12 8v4" />
-	                		<path d="M12 16v.01" />
-                		</svg>
-            		</a>
+    <!-- 1. ปุ่มสถานะคำสั่งซื้อ (Status) -->
+    <% if (locals.user || locals.session?.userId) { %>
+        <!-- ล็อกอินแล้ว -> ไปหน้าคำสั่งซื้อ -->
+        <a href="/orders/my-orders" class="btn btn-icon rounded-circle bg-light" title="สถานะคำสั่งซื้อ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-progress-alert">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M10 20.777a8.942 8.942 0 0 1 -2.48 -.969" />
+                <path d="M14 3.223a9.003 9.003 0 0 1 0 17.554" />
+                <path d="M4.579 17.093a8.961 8.961 0 0 1 -1.227 -2.592" />
+                <path d="M3.124 10.5c.16 -.95 .468 -1.85 .9 -2.675l.169 -.305" />
+                <path d="M6.907 4.579a8.954 8.954 0 0 1 3.093 -1.356" />
+                <path d="M12 8v4" />
+                <path d="M12 16v.01" />
+            </svg>
+        </a>
+    <% } else { %>
+        <!-- ยังไม่ล็อกอิน -> เด้ง Modal ล็อกอิน -->
+        <button type="button" class="btn btn-icon rounded-circle bg-light" data-bs-toggle="modal" data-bs-target="#user-login-modal" title="สถานะคำสั่งซื้อ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-progress-alert">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M10 20.777a8.942 8.942 0 0 1 -2.48 -.969" />
+                <path d="M14 3.223a9.003 9.003 0 0 1 0 17.554" />
+                <path d="M4.579 17.093a8.961 8.961 0 0 1 -1.227 -2.592" />
+                <path d="M3.124 10.5c.16 -.95 .468 -1.85 .9 -2.675l.169 -.305" />
+                <path d="M6.907 4.579a8.954 8.954 0 0 1 3.093 -1.356" />
+                <path d="M12 8v4" />
+                <path d="M12 16v.01" />
+            </svg>
+        </button>
+    <% } %>
 
-					<!-- User -->
-            		<a href="/user/login" class="btn btn-icon rounded-circle bg-light">
-                		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user">
-	                		<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-	                		<path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-	                		<path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                		</svg>
-            		</a>
+    <!-- 2. ปุ่มเข้าสู่ระบบ (User) -->
+    <button
+        id="user-login-button"
+        type="button"
+        class="btn btn-icon rounded-circle bg-light"
+        data-bs-toggle="modal"
+        data-bs-target="#user-login-modal"
+        title="เข้าสู่ระบบ"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+            <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+        </svg>
+    </button>
 
-					<!-- Bag -->
-            		<a href="/cart" class="btn btn-icon rounded-circle bg-light">	
-                		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-bag">
-	                		<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-	                		<path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304" />
-	                		<path d="M9 11v-5a3 3 0 0 1 6 0v5" />
-                		</svg>
-            		</a>
+    <!-- 3. ปุ่มตะกร้าสินค้า (Bag) -->
+    <% if (locals.user || locals.session?.userId) { %>
+        <!-- ล็อกอินแล้ว -> ไปหน้าตะกร้า -->
+        <a href="/cart" class="btn btn-icon rounded-circle bg-light" title="ตะกร้าสินค้า">	
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-bag">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304" />
+                <path d="M9 11v-5a3 3 0 0 1 6 0v5" />
+            </svg>
+        </a>
+    <% } else { %>
+        <!-- ยังไม่ล็อกอิน -> เด้ง Modal ล็อกอิน -->
+        <button type="button" class="btn btn-icon rounded-circle bg-light" data-bs-toggle="modal" data-bs-target="#user-login-modal" title="ตะกร้าสินค้า">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-bag">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304" />
+                <path d="M9 11v-5a3 3 0 0 1 6 0v5" />
+            </svg>
+        </button>
+    <% } %>
 
-        		</div>
+</div>
 
         	</div>
 
@@ -101,7 +137,7 @@
             		<a href="/" class="text-dark text-decoration-none">หน้าแรก</a>
             		<a href="/products" class="text-dark text-decoration-none">สินค้า</a>
             		<a href="/orders/my-orders" class="text-dark text-decoration-none">คำสั่งซื้อ</a>
-            		<a href="#" class="text-dark text-decoration-none">เกี่ยวกับเรา</a>
+            		<a href="/about" class="text-dark text-decoration-none">เกี่ยวกับเรา</a>
         		</nav>
 
             </div>
@@ -112,8 +148,109 @@
 
 </header>
 
+
 <!-- เพิ่มตัวจองพื้นที่ไว้ใต้ Navbar -->
 <div class="user-navbar-spacer"></div>
+
+
+<div
+    class="modal modal-blur fade"
+    id="user-login-modal"
+    tabindex="-1"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content user-login-modal-content">
+
+            <!-- ปุ่มปิด -->
+            <button
+                type="button"
+                class="btn-close user-login-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            ></button>
+
+            <form
+				id="user-login-form"
+    			action="/user/login"
+    			method="POST"
+			>
+
+                <div class="user-login-body">
+
+                    <!-- หัวข้อ -->
+                    <h2 class="user-login-title">
+                        เข้าสู่ระบบ
+                    </h2>
+
+                    <!-- Return URL -->
+                    <input
+                        type="hidden"
+                        name="returnTo"
+                        id="login-return-to"
+                    >
+
+                    <!-- Username -->
+                    <div class="user-login-input">
+                        <span class="user-login-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-at">
+								<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+								<path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+								<path d="M16 12v1.5a2.5 2.5 0 0 0 5 0v-1.5a9 9 0 1 0 -5.5 8.28" />
+							</svg>
+                        </span>
+
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="อีเมล"
+                            autocomplete="username"
+                        >
+                    </div>
+
+                    <!-- Password -->
+                    <div class="user-login-input">
+                        <span class="user-login-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-key">
+								<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+								<path d="M16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1 -4.069 0l-.301 -.301l-6.558 6.558a2 2 0 0 1 -1.239 .578l-.175 .008h-1.172a1 1 0 0 1 -.993 -.883l-.007 -.117v-1.172a2 2 0 0 1 .467 -1.284l.119 -.13l.414 -.414h2v-2h2v-2l2.144 -2.144l-.301 -.301a2.877 2.877 0 0 1 0 -4.069l2.643 -2.643a2.877 2.877 0 0 1 4.069 0" />
+								<path d="M15 9h.01" />
+							</svg>
+                        </span>
+
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="รหัสผ่าน"
+                            autocomplete="current-password"
+                        >
+                    </div>
+
+                    <!-- Login -->
+                    <button
+                        type="submit"
+                        class="btn btn-primary user-login-submit"
+                    >
+                        เข้าสู่ระบบ
+                    </button>
+
+                    <!-- Register -->
+                    <div class="user-login-register">
+                        ยังไม่มีบัญชี?
+                        <a href="/user/register">
+                            สมัครสมาชิก
+                        </a>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/tabler.min.js"></script>
 
 <script>
     const navbar = document.getElementById("user-navbar");
@@ -133,4 +270,84 @@
     });
 
     window.addEventListener("pageshow", updateNavbar);
+
+	// Login สำเร็จแล้วกลับมาหน้าเดิม
+	const loginReturnTo = document.getElementById("login-return-to");
+
+    if (loginReturnTo) {
+        loginReturnTo.value =
+            window.location.pathname + window.location.search;
+    }
+
+	document.addEventListener("DOMContentLoaded", function () {
+
+    	const loginButton = document.getElementById("user-login-button");
+    	const loginModalElement = document.getElementById("user-login-modal");
+
+    	if (loginButton && loginModalElement) {
+
+        	const loginModal =
+            	bootstrap.Modal.getOrCreateInstance(loginModalElement);
+
+        	loginButton.addEventListener("click", function () {
+            	loginModal.show();
+        });
+
+    	}
+
+	});
+
+	const loginForm = document.querySelector("#user-login-form");
+
+if (loginForm) {
+
+    loginForm.addEventListener("submit", async function (e) {
+
+        e.preventDefault();
+
+        const usernameInput = loginForm.elements.username;
+        const passwordInput = loginForm.elements.password;
+
+        // ล้างกรอบแดง
+        usernameInput.classList.remove("is-invalid");
+        passwordInput.classList.remove("is-invalid");
+
+        const formData = new URLSearchParams(
+    		new FormData(loginForm)
+		);
+
+        try {
+
+            const response = await fetch("/user/login", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "Accept": "application/json"
+                }
+            });
+
+            const result = await response.json();
+
+            // Login ผิด
+            if (!response.ok) {
+
+                usernameInput.classList.add("is-invalid");
+                passwordInput.classList.add("is-invalid");
+
+                return;
+            }
+
+            // Login สำเร็จ
+            window.location.href = result.redirect;
+
+        } catch (error) {
+
+            console.error("Login error:", error);
+
+        }
+
+    });
+
+}
+
 </script>
