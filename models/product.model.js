@@ -1,4 +1,5 @@
 const pool = require("../db/pool");
+const FileMetadata = require("./fileMetadata.model");
 
 exports.findAll = async (search = "", categoryId = null) => {
     const result = await pool.query(
@@ -84,19 +85,38 @@ exports.findById = async (id) => {
     return product;
 };
 
-exports.create = async (code, name, categoryId, price, description) => {
-    const result = await pool.query(
-        `
-        INSERT INTO products
-            (code, name, category_id, price, description)
-        VALUES
-            ($1, $2, $3, $4, $5)
-        RETURNING *
-    `,
-        [code, name, categoryId, price, description],
-    );
+exports.create = async (code, name, categoryId, price, description, imagePath = null, imageUpload) => {
+    const client = await pool.connect();
+    try {
+        await client.query("BEGIN");
+        const result = await client.query(
+            `
+                INSERT INTO products
+                    (code, name, category_id, price, description, image_path)
+                VALUES
+                    ($1, $2, $3, $4, $5, $6)
+                RETURNING *
+            `,
+            [code, name, categoryId, price, description, imagePath],
+        );
 
-    return result.rows[0];
+        if (imageUpload) {
+            await FileMetadata.insert(client, {
+                file: imageUpload.file,
+                resourceType: "product_image",
+                resourceId: result.rows[0].product_id,
+                req: imageUpload.req,
+            });
+        }
+
+        await client.query("COMMIT");
+        return result.rows[0];
+    } catch (error) {
+        await client.query("ROLLBACK");
+        throw error;
+    } finally {
+        client.release();
+    }
 };
 
 exports.createVariant = async (productId, size, color, stock) => {
@@ -141,25 +161,45 @@ exports.update = async (
     description,
     status,
     imagePath,
+    imageUpload,
 ) => {
-    const result = await pool.query(
-        `
-        UPDATE products
-        SET
-            code = $1,
-            name = $2,
-            category_id = $3,
-            price = $4,
-            description = $5,
-            status = $6,
-            image_path = $7
-        WHERE product_id = $8
-        RETURNING *
-    `,
-        [code, name, categoryId, price, description, status, imagePath, productId],
-    );
+    const client = await pool.connect();
+    try {
+        await client.query("BEGIN");
+        const result = await client.query(
+            `
+                UPDATE products
+                SET
+                    code = $1,
+                    name = $2,
+                    category_id = $3,
+                    price = $4,
+                    description = $5,
+                    status = $6,
+                    image_path = $7
+                WHERE product_id = $8
+                RETURNING *
+            `,
+            [code, name, categoryId, price, description, status, imagePath, productId],
+        );
 
-    return result.rows[0];
+        if (imageUpload) {
+            await FileMetadata.insert(client, {
+                file: imageUpload.file,
+                resourceType: "product_image",
+                resourceId: productId,
+                req: imageUpload.req,
+            });
+        }
+
+        await client.query("COMMIT");
+        return result.rows[0];
+    } catch (error) {
+        await client.query("ROLLBACK");
+        throw error;
+    } finally {
+        client.release();
+    }
 };
 
 exports.updateStatus = async (productId, status) => {

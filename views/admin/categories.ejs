@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="th">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>จัดการหมวดหมู่สินค้า | UTK-Store Admin</title>
+        <link rel="stylesheet" href="/css/tabler.min.css" />
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
+    <body>
+        <%- include("../partials/admin-navbar") %>
+
+        <main class="page-wrapper">
+            <div class="page-header">
+                <div class="container-xl">
+                    <h1 class="page-title">จัดการหมวดหมู่สินค้า</h1>
+                    <p class="text-secondary mb-0">เพิ่มและจัดระเบียบหมวดหมู่ที่ใช้แสดงในหน้าร้านและแบบฟอร์มสินค้า</p>
+                </div>
+            </div>
+
+            <div class="page-body">
+                <div class="container-xl">
+                    <% if (message) { %>
+                        <div class="alert alert-success" role="status"><%= message %></div>
+                    <% } %>
+                    <% if (error) { %>
+                        <div class="alert alert-danger" role="alert"><%= error %></div>
+                    <% } %>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h2 class="card-title">เพิ่มหมวดหมู่ใหม่</h2>
+                        </div>
+                        <div class="card-body">
+                            <form action="/admin/categories" method="POST" class="row g-3 align-items-end">
+                                <div class="col-12 col-md-8 col-lg-9">
+                                    <label class="form-label" for="new-category-name">ชื่อหมวดหมู่</label>
+                                    <input class="form-control" id="new-category-name" name="name" maxlength="100" required placeholder="เช่น อุปกรณ์กีฬา">
+                                    <div class="form-hint">เพิ่มได้ตามต้องการ ไม่จำกัดแค่หมวดหมู่ตัวอย่าง</div>
+                                </div>
+                                <div class="col-12 col-md-4 col-lg-3">
+                                    <button class="btn btn-primary w-100" type="submit">เพิ่มหมวดหมู่</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">หมวดหมู่ทั้งหมด</h2>
+                                <div class="text-secondary mt-1">มี <%= categories.length %> หมวดหมู่</div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-vcenter card-table">
+                                <thead>
+                                    <tr><th>ชื่อหมวดหมู่</th><th class="text-end">จัดการ</th></tr>
+                                </thead>
+                                <tbody>
+                                    <% categories.forEach((category) => { %>
+                                        <tr>
+                                            <td>
+                                                <form id="edit-category-<%= category.category_id %>" action="/admin/categories/<%= category.category_id %>/edit" method="POST"></form>
+                                                <input class="form-control" form="edit-category-<%= category.category_id %>" name="name" value="<%= category.name %>" maxlength="100" required aria-label="ชื่อหมวดหมู่">
+                                            </td>
+                                            <td>
+                                                <div class="d-flex justify-content-end gap-2">
+                                                    <button class="btn btn-outline-primary btn-sm" form="edit-category-<%= category.category_id %>" type="submit">บันทึก</button>
+                                                    <form action="/admin/categories/<%= category.category_id %>/delete" method="POST" onsubmit="return confirm('ยืนยันการลบหมวดหมู่นี้? หากยังมีสินค้าในหมวดนี้ ระบบจะไม่อนุญาตให้ลบ')">
+                                                        <button class="btn btn-outline-danger btn-sm" type="submit">ลบ</button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                    <% if (categories.length === 0) { %>
+                                        <tr><td colspan="2" class="py-4 text-center text-secondary">ยังไม่มีหมวดหมู่ เพิ่มหมวดแรกได้จากแบบฟอร์มด้านบน</td></tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script src="/js/tabler.min.js"></script>
+    </body>
+</html>

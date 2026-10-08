@@ -3,6 +3,10 @@ const pool = require("../db/pool");
 const functionCatalog = [
     ["GET", "/admin", "Dashboard"],
     ["GET", "/admin/products", "รายการสินค้า"],
+    ["GET", "/admin/categories", "จัดการหมวดหมู่สินค้า"],
+    ["POST", "/admin/categories", "เพิ่มหมวดหมู่สินค้า"],
+    ["POST", "/admin/categories/:id/edit", "แก้ไขหมวดหมู่สินค้า"],
+    ["POST", "/admin/categories/:id/delete", "ลบหมวดหมู่สินค้า"],
     ["GET", "/admin/orders", "รายการคำสั่งซื้อ"],
     ["GET", "/admin/products/create", "ฟอร์มเพิ่มสินค้า"],
     ["GET", "/admin/products/:id/variants", "ดู Variant สินค้า"],

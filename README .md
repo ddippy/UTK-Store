@@ -19,10 +19,16 @@ psql -U postgres -d utk_store -f db/migrations/003_payment_slip_acl.sql
 
 psql -U postgres -d utk_store -f db/migrations/004_activity_logs.sql
 
+psql -U postgres -d utk_store -f db/migrations/005_file_metadata.sql
+
+psql -U postgres -d utk_store -f db/migrations/006_category_management.sql
+
 ADMIN เข้าได้ทุกฟังก์ชัน, MANAGER ดู Dashboard และจัดการสินค้า/ออเดอร์, STAFF ดูสินค้า/สต็อก/ออเดอร์,
 และ USER ใช้ตะกร้ากับดู/สร้างคำสั่งซื้อของตนเอง หน้า /admin/acl ใช้เปลี่ยนสิทธิ์ได้โดยมีผลกับ Request ถัดไป
 ไฟล์สลิปเปิดผ่าน Route ที่ตรวจสิทธิ์ของเจ้าของคำสั่งซื้อหรือเจ้าหน้าที่ ไม่เปิดไฟล์สลิปผ่าน URL สาธารณะ
 หน้า `/admin/logs` ใช้ค้นหาประวัติการเข้าสู่ระบบ การจัดการข้อมูล/สิทธิ์ การอัปโหลดไฟล์ และการปฏิเสธการเข้าถึง
+ตาราง `file_metadata` เก็บชื่อไฟล์เดิม/ชื่อที่จัดเก็บ ชนิดไฟล์จาก signature ขนาด ผู้ส่ง และเวลาที่อัปโหลด
+หน้า `/admin/categories` ใช้เพิ่ม แก้ไข และลบหมวดหมู่สินค้าได้ โดย Role `MANAGER` และ `ADMIN` มีสิทธิ์จัดการ
 
 Github
 คำสั่ง ความหมาย

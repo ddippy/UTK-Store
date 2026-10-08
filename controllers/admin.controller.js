@@ -11,6 +11,96 @@ exports.products = async (req, res) => {
     });
 };
 
+const validateCategoryName = (value) => {
+    const name = typeof value === "string" ? value.trim() : "";
+    if (!name || name.length > 100) return null;
+    return name;
+};
+
+const validCategoryId = (value) => /^\d+$/.test(String(value)) && Number(value) > 0;
+
+exports.categories = async (req, res) => {
+    const categories = await Category.findAll();
+    const messages = {
+        created: "เพิ่มหมวดหมู่เรียบร้อยแล้ว",
+        updated: "บันทึกชื่อหมวดหมู่แล้ว",
+        deleted: "ลบหมวดหมู่แล้ว",
+    };
+    const errors = {
+        invalid_name: "กรุณากรอกชื่อหมวดหมู่ไม่เกิน 100 ตัวอักษร",
+        duplicate: "มีหมวดหมู่นี้อยู่แล้ว",
+        not_found: "ไม่พบหมวดหมู่ที่เลือก",
+        in_use: "ลบไม่ได้ เพราะยังมีสินค้าอยู่ในหมวดหมู่นี้",
+    };
+    res.render("admin/categories", {
+        categories,
+        message: messages[req.query.message] || null,
+        error: errors[req.query.error] || null,
+    });
+};
+
+exports.createCategory = async (req, res) => {
+    const name = validateCategoryName(req.body.name);
+    if (!name) return res.redirect("/admin/categories?error=invalid_name");
+
+    try {
+        const category = await Category.create(name);
+        await ActivityLog.record(req, {
+            eventType: "category.create",
+            resourceType: "category",
+            resourceId: category.category_id,
+            details: { name: category.name },
+        });
+        res.redirect("/admin/categories?message=created");
+    } catch (error) {
+        if (error.code === "23505") return res.redirect("/admin/categories?error=duplicate");
+        console.error(error);
+        res.status(500).send("เพิ่มหมวดหมู่ไม่สำเร็จ");
+    }
+};
+
+exports.updateCategory = async (req, res) => {
+    if (!validCategoryId(req.params.id)) return res.redirect("/admin/categories?error=not_found");
+    const name = validateCategoryName(req.body.name);
+    if (!name) return res.redirect("/admin/categories?error=invalid_name");
+
+    try {
+        const category = await Category.update(req.params.id, name);
+        if (!category) return res.redirect("/admin/categories?error=not_found");
+        await ActivityLog.record(req, {
+            eventType: "category.update",
+            resourceType: "category",
+            resourceId: category.category_id,
+            details: { name: category.name },
+        });
+        res.redirect("/admin/categories?message=updated");
+    } catch (error) {
+        if (error.code === "23505") return res.redirect("/admin/categories?error=duplicate");
+        console.error(error);
+        res.status(500).send("แก้ไขหมวดหมู่ไม่สำเร็จ");
+    }
+};
+
+exports.deleteCategory = async (req, res) => {
+    if (!validCategoryId(req.params.id)) return res.redirect("/admin/categories?error=not_found");
+
+    try {
+        const category = await Category.delete(req.params.id);
+        if (!category) return res.redirect("/admin/categories?error=not_found");
+        await ActivityLog.record(req, {
+            eventType: "category.delete",
+            resourceType: "category",
+            resourceId: category.category_id,
+            details: { name: category.name },
+        });
+        res.redirect("/admin/categories?message=deleted");
+    } catch (error) {
+        if (error.code === "23503") return res.redirect("/admin/categories?error=in_use");
+        console.error(error);
+        res.status(500).send("ลบหมวดหมู่ไม่สำเร็จ");
+    }
+};
+
 exports.createProduct = async (req, res) => {
     const { code, name, category_id, price, description } = req.body;
 
@@ -41,13 +131,36 @@ exports.createProduct = async (req, res) => {
     }
 
     try {
-        const product = await Product.create(code, name, category_id, price, description);
+        const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+        const product = await Product.create(
+            code,
+            name,
+            category_id,
+            price,
+            description,
+            imagePath,
+            req.file ? { file: req.file, req } : null,
+        );
+        req.fileMetadataSaved = Boolean(req.file);
         await ActivityLog.record(req, {
             eventType: "product.create",
             resourceType: "product",
             resourceId: product?.product_id,
             details: { code: code.trim(), name: name.trim() },
         });
+        if (req.file) {
+            await ActivityLog.record(req, {
+                eventType: "file.upload",
+                resourceType: "product_image",
+                resourceId: product.product_id,
+                details: {
+                    storedFilename: req.file.filename,
+                    originalFilename: req.file.originalname.replace(/[\\/]/g, "_").slice(0, 255),
+                    mimeType: req.file.detectedMimeType,
+                    sizeBytes: req.file.size,
+                },
+            });
+        }
 
         res.redirect("/admin/products");
     } catch (error) {
@@ -178,7 +291,9 @@ exports.editProduct = async (req, res) => {
             description,
             status,
             imagePath,
+            req.file ? { file: req.file, req } : null,
         );
+        req.fileMetadataSaved = Boolean(req.file);
 
         await ActivityLog.record(req, {
             eventType: "product.update",
@@ -194,7 +309,7 @@ exports.editProduct = async (req, res) => {
                 details: {
                     storedFilename: req.file.filename,
                     originalFilename: req.file.originalname.replace(/[\\/]/g, "_").slice(0, 255),
-                    mimeType: req.file.mimetype,
+                    mimeType: req.file.detectedMimeType,
                     sizeBytes: req.file.size,
                 },
             });
@@ -363,9 +478,34 @@ exports.deleteVariant = async (req, res) => {
 
 exports.orders = async (req, res) => {
     const orders = await Order.findAll();
+    const statusLabels = {
+        PENDING: "รอดำเนินการ",
+        CONFIRMED: "ยืนยันแล้ว",
+        COMPLETED: "สำเร็จ",
+        CANCELLED: "ยกเลิกแล้ว",
+    };
+    const toastMessages = {
+        updated: { type: "success", message: "อัปเดตสถานะคำสั่งซื้อแล้ว" },
+        invalid_status: { type: "error", message: "สถานะคำสั่งซื้อไม่ถูกต้อง" },
+        not_found: { type: "error", message: "ไม่พบคำสั่งซื้อที่ต้องการแก้ไข" },
+    };
+    let toast = Object.hasOwn(toastMessages, req.query.toast)
+        ? toastMessages[req.query.toast]
+        : null;
+    if (req.query.toast === "invalid_transition") {
+        const from = statusLabels[req.query.from];
+        const to = statusLabels[req.query.to];
+        toast = {
+            type: "error",
+            message: from && to
+                ? `ไม่สามารถเปลี่ยนสถานะจาก “${from}” ไปเป็น “${to}” ได้`
+                : "ไม่สามารถเปลี่ยนสถานะคำสั่งซื้อนี้ได้",
+        };
+    }
 
     res.render("admin/orders", {
         orders,
+        toast,
     });
 };
 
@@ -376,13 +516,13 @@ exports.updateOrderStatus = async (req, res) => {
     const allowedStatus = ["PENDING", "CONFIRMED", "COMPLETED", "CANCELLED"];
 
     if (!allowedStatus.includes(status)) {
-        return res.status(400).send("สถานะไม่ถูกต้อง");
+        return res.redirect("/admin/orders?toast=invalid_status");
     }
 
     const order = await Order.findById(orderId);
 
     if (!order) {
-        return res.status(404).send("ไม่พบคำสั่งซื้อ");
+        return res.redirect("/admin/orders?toast=not_found");
     }
 
     const allowedTransitions = {
@@ -393,7 +533,9 @@ exports.updateOrderStatus = async (req, res) => {
     };
 
     if (!allowedTransitions[order.status].includes(status)) {
-        return res.status(400).send(`ไม่สามารถเปลี่ยนสถานะจาก ${order.status} เป็น ${status} ได้`);
+        return res.redirect(
+            `/admin/orders?toast=invalid_transition&from=${encodeURIComponent(order.status)}&to=${encodeURIComponent(status)}`,
+        );
     }
 
     await Order.updateStatus(orderId, status);
@@ -404,7 +546,7 @@ exports.updateOrderStatus = async (req, res) => {
         details: { previousStatus: order.status, newStatus: status },
     });
 
-    res.redirect("/admin/orders");
+    res.redirect("/admin/orders?toast=updated");
 };
 
 exports.dashboard = async (req, res) => {

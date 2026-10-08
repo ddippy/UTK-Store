@@ -1,4 +1,5 @@
 const pool = require("../db/pool");
+const FileMetadata = require("./fileMetadata.model");
 
 exports.create = async (customerName, studentId, phone, totalPrice) => {
     const result = await pool.query(
@@ -55,6 +56,8 @@ exports.createOrder = async (
     payment_slip_path,
     checkout_token,
     items,
+    slipFile,
+    req,
 ) => {
     const client = await pool.connect();
 
@@ -74,6 +77,12 @@ exports.createOrder = async (
         );
 
         const order = orderResult.rows[0];
+        await FileMetadata.insert(client, {
+            file: slipFile,
+            resourceType: "payment_slip",
+            resourceId: order.order_id,
+            req,
+        });
 
         // 2. สร้าง Order Items + ตัด Stock
         for (const item of items) {

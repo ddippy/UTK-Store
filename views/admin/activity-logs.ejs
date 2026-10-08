@@ -8,18 +8,7 @@
         <link rel="stylesheet" href="/css/style.css" />
     </head>
     <body>
-        <header class="navbar navbar-expand-md d-print-none">
-            <div class="container-xl">
-                <a class="navbar-brand" href="/admin">UTK-Store Admin</a>
-                <nav class="navbar-nav flex-row ms-auto gap-3 align-items-center">
-                    <a class="nav-link" href="/admin/logs" aria-current="page">ประวัติการใช้งาน</a>
-                    <a class="nav-link" href="/admin">Dashboard</a>
-                    <form action="/logout" method="POST">
-                        <button class="btn btn-outline-danger" type="submit">ออกจากระบบ</button>
-                    </form>
-                </nav>
-            </div>
-        </header>
+        <%- include("../partials/admin-navbar") %>
 
         <main class="page-wrapper">
             <div class="page-header">

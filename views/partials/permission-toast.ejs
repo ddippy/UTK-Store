@@ -1,0 +1,28 @@
+<div id="permission-denied-toast" class="app-toast app-toast-error" role="alert" aria-live="assertive">
+    <span class="app-toast-icon app-toast-icon-error"><%- include("tabler-icon", { name: "alert-circle", size: 20 }) %></span>
+    <span class="app-toast-message">คุณไม่มีสิทธิ์ใช้งานส่วนนี้</span>
+    <button class="app-toast-close" type="button" aria-label="ปิดการแจ้งเตือน">&times;</button>
+</div>
+
+<script>
+    (() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("access") !== "denied") return;
+
+        const toast = document.getElementById("permission-denied-toast");
+        if (!toast) return;
+
+        const dismiss = () => toast.classList.remove("show");
+        toast.classList.add("show");
+        toast.querySelector(".app-toast-close")?.addEventListener("click", dismiss);
+        window.setTimeout(dismiss, 5000);
+
+        params.delete("access");
+        const query = params.toString();
+        window.history.replaceState(
+            {},
+            "",
+            window.location.pathname + (query ? `?${query}` : "") + window.location.hash,
+        );
+    })();
+</script>

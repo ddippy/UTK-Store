@@ -52,14 +52,14 @@
                         <!-- ========================= -->
 
                         <div class="empty">
-                            <div class="empty-img">🛒</div>
+                            <div class="empty-img"><%- include("../partials/tabler-icon", { name: "shopping-cart", size: 48 }) %></div>
 
                             <p class="empty-title">ตะกร้าสินค้าว่าง</p>
 
                             <p class="empty-subtitle text-secondary">ยังไม่มีสินค้าในตะกร้า</p>
 
                             <div class="empty-action">
-                                <a href="/products" class="btn btn-primary"> 🛍️ เลือกสินค้า </a>
+                                <a href="/products" class="btn btn-primary"> <%- include("../partials/tabler-icon", { name: "shopping-bag", size: 20 }) %> เลือกสินค้า </a>
                             </div>
                         </div>
 
@@ -80,7 +80,7 @@
 
                                             <div class="col-auto">
                                                 <span class="avatar avatar-lg bg-blue-lt">
-                                                    🛍️
+                                                    <%- include("../partials/tabler-icon", { name: "shopping-bag", size: 20 }) %>
                                                 </span>
                                             </div>
 
@@ -255,13 +255,14 @@
         <!-- Toast แจ้งเตือน -->
         <div
             id="cart-toast"
-            class="toast position-fixed top-0 end-0 m-3"
+            class="app-toast"
             role="alert"
-            style="z-index: 9999"
+            aria-live="assertive"
         >
-            <div class="toast-body">
-                <span id="cart-toast-message"></span>
-            </div>
+            <span class="app-toast-icon app-toast-icon-success"><%- include("../partials/tabler-icon", { name: "check", size: 20 }) %></span>
+            <span class="app-toast-icon app-toast-icon-error"><%- include("../partials/tabler-icon", { name: "alert-circle", size: 20 }) %></span>
+            <span id="cart-toast-message" class="app-toast-message"></span>
+            <button class="app-toast-close" type="button" aria-label="ปิดการแจ้งเตือน">&times;</button>
         </div>
 
         <!-- Modal ยืนยันการลบ -->
@@ -318,26 +319,20 @@
 
             function showToast(message, type = "danger") {
                 const toast = document.querySelector("#cart-toast");
-
                 const messageBox = document.querySelector("#cart-toast-message");
-
-                // ล้างสีเดิมก่อน
-                toast.classList.remove("text-bg-danger", "text-bg-success", "text-bg-warning");
-
-                // กำหนดสีตามประเภท
-                toast.classList.add(`text-bg-${type}`);
-
-                // ใส่ข้อความ
+                const variant = type === "success" ? "success" : type === "warning" ? "warning" : "error";
+                toast.classList.remove("app-toast-success", "app-toast-error", "app-toast-warning");
+                toast.classList.add(`app-toast-${variant}`);
                 messageBox.textContent = message;
-
-                // แสดง Toast
                 toast.classList.add("show");
-
-                // ซ่อนหลัง 3 วินาที
-                setTimeout(() => {
-                    toast.classList.remove("show");
-                }, 3000);
+                window.clearTimeout(toast.hideTimer);
+                toast.hideTimer = window.setTimeout(() => toast.classList.remove("show"), 3000);
             }
+
+            document.querySelector("#cart-toast .app-toast-close").addEventListener("click", () => {
+                const toast = document.querySelector("#cart-toast");
+                toast.classList.remove("show");
+            });
 
             // ========================================
             // ดักการกดปุ่ม "อัปเดต"

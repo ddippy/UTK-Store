@@ -2,7 +2,6 @@ const Order = require("../models/order.model");
 const Cart = require("../models/cart.model");
 const User = require("../models/user.model");
 const Permission = require("../models/permission.model");
-const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const ActivityLog = require("../models/activityLog.model");
@@ -32,10 +31,30 @@ exports.create = async (req, res) => {
             return res.status(400).send("ไม่พบ Checkout Token");
         }
 
-        // ข้อมูลผู้สั่งซื้อจาก User
-        const customer_name = user.name;
+        // ชื่อและเบอร์ติดต่อเป็นข้อมูลเฉพาะออเดอร์ ส่วนรหัสนักศึกษายึดจากบัญชี
+        const customer_name =
+            typeof req.body.customer_name === "string" ? req.body.customer_name.trim() : "";
         const student_id = user.student_id;
-        const phone = user.phone;
+        const phone = typeof req.body.phone === "string" ? req.body.phone.trim() : "";
+
+        if (!customer_name || customer_name.length > 150) {
+            await ActivityLog.record(req, {
+                eventType: "order.create",
+                resourceType: "order",
+                outcome: "failure",
+                details: { reason: "invalid_customer_name" },
+            });
+            return res.status(400).send("กรุณาตรวจสอบชื่อผู้สั่งซื้อ (ไม่เกิน 150 ตัวอักษร)");
+        }
+        if (!phone || phone.length > 20) {
+            await ActivityLog.record(req, {
+                eventType: "order.create",
+                resourceType: "order",
+                outcome: "failure",
+                details: { reason: "invalid_customer_phone" },
+            });
+            return res.status(400).send("กรุณาตรวจสอบเบอร์โทรศัพท์ (ไม่เกิน 20 ตัวอักษร)");
+        }
 
         // ดึง Cart จาก Session
         const cart = req.session.cart || [];
@@ -81,7 +100,10 @@ exports.create = async (req, res) => {
             payment_slip_path,
             checkout_token,
             cartItems,
+            req.file,
+            req,
         );
+        req.fileMetadataSaved = true;
 
         await ActivityLog.record(req, {
             eventType: "order.create",
@@ -96,7 +118,7 @@ exports.create = async (req, res) => {
             details: {
                 storedFilename: req.file.filename,
                 originalFilename: req.file.originalname.replace(/[\\/]/g, "_").slice(0, 255),
-                mimeType: req.file.mimetype,
+                mimeType: req.file.detectedMimeType,
                 sizeBytes: req.file.size,
             },
         });
@@ -127,29 +149,6 @@ exports.create = async (req, res) => {
         }
 
         if (error.code === "23505") {
-            if (req.file) {
-                const filePath = path.join("public", "uploads", req.file.filename);
-
-                try {
-                    await fs.promises.unlink(filePath);
-                    await ActivityLog.record(req, {
-                        eventType: "file.delete",
-                        resourceType: "payment_slip",
-                        resourceId: req.file.filename,
-                        details: { reason: "duplicate_checkout_cleanup" },
-                    });
-                } catch (fileError) {
-                    console.error("ลบไฟล์สลิปที่ซ้ำไม่สำเร็จ:", fileError);
-                    await ActivityLog.record(req, {
-                        eventType: "file.delete",
-                        resourceType: "payment_slip",
-                        resourceId: req.file.filename,
-                        outcome: "failure",
-                        details: { reason: "duplicate_checkout_cleanup_failed" },
-                    });
-                }
-            }
-
             return res.status(400).send("คำสั่งซื้อนี้ถูกส่งไปแล้ว");
         }
 

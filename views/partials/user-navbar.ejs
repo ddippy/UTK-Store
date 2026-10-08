@@ -40,8 +40,9 @@
                 </form>
 
         		<!-- Icons -->
-<div class="d-flex gap-2">
+<div class="navbar-actions" aria-label="เมนูบัญชีและร้านค้า">
 
+    <% if (locals.isUserLoggedIn) { %>
     <!-- 1. ปุ่มสถานะคำสั่งซื้อ (Status) -->
     <% if (locals.isUserLoggedIn) { %>
         <!-- ล็อกอินแล้ว -> ไปหน้าคำสั่งซื้อ -->
@@ -59,7 +60,7 @@
         </a>
     <% } else { %>
         <!-- ยังไม่ล็อกอิน -> เด้ง Modal ล็อกอิน -->
-        <button type="button" class="btn btn-icon rounded-circle bg-light js-open-login-modal" data-login-return-to="/orders/my-orders" title="สถานะคำสั่งซื้อ">
+        <button type="button" class="btn btn-icon rounded-circle bg-light js-open-login-modal" data-login-return-to="/orders/my-orders" title="สถานะคำสั่งซื้อ" aria-label="เข้าสู่ระบบเพื่อดูสถานะคำสั่งซื้อ">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-progress-alert">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                 <path d="M10 20.777a8.942 8.942 0 0 1 -2.48 -.969" />
@@ -71,6 +72,7 @@
                 <path d="M12 16v.01" />
             </svg>
         </button>
+    <% } %>
     <% } %>
 
     <!-- 2. ปุ่มเข้าสู่ระบบ (User) -->
@@ -109,6 +111,7 @@
         <% } %>
     <% } %>
 
+    <% if (locals.isUserLoggedIn) { %>
     <!-- 3. ปุ่มตะกร้าสินค้า (Bag) -->
     <% if (locals.isUserLoggedIn) { %>
         <!-- ล็อกอินแล้ว -> ไปหน้าตะกร้า -->
@@ -121,13 +124,14 @@
         </a>
     <% } else { %>
         <!-- ยังไม่ล็อกอิน -> เด้ง Modal ล็อกอิน -->
-        <button type="button" class="btn btn-icon rounded-circle bg-light js-open-login-modal" data-login-return-to="/cart" title="ตะกร้าสินค้า">
+        <button type="button" class="btn btn-icon rounded-circle bg-light js-open-login-modal" data-login-return-to="/cart" title="ตะกร้าสินค้า" aria-label="เข้าสู่ระบบเพื่อใช้ตะกร้าสินค้า">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-bag">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                 <path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304" />
                 <path d="M9 11v-5a3 3 0 0 1 6 0v5" />
             </svg>
         </button>
+    <% } %>
     <% } %>
 
 </div>
@@ -172,7 +176,7 @@
             		<a href="/" class="text-dark text-decoration-none">หน้าแรก</a>
             		<a href="/products" class="text-dark text-decoration-none">สินค้า</a>
                     <% if (locals.isUserLoggedIn) { %>
-                        <a href="<%= ["MANAGER", "STAFF"].includes(String(locals.role || "USER").toUpperCase()) ? "/admin/orders" : "/orders/my-orders" %>" class="text-dark text-decoration-none">คำสั่งซื้อ</a>
+                        <a href="/orders/my-orders" class="text-dark text-decoration-none">คำสั่งซื้อ</a>
                     <% } else { %>
                         <a href="/orders/my-orders" class="text-dark text-decoration-none js-open-login-modal" data-login-return-to="/orders/my-orders">คำสั่งซื้อ</a>
                     <% } %>
@@ -326,6 +330,8 @@
     </div>
 </div>
 <% } %>
+
+<%- include("permission-toast") %>
 
 <script src="/js/bootstrap.bundle.min.js"></script>
 

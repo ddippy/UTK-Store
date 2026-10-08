@@ -257,7 +257,7 @@ exports.logout = async (req, res) => {
             resourceType: "authentication",
             outcome: "success",
         });
-        res.redirect("/user/login");
+        res.redirect("/");
     });
 };
 

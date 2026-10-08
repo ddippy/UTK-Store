@@ -16,113 +16,94 @@
         <!-- Navbar -->
         <%- include("./partials/user-navbar") %>
 
-        <!-- Page -->
-        <div class="page">
-            <div class="page-wrapper">
-                <!-- Page Header -->
-                <div class="page-header d-print-none">
-                    <div class="container-xl">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h2 class="page-title">UTK-Store</h2>
-
-                                <div class="text-secondary mt-1">ร้านค้าออนไลน์ของมหาวิทยาลัย</div>
+        <main class="home-page">
+            <div class="container-xl home-content">
+                <section class="home-hero" aria-label="โปรโมชั่นร้านค้า">
+                    <div class="home-hero-slides">
+                        <article class="home-hero-slide is-active" data-home-slide>
+                            <!-- เปลี่ยนรูปแบนเนอร์หลักได้ที่ src ด้านล่าง -->
+                            <img class="home-hero-image" src="/images/home-banner-1.jpg" alt="" onerror="this.hidden = true" />
+                            <div class="home-hero-copy">
+                                <span class="home-eyebrow">UTK STORE · CAMPUS PICKS</span>
+                                <h1>ของใช้ที่ใช่<br /><span>สำหรับชีวิตในรั้วมหาวิทยาลัย</span></h1>
+                                <p>เลือกชมสินค้าและสั่งซื้อได้สะดวก พร้อมนัดรับสินค้าที่ร้าน</p>
+                                <a href="/products" class="btn home-hero-button">เลือกชมสินค้า <%- include("partials/tabler-icon", { name: "arrow-right", size: 18 }) %></a>
                             </div>
-                        </div>
+                            <div class="home-hero-art" aria-hidden="true"><span class="home-art-orbit"></span><span class="home-art-icon"><%- include("partials/tabler-icon", { name: "shopping-bag", size: 92 }) %></span><span class="home-art-label">UTK<br />STORE</span></div>
+                        </article>
+                        <article class="home-hero-slide" data-home-slide>
+                            <img class="home-hero-image" src="/images/home-banner-2.jpg" alt="" onerror="this.hidden = true" />
+                            <div class="home-hero-copy"><span class="home-eyebrow">พร้อมสำหรับทุกวัน</span><h2>ค้นหาของจำเป็น<br /><span>ได้ในที่เดียว</span></h2><p>เลือกดูสินค้าหลากหลายหมวดหมู่จากร้าน UTK-Store</p><a href="/products" class="btn home-hero-button">ดูสินค้าทั้งหมด <%- include("partials/tabler-icon", { name: "arrow-right", size: 18 }) %></a></div>
+                            <div class="home-hero-art" aria-hidden="true"><span class="home-art-orbit"></span><span class="home-art-icon"><%- include("partials/tabler-icon", { name: "device-laptop", size: 92 }) %></span><span class="home-art-label">STUDY<br />& MORE</span></div>
+                        </article>
+                        <article class="home-hero-slide" data-home-slide>
+                            <img class="home-hero-image" src="/images/home-banner-3.jpg" alt="" onerror="this.hidden = true" />
+                            <div class="home-hero-copy"><span class="home-eyebrow">ช้อปง่าย · นัดรับสะดวก</span><h2>สั่งซื้อออนไลน์<br /><span>แล้วมารับที่ร้าน</span></h2><p>ติดตามสถานะคำสั่งซื้อของคุณได้จากหน้าเว็บ</p><a href="/about#about" class="btn home-hero-button">วิธีสั่งซื้อ <%- include("partials/tabler-icon", { name: "arrow-right", size: 18 }) %></a></div>
+                            <div class="home-hero-art" aria-hidden="true"><span class="home-art-orbit"></span><span class="home-art-icon"><%- include("partials/tabler-icon", { name: "map-pin", size: 92 }) %></span><span class="home-art-label">ORDER<br />& PICK UP</span></div>
+                        </article>
                     </div>
-                </div>
-
-                <!-- Page Body -->
-                <div class="page-body">
-                    <div class="container-xl">
-                        <div class="row row-cards">
-                            <!-- Welcome Card -->
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body py-5">
-                                        <div class="row align-items-center">
-                                            <div class="col-auto">
-                                                <span class="avatar avatar-xl bg-primary-lt">
-                                                    🛍️
-                                                </span>
-                                            </div>
-
-                                            <div class="col">
-                                                <h1 class="mb-2">ยินดีต้อนรับสู่ UTK-Store</h1>
-
-                                                <p class="text-secondary mb-3">
-                                                    ร้านค้าออนไลน์ของมหาวิทยาลัย
-                                                    สามารถเลือกดูสินค้าและสั่งซื้อสินค้าได้ที่นี่
-                                                </p>
-
-                                                <a href="/products" class="btn btn-primary">
-                                                    🛍️ ดูสินค้าทั้งหมด
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Feature 1 -->
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center mb-3">
-                                            <span class="avatar bg-blue-lt me-3"> 🛒 </span>
-
-                                            <h3 class="card-title mb-0">เลือกสินค้า</h3>
-                                        </div>
-
-                                        <div class="text-secondary">
-                                            เลือกดูสินค้าที่ต้องการ และตรวจสอบรายละเอียดสินค้า
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Feature 2 -->
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center mb-3">
-                                            <span class="avatar bg-green-lt me-3"> 📦 </span>
-
-                                            <h3 class="card-title mb-0">สั่งซื้อ</h3>
-                                        </div>
-
-                                        <div class="text-secondary">
-                                            เพิ่มสินค้าลงรถเข็น และดำเนินการสั่งซื้อได้ง่าย
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Feature 3 -->
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center mb-3">
-                                            <span class="avatar bg-yellow-lt me-3"> 🎓 </span>
-
-                                            <h3 class="card-title mb-0">สำหรับนักศึกษา</h3>
-                                        </div>
-
-                                        <div class="text-secondary">
-                                            ระบบร้านค้าออนไลน์ สำหรับนักศึกษาของมหาวิทยาลัย
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="home-hero-dots" role="tablist" aria-label="เลือกแบนเนอร์">
+                        <button type="button" class="is-active" aria-label="แบนเนอร์ 1" aria-selected="true" data-home-dot="0"></button>
+                        <button type="button" aria-label="แบนเนอร์ 2" aria-selected="false" data-home-dot="1"></button>
+                        <button type="button" aria-label="แบนเนอร์ 3" aria-selected="false" data-home-dot="2"></button>
                     </div>
-                </div>
+                </section>
+
+                <section class="home-promos" aria-label="จุดเด่นของร้าน">
+                    <a class="home-promo home-promo-green" href="/products">
+                        <!-- เปลี่ยนรูปโปรโมชันได้โดยแก้ src ในแท็กนี้ -->
+                        <img src="/images/home-promo-1.jpg" alt="" onerror="this.hidden = true" />
+                        <span class="home-promo-icon"><%- include("partials/tabler-icon", { name: "category", size: 30 }) %></span><span class="home-promo-copy"><strong>เลือกได้หลายหมวด</strong><small>ค้นหาสินค้าที่ต้องการ</small></span><span class="home-promo-arrow"><%- include("partials/tabler-icon", { name: "arrow-up-right", size: 20 }) %></span>
+                    </a>
+                    <a class="home-promo home-promo-gold" href="/about#about">
+                        <img src="/images/home-promo-2.jpg" alt="" onerror="this.hidden = true" />
+                        <span class="home-promo-icon"><%- include("partials/tabler-icon", { name: "shopping-cart", size: 30 }) %></span><span class="home-promo-copy"><strong>สั่งซื้อสะดวก</strong><small>เลือกสินค้าแล้วสั่งซื้อออนไลน์</small></span><span class="home-promo-arrow"><%- include("partials/tabler-icon", { name: "arrow-up-right", size: 20 }) %></span>
+                    </a>
+                    <a class="home-promo home-promo-dark" href="/about#about">
+                        <img src="/images/home-promo-3.jpg" alt="" onerror="this.hidden = true" />
+                        <span class="home-promo-icon"><%- include("partials/tabler-icon", { name: "map-pin", size: 30 }) %></span><span class="home-promo-copy"><strong>นัดรับที่ร้าน</strong><small>รับสินค้าตามรายละเอียดคำสั่งซื้อ</small></span><span class="home-promo-arrow"><%- include("partials/tabler-icon", { name: "arrow-up-right", size: 20 }) %></span>
+                    </a>
+                </section>
+
+                <section class="home-intro">
+                    <div>
+                        <span class="home-eyebrow home-eyebrow-green">ยินดีต้อนรับสู่ UTK-Store</span>
+                        <h2>ร้านค้าออนไลน์สำหรับชาว UTK</h2>
+                        <p>เลือกชมสินค้า ตรวจสอบรายละเอียด และสั่งซื้อผ่านเว็บไซต์ได้ง่าย ๆ หลังสั่งซื้อสามารถติดตามสถานะได้จากบัญชีของคุณ โดยการรับสินค้าเป็นไปตามรายละเอียดนัดรับที่ร้าน</p>
+                    </div>
+                    <a href="/products" class="btn home-browse-button">เริ่มเลือกซื้อ <%- include("partials/tabler-icon", { name: "arrow-right", size: 18 }) %></a>
+                </section>
             </div>
-        </div>
+        </main>
 
         <script src="/js/tabler.min.js"></script>
 
         <script>
+            (() => {
+                const slides = [...document.querySelectorAll("[data-home-slide]")];
+                const dots = [...document.querySelectorAll("[data-home-dot]")];
+                if (!slides.length || !dots.length) return;
+                let active = 0;
+                let timer;
+                const showSlide = (index) => {
+                    active = index;
+                    slides.forEach((slide, i) => slide.classList.toggle("is-active", i === index));
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle("is-active", i === index);
+                        dot.setAttribute("aria-selected", String(i === index));
+                    });
+                };
+                const restart = () => {
+                    window.clearInterval(timer);
+                    timer = window.setInterval(() => showSlide((active + 1) % slides.length), 6000);
+                };
+                dots.forEach((dot) => dot.addEventListener("click", () => {
+                    showSlide(Number(dot.dataset.homeDot));
+                    restart();
+                }));
+                restart();
+            })();
+
             const params = new URLSearchParams(window.location.search);
             const shouldOpenLogin = params.get("login");
 

@@ -1,0 +1,45 @@
+<%
+    const adminNavItems = [
+        { href: "/admin", label: "ภาพรวม", icon: "chart-bar", active: currentPath === "/admin" },
+        { href: "/admin/products", label: "สินค้า", icon: "shopping-bag", active: currentPath.startsWith("/admin/products") },
+        { href: "/admin/categories", label: "หมวดหมู่", icon: "puzzle", active: currentPath.startsWith("/admin/categories") },
+        { href: "/admin/orders", label: "คำสั่งซื้อ", icon: "package", active: currentPath.startsWith("/admin/orders") },
+        { href: "/admin/users", label: "ผู้ใช้", icon: "users", active: currentPath.startsWith("/admin/users") },
+        { href: "/admin/roles", label: "บทบาท", icon: "school", active: currentPath.startsWith("/admin/roles") },
+        { href: "/admin/permissions", label: "สิทธิ์", icon: "lock", active: currentPath.startsWith("/admin/permissions") || currentPath.startsWith("/admin/acl") },
+        { href: "/admin/logs", label: "ประวัติ", icon: "chart-bar", active: currentPath.startsWith("/admin/logs") },
+    ];
+    const adminRoleLabels = { ADMIN: "ผู้ดูแลระบบ", MANAGER: "ผู้จัดการ", STAFF: "เจ้าหน้าที่", USER: "ผู้ใช้ทั่วไป" };
+    const adminRoleLabel = adminRoleLabels[String(adminNavRole).toUpperCase()] || adminNavRole;
+%>
+<header class="admin-island-wrap d-print-none">
+    <div class="admin-island">
+        <a class="admin-island-brand" href="/admin" aria-label="UTK-Store Admin - หน้าภาพรวม">
+            <span class="admin-island-brand-mark"><%- include("tabler-icon", { name: "school", size: 21 }) %></span>
+            <span><strong>UTK-Store</strong><small>จัดการร้านค้า</small></span>
+        </a>
+
+        <nav class="admin-island-nav" aria-label="เมนูผู้ดูแลระบบ">
+            <% adminNavItems.forEach((item) => { %>
+                <a href="<%= item.href %>" class="admin-island-link <%= item.active ? 'is-active' : '' %>"<% if (item.active) { %> aria-current="page"<% } %>>
+                    <%- include("tabler-icon", { name: item.icon, size: 18 }) %>
+                    <span><%= item.label %></span>
+                </a>
+            <% }) %>
+        </nav>
+
+        <div class="admin-island-account">
+            <div class="admin-island-user" title="<%= adminRoleLabel %>">
+                <span class="admin-island-user-icon"><%- include("tabler-icon", { name: "user", size: 18 }) %></span>
+                <span class="admin-island-user-text"><strong><%= adminNavUsername %></strong><small><%= adminRoleLabel %></small></span>
+            </div>
+            <form action="/logout" method="POST">
+                <button class="admin-island-logout" type="submit" aria-label="ออกจากระบบ" title="ออกจากระบบ">
+                    <%- include("tabler-icon", { name: "lock", size: 18 }) %><span>ออกจากระบบ</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</header>
+<div class="admin-island-spacer" aria-hidden="true"></div>
+<%- include("permission-toast") %>

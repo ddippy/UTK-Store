@@ -60,11 +60,35 @@ module.exports = (upload, fieldName, resourceType) => (req, res, next) => {
         }
 
         const extension = path.extname(req.file.originalname).toLowerCase();
-        const typeMatches =
-            detectedType &&
-            detectedType === req.file.mimetype &&
-            imageTypes[detectedType]?.includes(extension);
-        if (typeMatches) return next();
+        const typeMatches = detectedType && imageTypes[detectedType]?.includes(extension);
+        if (typeMatches) {
+            req.file.detectedMimeType = detectedType;
+            req.fileMetadataSaved = false;
+            res.once("finish", async () => {
+                if (res.statusCode < 400 || req.fileMetadataSaved || req.fileDiscarded) return;
+
+                try {
+                    await fs.unlink(req.file.path);
+                    req.fileDiscarded = true;
+                    await ActivityLog.record(req, {
+                        eventType: "file.delete",
+                        resourceType,
+                        resourceId: req.file.filename,
+                        details: { reason: "upload_operation_failed_cleanup" },
+                    });
+                } catch (cleanupError) {
+                    if (cleanupError.code === "ENOENT") return;
+                    await ActivityLog.record(req, {
+                        eventType: "file.delete",
+                        resourceType,
+                        resourceId: req.file.filename,
+                        outcome: "failure",
+                        details: { reason: "upload_operation_failed_cleanup" },
+                    });
+                }
+            });
+            return next();
+        }
 
         await ActivityLog.record(req, {
             eventType: "file.upload",
@@ -81,6 +105,7 @@ module.exports = (upload, fieldName, resourceType) => (req, res, next) => {
 
         try {
             await fs.unlink(req.file.path);
+            req.fileDiscarded = true;
             await ActivityLog.record(req, {
                 eventType: "file.delete",
                 resourceType,

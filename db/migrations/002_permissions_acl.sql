@@ -340,6 +340,7 @@ WHERE
         'variants.manage',
         'orders.read',
         'orders.update',
+        'orders.own.read',
         'payment_slips.read'
     ) ON CONFLICT DO NOTHING;
 
@@ -359,6 +360,7 @@ WHERE
         'variants.manage',
         'orders.read',
         'orders.update',
+        'orders.own.read',
         'payment_slips.read'
     ) ON CONFLICT DO NOTHING;
 

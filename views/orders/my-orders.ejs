@@ -65,7 +65,7 @@
                                 <% if (orders.length === 0) { %>
 
                                 <div class="empty py-5">
-                                    <div class="empty-img">📦</div>
+                                    <div class="empty-img"><%- include("../partials/tabler-icon", { name: "package", size: 48 }) %></div>
 
                                     <p class="empty-title">ยังไม่มีคำสั่งซื้อ</p>
 
@@ -75,7 +75,7 @@
 
                                     <div class="empty-action">
                                         <a href="/products" class="btn btn-primary">
-                                            🛍️ เลือกซื้อสินค้า
+                                            <%- include("../partials/tabler-icon", { name: "shopping-bag", size: 20 }) %> เลือกซื้อสินค้า
                                         </a>
                                     </div>
                                 </div>
@@ -191,7 +191,7 @@
                                 <% if (orders.length === 0) { %>
 
                                 <div class="empty py-5">
-                                    <div class="empty-img">📦</div>
+                                    <div class="empty-img"><%- include("../partials/tabler-icon", { name: "package", size: 48 }) %></div>
 
                                     <p class="empty-title">ยังไม่มีคำสั่งซื้อ</p>
 
@@ -201,7 +201,7 @@
 
                                     <div class="empty-action">
                                         <a href="/products" class="btn btn-primary">
-                                            🛍️ เลือกซื้อสินค้า
+                                            <%- include("../partials/tabler-icon", { name: "shopping-bag", size: 20 }) %> เลือกซื้อสินค้า
                                         </a>
                                     </div>
                                 </div>

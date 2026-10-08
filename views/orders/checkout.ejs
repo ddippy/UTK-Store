@@ -68,11 +68,21 @@
                                     />
 
                                     <div class="card">
-                                        <div class="card-header">
+                                        <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
                                             <h3 class="card-title">ข้อมูลผู้สั่งซื้อ</h3>
+                                            <div class="d-flex gap-2">
+                                                <button id="checkout-edit-contact" type="button" class="btn btn-sm btn-outline-primary" aria-controls="checkout-customer-name checkout-phone" aria-pressed="false">
+                                                    <%- include("../partials/tabler-icon", { name: "edit", size: 18 }) %>
+                                                    <span class="checkout-edit-label">แก้ไขข้อมูล</span>
+                                                </button>
+                                                <button id="checkout-cancel-contact" type="button" class="btn btn-sm btn-outline-secondary" hidden>ยกเลิก</button>
+                                            </div>
                                         </div>
 
                                         <div class="card-body">
+                                            <div class="text-secondary mb-4">
+                                                ข้อมูลเริ่มต้นจากบัญชีของคุณ การแก้ไขมีผลเฉพาะคำสั่งซื้อนี้
+                                            </div>
                                             <!-- Name -->
 
                                             <div class="mb-4">
@@ -81,8 +91,12 @@
                                                 <input
                                                     type="text"
                                                     name="customer_name"
+                                                    id="checkout-customer-name"
                                                     value="<%= user.name %>"
-                                                    class="form-control"
+                                                    class="form-control checkout-contact-field"
+                                                    maxlength="150"
+                                                    autocomplete="name"
+                                                    readonly
                                                     required
                                                 />
 
@@ -98,14 +112,14 @@
 
                                                 <input
                                                     type="text"
-                                                    name="student_id"
                                                     value="<%= user.student_id %>"
                                                     class="form-control"
-                                                    required
+                                                    readonly
+                                                    aria-readonly="true"
                                                 />
 
                                                 <div class="form-hint">
-                                                    รหัสนักศึกษาของผู้สั่งซื้อ
+                                                    รหัสนักศึกษาเชื่อมกับบัญชีและแก้ไขจากหน้านี้ไม่ได้
                                                 </div>
                                             </div>
 
@@ -117,8 +131,12 @@
                                                 <input
                                                     type="text"
                                                     name="phone"
+                                                    id="checkout-phone"
                                                     value="<%= user.phone %>"
-                                                    class="form-control"
+                                                    class="form-control checkout-contact-field"
+                                                    maxlength="20"
+                                                    autocomplete="tel"
+                                                    readonly
                                                     required
                                                 />
 
@@ -289,6 +307,34 @@
         <!-- Tabler JS -->
 
         <script src="/js/tabler.min.js"></script>
+
+        <script>
+            (() => {
+                const editButton = document.getElementById("checkout-edit-contact");
+                const cancelButton = document.getElementById("checkout-cancel-contact");
+                const editLabel = editButton?.querySelector(".checkout-edit-label");
+                const fields = [...document.querySelectorAll(".checkout-contact-field")];
+                if (!editButton || !cancelButton || !editLabel || fields.length === 0) return;
+
+                const originalValues = fields.map((field) => field.value);
+                const setEditing = (editing) => {
+                    fields.forEach((field) => { field.readOnly = !editing; });
+                    editButton.setAttribute("aria-pressed", String(editing));
+                    editLabel.textContent = editing ? "ใช้ข้อมูลนี้" : "แก้ไขข้อมูล";
+                    cancelButton.hidden = !editing;
+                    if (editing) fields[0].focus();
+                };
+
+                editButton.addEventListener("click", () => {
+                    const editing = fields.some((field) => field.readOnly);
+                    setEditing(editing);
+                });
+                cancelButton.addEventListener("click", () => {
+                    fields.forEach((field, index) => { field.value = originalValues[index]; });
+                    setEditing(false);
+                });
+            })();
+        </script>
 
         <%- include("../partials/store-footer") %>
     </body>

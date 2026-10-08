@@ -21,26 +21,7 @@
 
     <body>
         <!-- Navbar -->
-        <header class="navbar navbar-expand-md d-print-none">
-            <div class="container-xl">
-                <h1 class="navbar-brand navbar-brand-autodark">UTK-Store Admin</h1>
-
-                <div class="navbar-nav flex-row order-md-last ms-auto">
-                    <% if (isAdmin) { %>
-                    <a class="nav-link" href="/admin/logs">ประวัติการใช้งาน</a>
-                    <% } %>
-                    <div class="nav-item">
-                        <span class="nav-link"> สวัสดี, <%= adminUsername %> </span>
-                    </div>
-
-                    <div class="nav-item">
-                        <form action="/logout" method="POST">
-                            <button type="submit" class="btn btn-outline-danger">Logout</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </header>
+        <%- include("../partials/admin-navbar") %>
 
         <!-- Page -->
         <div class="page">
@@ -78,7 +59,7 @@
                                             </div>
 
                                             <div class="ms-auto">
-                                                <span class="avatar bg-blue-lt"> 📦 </span>
+                                                <span class="avatar bg-blue-lt"> <%- include("../partials/tabler-icon", { name: "package", size: 20 }) %> </span>
                                             </div>
                                         </div>
                                     </div>
@@ -102,7 +83,7 @@
                                             </div>
 
                                             <div class="ms-auto">
-                                                <span class="avatar bg-green-lt"> 💰 </span>
+                                                <span class="avatar bg-green-lt"> <%- include("../partials/tabler-icon", { name: "coin", size: 20 }) %> </span>
                                             </div>
                                         </div>
                                     </div>
@@ -135,7 +116,7 @@
                                             </div>
 
                                             <div class="ms-auto">
-                                                <span class="avatar bg-yellow-lt"> 📊 </span>
+                                                <span class="avatar bg-yellow-lt"> <%- include("../partials/tabler-icon", { name: "chart-bar", size: 20 }) %> </span>
                                             </div>
                                         </div>
                                     </div>
@@ -191,7 +172,7 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">🏆 สินค้าขายดี</h3>
+                                        <h3 class="card-title"><%- include("../partials/tabler-icon", { name: "trophy", size: 20 }) %> สินค้าขายดี</h3>
                                     </div>
 
                                     <div class="table-responsive">
@@ -378,7 +359,7 @@
                                 <a href="/admin/products" class="card card-link card-link-pop">
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
-                                            <span class="avatar bg-blue-lt me-3"> 📦 </span>
+                                            <span class="avatar bg-blue-lt me-3"> <%- include("../partials/tabler-icon", { name: "package", size: 20 }) %> </span>
 
                                             <div>
                                                 <h3 class="mb-1">จัดการสินค้า</h3>
@@ -396,7 +377,7 @@
                                 <a href="/admin/orders" class="card card-link card-link-pop">
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
-                                            <span class="avatar bg-green-lt me-3"> 🛒 </span>
+                                            <span class="avatar bg-green-lt me-3"> <%- include("../partials/tabler-icon", { name: "shopping-cart", size: 20 }) %> </span>
 
                                             <div>
                                                 <h3 class="mb-1">จัดการคำสั่งซื้อ</h3>
@@ -414,7 +395,7 @@
                                 <a href="/admin/roles" class="card card-link card-link-pop">
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
-                                            <span class="avatar bg-purple-lt me-3">🔐</span>
+                                            <span class="avatar bg-purple-lt me-3"><%- include("../partials/tabler-icon", { name: "lock", size: 20 }) %></span>
                                             <div>
                                                 <h3 class="mb-1">จัดการ Role</h3>
                                                 <div class="text-secondary">
@@ -430,7 +411,7 @@
                                 <a href="/admin/users" class="card card-link card-link-pop">
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
-                                            <span class="avatar bg-cyan-lt me-3">👥</span>
+                                            <span class="avatar bg-cyan-lt me-3"><%- include("../partials/tabler-icon", { name: "users", size: 20 }) %></span>
                                             <div>
                                                 <h3 class="mb-1">จัดการผู้ใช้</h3>
                                                 <div class="text-secondary">
@@ -445,7 +426,7 @@
                             <div class="col-md-6">
                                 <a href="/admin/permissions" class="card card-link card-link-pop">
                                     <div class="card-body d-flex align-items-center">
-                                        <span class="avatar bg-orange-lt me-3">🧩</span>
+                                        <span class="avatar bg-orange-lt me-3"><%- include("../partials/tabler-icon", { name: "puzzle", size: 20 }) %></span>
                                         <div>
                                             <h3 class="mb-1">จัดการ Permission</h3>
                                             <div class="text-secondary">

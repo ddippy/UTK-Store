@@ -2,263 +2,129 @@
 <html lang="th">
     <head>
         <meta charset="UTF-8" />
-
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
         <title>เกี่ยวกับเรา | UTK-Store</title>
-
         <link rel="stylesheet" href="/css/tabler.min.css" />
-
         <link rel="stylesheet" href="/css/style.css" />
     </head>
-
-    <body class="bg-light">
-        <!-- Navbar -->
-
+    <body class="about-page-shell">
         <%- include("./partials/user-navbar") %>
 
-        <!-- Page -->
-
-        <div class="page">
-            <div class="page-wrapper">
-                <!-- Header -->
-
-                <div class="page-header d-print-none">
-                    <div class="container-xl">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h2 class="page-title">เกี่ยวกับเรา</h2>
-
-                                <div class="text-secondary mt-1">
-                                    รู้จัก UTK-Store และระบบของเรา
-                                </div>
-                            </div>
+        <main class="page-wrapper about-help-page">
+            <div class="container-xl">
+                <div class="about-help-layout">
+                    <aside class="about-help-sidebar" aria-label="เมนูข้อมูลร้านค้า">
+                        <div class="about-help-sidebar-title">ข้อมูลร้านค้า</div>
+                        <div class="about-help-tabs" role="tablist" aria-orientation="vertical" aria-label="เลือกหัวข้อ">
+                            <button class="about-help-tab" id="about-tab-contact" type="button" role="tab" aria-selected="false" aria-controls="about-panel-contact" data-about-tab="contact">
+                                <%- include("./partials/tabler-icon", { name: "phone", size: 19 }) %>
+                                <span>ติดต่อเรา</span>
+                            </button>
+                            <button class="about-help-tab is-active" id="about-tab-about" type="button" role="tab" aria-selected="true" aria-controls="about-panel-about" data-about-tab="about">
+                                <%- include("./partials/tabler-icon", { name: "receipt", size: 19 }) %>
+                                <span>เกี่ยวกับเรา</span>
+                            </button>
                         </div>
-                    </div>
-                </div>
+                    </aside>
 
-                <!-- Body -->
+                    <div class="about-help-content">
+                        <section class="about-help-panel" id="about-panel-about" role="tabpanel" aria-labelledby="about-tab-about" data-about-panel="about">
+                            <div class="about-help-heading">
+                                <span class="about-help-heading-icon"><%- include("./partials/tabler-icon", { name: "receipt", size: 22 }) %></span>
+                                <h1>เกี่ยวกับเรา</h1>
+                            </div>
 
-                <div class="page-body">
-                    <div class="container-xl">
-                        <!-- About -->
+                            <div class="about-help-card">
+                                <h2>UTK-Store ร้านค้าออนไลน์สำหรับชุมชนมหาวิทยาลัย</h2>
+                                <p>UTK-Store ช่วยให้เลือกดูสินค้า ตรวจสอบรายละเอียดและตัวเลือกสินค้า ใส่สินค้าในตะกร้า และสั่งซื้อผ่านเว็บไซต์ได้สะดวกขึ้น</p>
 
-                        <div class="card mb-4">
-                            <div class="card-body p-4 p-md-5">
-                                <div class="row align-items-center">
-                                    <div class="col-lg-8">
-                                        <h1 class="mb-3">UTK-Store</h1>
+                                <h3>ขั้นตอนการสั่งซื้อและนัดรับ</h3>
+                                <ol class="about-pickup-steps">
+                                    <li><strong>เลือกสินค้า</strong><span>เลือกสินค้าและ Variant ที่ต้องการ แล้วเพิ่มลงตะกร้า</span></li>
+                                    <li><strong>ยืนยันคำสั่งซื้อ</strong><span>ตรวจสอบข้อมูลผู้ติดต่อ ชำระเงินตามช่องทางที่ร้านแจ้ง และแนบหลักฐานการชำระเงิน</span></li>
+                                    <li><strong>รอร้านตรวจสอบ</strong><span>ติดตามสถานะคำสั่งซื้อในบัญชีของคุณ เมื่อร้านตรวจสอบแล้วจะยืนยันคำสั่งซื้อ</span></li>
+                                    <li><strong>นัดรับสินค้าที่ร้าน</strong><span>ติดต่อร้านเพื่อนัดวัน เวลา และจุดรับสินค้า หลังรับสินค้าเรียบร้อย ร้านจะปิดคำสั่งซื้อเป็นสำเร็จ</span></li>
+                                </ol>
 
-                                        <p class="text-secondary fs-3">
-                                            ร้านค้าออนไลน์สำหรับนักศึกษา และสมาชิกของมหาวิทยาลัย
-                                        </p>
+                                <div class="about-pickup-note">
+                                    <%- include("./partials/tabler-icon", { name: "map-pin", size: 20 }) %>
+                                    <span>ระบบปัจจุบันรองรับการนัดรับที่ร้าน ยังไม่มีบริการจัดส่งถึงที่อยู่</span>
+                                </div>
+                            </div>
+                        </section>
 
-                                        <p class="text-secondary">
-                                            UTK-Store เป็นระบบร้านค้าออนไลน์
-                                            ที่จัดทำขึ้นเพื่อใช้สำหรับการเลือกดูสินค้า
-                                            ตรวจสอบรายละเอียดสินค้า เพิ่มสินค้าลงรถเข็น
-                                            และดำเนินการสั่งซื้อผ่านระบบออนไลน์
-                                        </p>
+                        <section class="about-help-panel" id="about-panel-contact" role="tabpanel" aria-labelledby="about-tab-contact" data-about-panel="contact" hidden>
+                            <div class="about-help-heading">
+                                <span class="about-help-heading-icon"><%- include("./partials/tabler-icon", { name: "phone", size: 22 }) %></span>
+                                <h1>ติดต่อเรา</h1>
+                            </div>
 
-                                        <p class="text-secondary mb-0">
-                                            จุดประสงค์ของระบบคือช่วยให้การซื้อขายสินค้า
-                                            ภายในมหาวิทยาลัยมีความสะดวก เป็นระบบ
-                                            และสามารถตรวจสอบข้อมูลคำสั่งซื้อได้ง่าย
-                                        </p>
+                            <div class="about-help-card">
+                                <div class="about-contact-intro">
+                                    <div>
+                                        <h2>สอบถามข้อมูลสินค้าและนัดรับ</h2>
+                                        <p class="text-secondary mb-0">ติดต่อเราได้ตามช่องทางด้านล่าง ข้อมูลชุดนี้เป็นตัวอย่างสำหรับแก้ไขก่อนนำเว็บไปใช้งานจริง</p>
                                     </div>
+                                    <span class="badge bg-yellow-lt">ข้อมูลตัวอย่าง</span>
+                                </div>
 
-                                    <div class="col-lg-4 mt-4 mt-lg-0">
-                                        <div class="bg-primary-lt rounded-3 p-5 text-center">
-                                            <div
-                                                class="avatar avatar-xl bg-primary text-white mx-auto mb-3"
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="32"
-                                                    height="32"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                >
-                                                    <path stroke="none" d="M0 0h24v24H0z" />
-                                                    <path
-                                                        d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
-                                                    />
-                                                    <path
-                                                        d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
-                                                    />
-                                                    <path d="M6 17h11v-5h-9" />
-                                                    <path d="M8 12l-2 -8h-2" />
-                                                </svg>
-                                            </div>
-
-                                            <h3 class="mb-1">UTK-Store</h3>
-
-                                            <div class="text-secondary">
-                                                Online University Store
-                                            </div>
-                                        </div>
+                                <div class="about-contact-list">
+                                    <div class="about-contact-item">
+                                        <span class="about-contact-icon"><%- include("./partials/tabler-icon", { name: "phone", size: 20 }) %></span>
+                                        <div><div class="text-secondary">โทรศัพท์</div><strong>02-123-4567</strong></div>
+                                    </div>
+                                    <div class="about-contact-item">
+                                        <span class="about-contact-icon"><%- include("./partials/tabler-icon", { name: "mail", size: 20 }) %></span>
+                                        <div><div class="text-secondary">อีเมล</div><strong>contact@utk-store.example</strong></div>
+                                    </div>
+                                    <div class="about-contact-item">
+                                        <span class="about-contact-icon"><%- include("./partials/tabler-icon", { name: "map-pin", size: 20 }) %></span>
+                                        <div><div class="text-secondary">จุดนัดรับ</div><strong>บริเวณร้าน UTK-Store ภายในมหาวิทยาลัย</strong></div>
+                                    </div>
+                                    <div class="about-contact-item">
+                                        <span class="about-contact-icon"><%- include("./partials/tabler-icon", { name: "clock", size: 20 }) %></span>
+                                        <div><div class="text-secondary">เวลาติดต่อ</div><strong>วันจันทร์–ศุกร์ เวลา 09:00–16:00 น.</strong></div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Features -->
-
-                        <div class="row row-cards mb-4">
-                            <div class="col-md-4">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <div class="avatar bg-blue-lt mb-3">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="2"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-                                                <path stroke="none" d="M0 0h24v24H0z" />
-                                                <path d="M4 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                                                <path d="M12.5 17h-6.5v-14h-2" />
-                                                <path d="M6 5l14 1l-1 7h-13" />
-                                            </svg>
-                                        </div>
-
-                                        <h3>สินค้า</h3>
-
-                                        <p class="text-secondary mb-0">
-                                            รวมสินค้าสำหรับนักศึกษา
-                                            พร้อมรายละเอียดและข้อมูลที่จำเป็น
-                                            สำหรับการตัดสินใจก่อนสั่งซื้อ
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <div class="avatar bg-green-lt mb-3">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="2"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-                                                <path stroke="none" d="M0 0h24v24H0z" />
-                                                <path d="M6 10h14" />
-                                                <path d="M6 14h14" />
-                                                <path d="M4 6v12" />
-                                            </svg>
-                                        </div>
-
-                                        <h3>สั่งซื้อออนไลน์</h3>
-
-                                        <p class="text-secondary mb-0">
-                                            สามารถเพิ่มสินค้าในรถเข็น
-                                            และดำเนินการสั่งซื้อได้ผ่านระบบ
-                                            โดยไม่ต้องจัดการข้อมูลด้วยตนเอง
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <div class="avatar bg-yellow-lt mb-3">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                stroke-width="2"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            >
-                                                <path stroke="none" d="M0 0h24v24H0z" />
-                                                <path
-                                                    d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
-                                                />
-                                                <path d="M12 8v4l2 2" />
-                                            </svg>
-                                        </div>
-
-                                        <h3>ติดตามคำสั่งซื้อ</h3>
-
-                                        <p class="text-secondary mb-0">
-                                            ตรวจสอบรายการสั่งซื้อ และติดตามสถานะคำสั่งซื้อ
-                                            ได้จากบัญชีของผู้ใช้งาน
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Project Information -->
-
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">ข้อมูลโครงการ</h3>
-                            </div>
-
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <dl class="row">
-                                            <dt class="col-5">ชื่อระบบ</dt>
-
-                                            <dd class="col-7">UTK-Store</dd>
-
-                                            <dt class="col-5">ประเภท</dt>
-
-                                            <dd class="col-7">ระบบร้านค้าออนไลน์</dd>
-
-                                            <dt class="col-5">กลุ่มผู้ใช้งาน</dt>
-
-                                            <dd class="col-7">นักศึกษา / สมาชิกมหาวิทยาลัย</dd>
-                                        </dl>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <dl class="row">
-                                            <dt class="col-5">เทคโนโลยี</dt>
-
-                                            <dd class="col-7">Node.js / Express</dd>
-
-                                            <dt class="col-5">Database</dt>
-
-                                            <dd class="col-7">PostgreSQL</dd>
-
-                                            <dt class="col-5">Frontend</dt>
-
-                                            <dd class="col-7">EJS / Tabler</dd>
-                                        </dl>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        </section>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
 
+        <script>
+            (() => {
+                const tabs = [...document.querySelectorAll("[data-about-tab]")];
+                const panels = [...document.querySelectorAll("[data-about-panel]")];
+                const activate = (name, updateHash = true) => {
+                    tabs.forEach((tab) => {
+                        const active = tab.dataset.aboutTab === name;
+                        tab.classList.toggle("is-active", active);
+                        tab.setAttribute("aria-selected", String(active));
+                        tab.tabIndex = active ? 0 : -1;
+                    });
+                    panels.forEach((panel) => { panel.hidden = panel.dataset.aboutPanel !== name; });
+                    if (updateHash) history.replaceState(null, "", `#${name}`);
+                };
+
+                tabs.forEach((tab, index) => {
+                    tab.addEventListener("click", () => activate(tab.dataset.aboutTab));
+                    tab.addEventListener("keydown", (event) => {
+                        if (!["ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"].includes(event.key)) return;
+                        event.preventDefault();
+                        const step = ["ArrowDown", "ArrowRight"].includes(event.key) ? 1 : -1;
+                        const next = tabs[(index + step + tabs.length) % tabs.length];
+                        next.focus();
+                        activate(next.dataset.aboutTab);
+                    });
+                });
+
+                const initialTab = window.location.hash === "#contact" ? "contact" : "about";
+                activate(initialTab, false);
+            })();
+        </script>
         <script src="/js/tabler.min.js"></script>
-
         <%- include("./partials/store-footer") %>
     </body>
 </html>

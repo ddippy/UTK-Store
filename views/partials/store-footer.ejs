@@ -26,7 +26,7 @@
                     <li><a href="/user/register">สมัครสมาชิก</a></li>
                     <li>
                         <% if (locals.isUserLoggedIn) { %>
-                            <a href="<%= ["MANAGER", "STAFF"].includes(String(locals.role || "USER").toUpperCase()) ? "/admin/orders" : "/orders/my-orders" %>">คำสั่งซื้อของฉัน</a>
+                            <a href="/orders/my-orders">คำสั่งซื้อของฉัน</a>
                         <% } else { %>
                             <a href="/orders/my-orders" class="js-open-login-modal" data-login-return-to="/orders/my-orders">คำสั่งซื้อของฉัน</a>
                         <% } %>

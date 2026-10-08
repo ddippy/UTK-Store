@@ -18,29 +18,7 @@
 
     <!-- Navbar -->
 
-    <header class="navbar navbar-expand-md d-print-none">
-
-        <div class="container-xl">
-
-            <a href="/admin" class="navbar-brand navbar-brand-autodark">
-                UTK-Store Admin
-            </a>
-
-
-            <div class="navbar-nav flex-row order-md-last ms-auto">
-
-                <a
-                    href="/products"
-                    class="btn btn-outline-primary"
-                >
-                    🛍️ หน้าร้าน
-                </a>
-
-            </div>
-
-        </div>
-
-    </header>
+    <%- include("../partials/admin-navbar") %>
 
 
     <!-- Page -->
@@ -70,18 +48,6 @@
 
                         </div>
 
-
-                        <div class="col-auto">
-
-                            <a
-                                href="/admin"
-                                class="btn btn-outline-secondary"
-                            >
-                                ← กลับ Dashboard
-                            </a>
-
-                        </div>
-
                     </div>
 
                 </div>
@@ -106,7 +72,7 @@
                             <div class="empty">
 
                                 <div class="empty-img">
-                                    📦
+                                    <%- include("../partials/tabler-icon", { name: "package", size: 48 }) %>
                                 </div>
 
                                 <p class="empty-title">
@@ -164,7 +130,7 @@
                                             <div class="ms-auto">
 
                                                 <span class="avatar bg-blue-lt">
-                                                    📦
+                                                    <%- include("../partials/tabler-icon", { name: "package", size: 20 }) %>
                                                 </span>
 
                                             </div>
@@ -488,6 +454,21 @@
     </div>
 
 
+    <% if (toast) { %>
+        <div class="admin-toast admin-toast-<%= toast.type %>" role="<%= toast.type === 'error' ? 'alert' : 'status' %>" aria-live="polite">
+            <span class="admin-toast-icon"><%- include("../partials/tabler-icon", { name: toast.type === "error" ? "lock" : "check", size: 20 }) %></span>
+            <span class="admin-toast-message"><%= toast.message %></span>
+            <button class="admin-toast-close" type="button" aria-label="ปิดการแจ้งเตือน">&times;</button>
+        </div>
+        <script>
+            (() => {
+                const toast = document.querySelector(".admin-toast");
+                const dismiss = () => toast?.classList.add("is-hidden");
+                toast?.querySelector(".admin-toast-close")?.addEventListener("click", dismiss);
+                window.setTimeout(dismiss, 5000);
+            })();
+        </script>
+    <% } %>
     <script src="/js/tabler.min.js"></script>
 
 </body>

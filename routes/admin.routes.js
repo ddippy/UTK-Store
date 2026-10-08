@@ -25,6 +25,10 @@ router.post("/acl/:roleId/:permissionId", authorizeRoute, permissionController.s
 router.get("/logs", authorizeRoute, activityLogController.index);
 
 router.get("/products", authorizeRoute, adminController.products);
+router.get("/categories", authorizeRoute, adminController.categories);
+router.post("/categories", authorizeRoute, adminController.createCategory);
+router.post("/categories/:id/edit", authorizeRoute, adminController.updateCategory);
+router.post("/categories/:id/delete", authorizeRoute, adminController.deleteCategory);
 
 router.get("/orders", authorizeRoute, adminController.orders);
 
@@ -40,7 +44,12 @@ router.get("/products/:id/variants", authorizeRoute, adminController.variants);
 
 router.get("/products/:id/edit", authorizeRoute, adminController.editProductForm);
 
-router.post("/products/create", authorizeRoute, adminController.createProduct);
+router.post(
+    "/products/create",
+    authorizeRoute,
+    auditedUpload(upload, "image", "product_image"),
+    adminController.createProduct,
+);
 
 router.post("/products/:id/variants", authorizeRoute, adminController.createVariant);
 

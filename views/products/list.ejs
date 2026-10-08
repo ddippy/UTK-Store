@@ -68,7 +68,7 @@
                         <% if (products.length === 0) { %>
 
                         <div class="empty">
-                            <div class="empty-img">🛍️</div>
+                            <div class="empty-img"><%- include("../partials/tabler-icon", { name: "shopping-bag", size: 48 }) %></div>
 
                             <p class="empty-title">
                                 <%= search ? "ไม่พบสินค้าที่ค้นหา" : (selectedCategory ?
@@ -232,11 +232,9 @@
                             display: flex;
                             align-items: center;
                             justify-content: center;
-                            font-size: 36px;
-                            font-weight: bold;
                         "
                     >
-                        ✓
+                        <%- include("../partials/tabler-icon", { name: "check", size: 40 }) %>
                     </div>
 
                     <h2 style="margin: 0 0 8px; font-size: 24px">สั่งซื้อสำเร็จ!</h2>
@@ -304,13 +302,14 @@
 
         <div
             id="product-toast"
-            class="toast position-fixed top-0 end-0 m-3"
+            class="app-toast"
             role="alert"
-            style="z-index: 9999"
+            aria-live="assertive"
         >
-            <div class="toast-body">
-                <span id="product-toast-message"></span>
-            </div>
+            <span class="app-toast-icon app-toast-icon-success"><%- include("../partials/tabler-icon", { name: "check", size: 20 }) %></span>
+            <span class="app-toast-icon app-toast-icon-error"><%- include("../partials/tabler-icon", { name: "alert-circle", size: 20 }) %></span>
+            <span id="product-toast-message" class="app-toast-message"></span>
+            <button class="app-toast-close" type="button" aria-label="ปิดการแจ้งเตือน">&times;</button>
         </div>
 
         <script>
@@ -319,51 +318,40 @@
                 const messageBox = document.querySelector("#product-toast-message");
 
                 const params = new URLSearchParams(window.location.search);
-
                 const error = params.get("error");
+                if (error) {
+                    let message = "";
+                    if (error === "invalid-id") {
+                        message = "รหัสสินค้าไม่ถูกต้อง";
+                    } else if (error === "product-not-found") {
+                        message = "ไม่พบสินค้าที่ต้องการ";
+                    } else if (error === "inactive") {
+                        message = "สินค้านี้ไม่มีจำหน่ายแล้ว";
+                    }
 
-                if (!error) {
-                    return;
+                    if (message) {
+                        toast.classList.remove("app-toast-success", "app-toast-error", "app-toast-warning");
+                        toast.classList.add("app-toast-warning");
+                        messageBox.textContent = message;
+                        toast.classList.add("show");
+                        window.clearTimeout(toast.hideTimer);
+                        toast.hideTimer = window.setTimeout(() => toast.classList.remove("show"), 3000);
+                        toast.querySelector(".app-toast-close").onclick = () => toast.classList.remove("show");
+                    }
+
+                    // ลบ error ออกจาก URL โดยคง query อื่นไว้
+                    params.delete("error");
+                    const query = params.toString();
+                    window.history.replaceState(
+                        {},
+                        "",
+                        window.location.pathname + (query ? `?${query}` : "") + window.location.hash,
+                    );
                 }
-
-                let message = "";
-                let type = "warning";
-
-                if (error === "invalid-id") {
-                    message = "รหัสสินค้าไม่ถูกต้อง";
-                } else if (error === "product-not-found") {
-                    message = "ไม่พบสินค้าที่ต้องการ";
-                } else if (error === "inactive") {
-                    message = "สินค้านี้ไม่มีจำหน่ายแล้ว";
-                }
-
-                if (!message) {
-                    return;
-                }
-
-                toast.classList.remove("text-bg-danger", "text-bg-warning", "text-bg-success");
-
-                toast.classList.add(`text-bg-${type}`);
-
-                messageBox.textContent = message;
-
-                toast.classList.add("show");
-
-                setTimeout(() => {
-                    toast.classList.remove("show");
-                }, 3000);
-
-                // ลบ error ออกจาก URL
-                params.delete("error");
-
-                const newUrl =
-                    window.location.pathname + (params.toString() ? "?" + params.toString() : "");
-
-                window.history.replaceState({}, "", newUrl);
 
                 const modal = document.getElementById("order-success-modal");
-
                 const closeButton = document.getElementById("close-order-success");
+                if (!modal || !closeButton || params.get("success") !== "1") return;
 
                 // =========================
                 // เปิด Modal

@@ -18,32 +18,7 @@
 
     <!-- Navbar -->
 
-    <header class="navbar navbar-expand-md d-print-none">
-
-        <div class="container-xl">
-
-            <a
-                href="/admin"
-                class="navbar-brand navbar-brand-autodark"
-            >
-                UTK-Store Admin
-            </a>
-
-
-            <div class="navbar-nav flex-row order-md-last ms-auto">
-
-                <a
-                    href="/products"
-                    class="btn btn-outline-primary"
-                >
-                    🛍️ หน้าร้าน
-                </a>
-
-            </div>
-
-        </div>
-
-    </header>
+    <%- include("../partials/admin-navbar") %>
 
 
     <!-- Page -->
@@ -317,7 +292,7 @@
                                             type="submit"
                                             class="btn btn-primary"
                                         >
-                                            💾 บันทึกการแก้ไข
+                                            <%- include("../partials/tabler-icon", { name: "device-floppy", size: 20 }) %> บันทึกการแก้ไข
                                         </button>
 
                                     </div>
@@ -370,7 +345,7 @@
                                         >
 
                                             <div class="empty-img">
-                                                🖼️
+                                                <%- include("../partials/tabler-icon", { name: "photo", size: 48 }) %>
                                             </div>
 
                                             <p class="empty-title">
@@ -428,7 +403,7 @@
                                         <% if (product.status === "ACTIVE") { %>
 
                                             <span class="avatar bg-green-lt me-3">
-                                                ✓
+                                                <%- include("../partials/tabler-icon", { name: "check", size: 18 }) %>
                                             </span>
 
                                             <div>

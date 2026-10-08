@@ -1,0 +1,33 @@
+<%
+    const iconPaths = {
+        "shopping-bag": '<path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1-2.966 2.544h-6.852a3 3 0 0 1-2.965-2.544l-1.255-8.152a2 2 0 0 1 1.977-2.304"/><path d="M9 11v-5a3 3 0 0 1 6 0v5"/>',
+        "shopping-cart": '<circle cx="8" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M5 5h2l2 10h9l2-7H8"/>',
+        package: '<path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m12 12 8-4.5M12 12v9M12 12 4 7.5M8 5.25l8 4.5"/>',
+        user: '<circle cx="12" cy="8" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/>',
+        school: '<path d="m22 10-10-5L2 10l10 5 10-5Z"/><path d="M6 12v5c3.5 3 8.5 3 12 0v-5M22 10v6"/>',
+        coin: '<circle cx="12" cy="12" r="9"/><path d="M14.8 9.5c-.5-1-1.5-1.5-2.8-1.5-1.6 0-2.5.8-2.5 2s.9 1.8 2.5 2 2.5.8 2.5 2-.9 2-2.5 2c-1.3 0-2.3-.5-2.8-1.5M12 6.5v11"/>',
+        "chart-bar": '<path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/>',
+        trophy: '<path d="M8 21h8m-4-4v4M7 4h10l1 6a6 6 0 0 1-12 0l1-6Z"/><path d="M7 7H4v2a4 4 0 0 0 4 4m9-6h3v2a4 4 0 0 1-4 4"/>',
+        lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4M12 15v2"/>',
+        users: '<path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+        puzzle: '<path d="M4 7a2 2 0 0 1 2-2h3a2 2 0 1 1 4 0h3a2 2 0 0 1 2 2v3a2 2 0 1 1 0 4v3a2 2 0 0 1-2 2h-3a2 2 0 1 0-4 0H6a2 2 0 0 1-2-2v-3a2 2 0 1 0 0-4V7Z"/>',
+        edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4 11.5-11.5Z"/>',
+        photo: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>',
+        "device-floppy": '<path d="M5 21h14a2 2 0 0 0 2-2V7l-4-4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2Z"/><path d="M17 21v-8H7v8M7 3v5h8"/>',
+        bulb: '<path d="M9 18h6m-5 4h4m-7-7a7 7 0 1 1 10 0c-1 .8-1 1.5-1 3H9c0-1.5 0-2.2-1-3Z"/>',
+        check: '<path d="m5 12 4 4L19 6"/>',
+        "alert-circle": '<circle cx="12" cy="12" r="9"/><path d="M12 8v4m0 4h.01"/>',
+        phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/>',
+        mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+        "map-pin": '<path d="M12 21s7-5.5 7-12a7 7 0 1 0-14 0c0 6.5 7 12 7 12Z"/><circle cx="12" cy="9" r="2"/>',
+        "arrow-right": '<path d="M5 12h14m-7-7 7 7-7 7"/>',
+        "arrow-up-right": '<path d="M7 17 17 7M8 7h9v9"/>',
+        "device-laptop": '<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M2 20h20"/>',
+        category: '<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>',
+        clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+        receipt: '<path d="M5 3 7 4l2-1 3 1 3-1 2 1 2-1v18l-2-1-2 1-3-1-3 1-2-1-2 1V3Z"/><path d="M9 8h6m-6 4h6m-6 4h3"/>',
+    };
+    const iconName = Object.hasOwn(iconPaths, name) ? name : "shopping-bag";
+    const iconSize = Number.isFinite(Number(size)) ? Math.min(Math.max(Number(size), 12), 96) : 24;
+%>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-<%= iconName %>" width="<%= iconSize %>" height="<%= iconSize %>" style="width:<%= iconSize %>px;height:<%= iconSize %>px" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><%- iconPaths[iconName] %></svg>
