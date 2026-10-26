@@ -6,7 +6,8 @@
         { href: "/admin/orders", label: "คำสั่งซื้อ", icon: "package", active: currentPath.startsWith("/admin/orders") },
         { href: "/admin/users", label: "ผู้ใช้", icon: "users", active: currentPath.startsWith("/admin/users") },
         { href: "/admin/roles", label: "บทบาท", icon: "school", active: currentPath.startsWith("/admin/roles") },
-        { href: "/admin/permissions", label: "สิทธิ์", icon: "lock", active: currentPath.startsWith("/admin/permissions") || currentPath.startsWith("/admin/acl") },
+        { href: "/admin/permissions", label: "สิทธิ์", icon: "lock", active: currentPath.startsWith("/admin/permissions") },
+        { href: "/admin/acl", label: "กำหนด ACL", icon: "users", active: currentPath.startsWith("/admin/acl") },
         { href: "/admin/logs", label: "ประวัติ", icon: "chart-bar", active: currentPath.startsWith("/admin/logs") },
     ];
     const adminRoleLabels = { ADMIN: "ผู้ดูแลระบบ", MANAGER: "ผู้จัดการ", STAFF: "เจ้าหน้าที่", USER: "ผู้ใช้ทั่วไป" };
